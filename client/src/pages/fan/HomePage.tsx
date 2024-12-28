@@ -3,8 +3,10 @@ import { Container, Navbar, Button, Row, Col } from 'react-bootstrap';
 import Carousel from 'react-bootstrap/Carousel';
 import image from '../../Gemini_Generated_Image.jpeg'
 
-import './HomePage.css';
+import '../../assets/styles/HomePage.css';
 import { useNavigate } from 'react-router-dom';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const HomePage: React.FC = () => {
     const [screenSize, setScreenSize] = useState<'sm' | 'md' | 'lg'>('sm');
@@ -61,9 +63,15 @@ const HomePage: React.FC = () => {
     <div>
       {/* Brand Bar */}
       <Navbar bg="light" variant="light" className="mb-2  ">
-        <Container className='d-flex justify-content-center bg-grey'>
-          <Navbar.Brand className='text-center '><h1 className='fw-3 fs-3'>Celebrity Feedback Survey</h1></Navbar.Brand>
-        </Container>
+      <Container className="d-flex bg-grey justify-content-between align-items-center">
+  <div className="flex-grow-1 text-center">
+   
+      <h1 className="fw-3 fs-3">Celebrity Connect</h1>
+ 
+  </div>
+  <FontAwesomeIcon onClick={()=>navigate('/login')} style={{width:'2cm'}} icon={faUser}/>
+</Container>
+
       </Navbar>
 
       <Container>
@@ -92,24 +100,30 @@ const HomePage: React.FC = () => {
         </Row>
 
         {/* Write-up Section */}
-        
-  <Row className="mb-4">
-  <Col className='text-center fs-6'>
-    <h2>Take the Celebrity Survey!</h2>
-    <p>Have your say about the performance and popularity of your favorite celebrities!</p>
-    <p>Your feedback is invaluable in helping them connect better with their fans and grow in their journey.</p>
-    <p>Who knows? Your insights might even catch their attention, and you could hear directly from them as a token of their appreciation!</p>
-  </Col>
-</Row>
+ 
+  <div className='text-center fs-6'>
+    <h5>Connect With You Favorite Celebrities All Over The World!</h5>
+    <p>Send a shoutout, book a phone or video call with your favorite celebrities from anywhere on the globe!</p>
+    <p>Its simple and free.</p>
+    <p>Click any of the buttons below to get started</p>
+  </div>
 
-        {/* Start Survey Button */}
-        <Row className="text-center">
-          <Col>
-            <Button onClick={()=>navigate('/survey')} variant="primary" size="lg">
-              Start Survey
-            </Button>
-          </Col>
-        </Row>
+
+       <div className="d-flex justify-content-center gap-3">
+  <Button onClick={() => navigate('/send/shout-out')}>
+    Send Shout Out
+  </Button>
+  <Button onClick={() => navigate('/book/phone-call')}>
+    Book Phone Call
+  </Button>
+  <Button onClick={() => navigate('/book/video-call')}>
+    Book Video Call
+  </Button>
+</div>
+
+
+
+  
       </Container>
     </div>
   );
