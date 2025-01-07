@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/fan/HomePage';
 import BookCall from './components/BookCall';
 import Login from './pages/fan/Login';
+import Dashboard from './pages/fan/Dashboard';
+
+import DonationCampaigns from './pages/fan/DonationCampaigns';
 
 
 const App: React.FC = () => {
@@ -19,11 +22,12 @@ const App: React.FC = () => {
         <Route  path="/fan/book/video-call" element={<BookCall isFan isVideo/>} />
         <Route  path="/fan/book/phone-call" element={<BookCall isFan/>} />
         {/* <Route  path="/signup" element={<SignUp/>} /> */}
+        <Route  path="/dashboard" element={<Dashboard/>} />
+
         <Route  path="/login" element={<Login/>} />
         {/* <Route  path="forgot-password" element={<Forgot/>} />
         <Route  path="/reset-password" element={<Reset/>} />
         <Route  path="/profile" element={<Profile/>} />
-        <Route  path="/dashboard" element={<Dashboard/>} />
         <Route  path="/cart" element={<Cart/>} />
         <Route path="/book/tour" element={<BookTour/>} />
         <Route path="/book/membership-club" element={<BookMembership/>} />

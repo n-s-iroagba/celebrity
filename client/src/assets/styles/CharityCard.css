@@ -1,0 +1,73 @@
+.building-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .building-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  
+  .listed-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  .like-icon{
+    color:white
+  }
+  .like-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  
+  .like-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .like-button.liked {
+    color: red;
+  }
+  
+  .amenities {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .location {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+  }
+  .contact-button{
+    border-radius: 2rem;
+    background-color: rgb(25, 116, 151);
+    color: white;
+  }

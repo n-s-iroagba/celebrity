@@ -7,6 +7,17 @@ import '../../assets/styles/HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CircularImageSlider from '../../components/CircularImageSlider';
+import NavbarComponent from '../../components/NavbarComponent';
+import VideoContent from '../../components/VideoContent';
+import HowItWorks from '../../components/HowItWorks';
+import ActionButtons from '../../components/ActionButtons';
+import Footer from '../../components/Footer';
+import CustomCarousel from '../../components/CustomCarousel';
+import image1 from '../../assets/images/felton.png'
+import image2 from '../../assets/images/search-for-a-star-1x.png'
+import image3 from '../../assets/images/search.png'
+import image4 from '../../assets/images/img-fan-clubs.png'
 
 const HomePage: React.FC = () => {
     const [screenSize, setScreenSize] = useState<'sm' | 'md' | 'lg'>('sm');
@@ -35,7 +46,7 @@ const HomePage: React.FC = () => {
       };
     }, []);
   const celebrityImages = [
-    image,
+    image1,
     image,
     image,
     image,
@@ -61,71 +72,33 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      {/* Brand Bar */}
-      <Navbar bg="light" variant="light" className="mb-2  ">
-      <Container className="d-flex bg-grey justify-content-between align-items-center">
-  <div className="flex-grow-1 text-center">
-   
-      <h1 className="fw-3 fs-3">Celebrity Connect</h1>
+      <NavbarComponent/>
+
  
-  </div>
-  <FontAwesomeIcon onClick={()=>navigate('/login')} style={{width:'2cm'}} icon={faUser}/>
-</Container>
-
-      </Navbar>
-
-      <Container>
-        {/* Image Carousel */}
-        <Row className="mb-4">
-          <Col>
-            <Carousel className='bg-dark' indicators={false} controls={false} interval={3000}>
-              {imageChunks.map((chunk, index) => (
-                <Carousel.Item key={index}>
-                  <div className="d-flex justify-content-center">
-                    {chunk.map((img, idx) => (
-                      <div className="p-2" style={{ flex: '1 1 25%' }} key={idx}>
-                        <img
-                          src={img}
-                          alt={`Celebrity ${idx + 1}`}
-                          className="img-fluid rounded"
-                          style={{ maxHeight: '200px', objectFit: 'cover' }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-          </Col>
-        </Row>
-
-        {/* Write-up Section */}
- 
-  <div className='text-center fs-6'>
-    <h5>Connect With You Favorite Celebrities All Over The World!</h5>
-    <p>Send a shoutout, book a phone or video call with your favorite celebrities from anywhere on the globe!</p>
-    <p>Its simple and free.</p>
-    <p>Click any of the buttons below to get started</p>
-  </div>
-
-
-       <div className="d-flex justify-content-center gap-3">
-  <Button onClick={() => navigate('/send/shout-out')}>
-    Send Shout Out
-  </Button>
-  <Button onClick={() => navigate('/book/phone-call')}>
-    Book Phone Call
-  </Button>
-  <Button onClick={() => navigate('/book/video-call')}>
-    Book Video Call
-  </Button>
+      <div className='text-center'>
+  <h3> Connect Globally with Your Favorite Stars! 🌍</h3>
+  <p>Book phone calls, video calls, shoutouts, and personalized videos with celebrities you love. Your dream interaction, just a click away!</p>
 </div>
+   
+      <CircularImageSlider/>
+ 
+      <Container>
+
+ 
+  <VideoContent/>
 
 
+<ActionButtons/>
 
   
       </Container>
+      <HowItWorks/>
+
+<ActionButtons/>
+<Footer/>
+<CustomCarousel images={celebrityImages}/>
     </div>
+   
   );
 };
 
