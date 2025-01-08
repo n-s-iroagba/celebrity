@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTicketAlt, faStar, faCrown } from '@fortawesome/free-solid-svg-icons';
-import { ImmmersionTour } from '../../types/ImmersionTour';
+import { faTicketAlt, faStar, } from '@fortawesome/free-solid-svg-icons';
+import { TourPackage } from '../../types/TourPackage';
 
-const tourTiers:ImmmersionTour[] = [
+const tourTiers:TourPackage[] = [
   {
     id:1,
     name: "Backstage Experience",
@@ -20,7 +20,7 @@ const tourTiers:ImmmersionTour[] = [
   },
 ];
 
-const ImmersionTours = () => {
+const TourPackages = () => {
   return (
     <div className="bg-light py-5">
       <Container>
@@ -75,4 +75,4 @@ const ImmersionTours = () => {
   );
 };
 
-export default ImmersionTours;
+export default TourPackages;
