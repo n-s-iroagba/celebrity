@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import '../assets/styles/HowItWorks.css'
 
 const HowItWorks: React.FC = () => {
@@ -23,7 +23,7 @@ const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <Container className="py-4">
+    <div className="py-4">
       <Row className="g-4">
         {steps.map((step, index) => (
           <Col key={index} sm={12} md={6} lg={3}>
@@ -36,7 +36,7 @@ const HowItWorks: React.FC = () => {
           </Col>
         ))}
       </Row>
-    </Container>
+    </div>
   );
 };
 
