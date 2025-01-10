@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { ListGroup, Form, Spinner } from 'react-bootstrap';
-import SearchPic from './SearchPic';
-import '../assets/styles/BookCall.css';
-import Celebrity from '../types/Celebrity';
-import Schdedule from '../types/Schedule';
-
+import SearchPic from '../../assets/images/search.png';
+import '../../assets/styles/BookCall.css';
+import Celebrity from '../../types/Celebrity';
+import SearchBar from '../../components/SearchBar';
+import Schedule from '../../types/Schedule';
 
 
 const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isVideo }) => {
@@ -22,7 +21,8 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
       picture: 'https://example.com/drake.jpg',
     },
   ];
-  const schedules:Schdedule[] = [
+
+  const schedules: Schedule[] = [
     {
       date: '25 Jan 2025',
       time: '10:00 PM',
@@ -31,18 +31,18 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
       date: '25 Jan 2025',
       time: '10:00 PM',
     },
-  ]
+  ];
 
   const [query, setQuery] = useState('');
   const [selectedCelebrity, setSelectedCelebrity] = useState<Celebrity | null>(null);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+  const handleSearchChange = (searchQuery: string) => {
+    setQuery(searchQuery);
   };
 
   const handleSelectCelebrity = (celebrity: Celebrity) => {
     setSelectedCelebrity(celebrity);
-    setQuery(''); // Clear the search bar when a celebrity is selected
+    setQuery('');
   };
 
   const filteredCelebrities = celebrities.filter((celebrity) =>
@@ -50,8 +50,6 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
     celebrity.firstName.toLowerCase().includes(query.toLowerCase()) ||
     celebrity.lastName.toLowerCase().includes(query.toLowerCase())
   );
-
-  const noResultFound = query && filteredCelebrities.length === 0;
 
   return (
     <div className="d-flex justify-content-center">
@@ -61,65 +59,45 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
         </h6>
         <SearchPic />
         <small>Search the celebrity you wish to connect with.</small>
-        <Form.Control
-          type="text"
-          placeholder="Search for a celebrity..."
-          className="custom-input mb-0"
-          value={query}
-          onChange={handleSearchChange}
+        <SearchBar
+          query={query}
+          onQueryChange={handleSearchChange}
+          items={filteredCelebrities}
+          onSelectItem={handleSelectCelebrity}
+          renderItem={(celebrity) => (
+            <div className="d-flex align-items-center">
+              <img
+                src={celebrity.picture}
+                alt={celebrity.stageName}
+                style={{ width: 40, height: 40, borderRadius: '50%' }}
+                className="me-3"
+              />
+              <div>
+                <strong>
+                  {celebrity.firstName} {celebrity.lastName}
+                </strong>
+                <br />
+                <small>{celebrity.stageName}</small>
+              </div>
+            </div>
+          )}
+          noResultMessage={`No results found for "${query}"`}
         />
-
-        {query && (
-          <ListGroup className="mt-3">
-            {filteredCelebrities.length > 0 ? (
-              filteredCelebrities.map((celebrity) => (
-                <ListGroup.Item
-                  key={celebrity.stageName}
-                  action
-                  onClick={() => handleSelectCelebrity(celebrity)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={celebrity.picture}
-                      alt={celebrity.stageName}
-                      style={{ width: 40, height: 40, borderRadius: '50%' }}
-                      className="me-3"
-                    />
-                    <div>
-                      <strong>
-                        {celebrity.firstName} {celebrity.lastName}
-                      </strong>
-                      <br />
-                      <small>{celebrity.stageName}</small>
-                    </div>
-                  </div>
-                </ListGroup.Item>
-              ))
-            ) : noResultFound ? (
-              <ListGroup.Item>
-                <p>No results found for "{query}"</p>
-              </ListGroup.Item>
-            ) : (
-              <Spinner animation="border" size="sm" />
-            )}
-          </ListGroup>
-        )}
 
         {selectedCelebrity && (
           <>
             <p className="mt-3 mb-0">
-              <b>You picked {selectedCelebrity.firstName} {selectedCelebrity.lastName}</b>
+              <b>
+                You picked {selectedCelebrity.firstName} {selectedCelebrity.lastName}
+              </b>
             </p>
-           
-            
             <div className="lin mt-2"></div>
             <p className="mt-0 mb-0">
               <b>Video Call Schedules</b>
             </p>
             <div className="lin mb-3"></div>
 
-            {schedules && schedules.length > 0 ? (
+            {schedules.length > 0 ? (
               <ul className="list-unstyled">
                 {schedules.map((schedule, index) => (
                   <li

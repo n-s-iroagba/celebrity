@@ -1,119 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import { InputGroup, Spinner } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import ErrorMessage from '../../components/ErrorMessage';
-import AuthOption from '../../components/AuthOption';
-import Logo from '../../components/Logo';
+import React from 'react';import { Form, Button, Card } from 'react-bootstrap';
 
-const SignUp: React.FC = () => {
-  const navigate = useNavigate();
-  const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
-  });
-  const [validated, setValidated] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
-  };
-
-  const showPassword = () => {
-    setPasswordType((prev) => (prev === 'text' ? 'password' : 'text'));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-      setValidated(true);
-      return;
-    }
-
-    setSubmitting(true);
-
-    // Simulating local data submission
-    setTimeout(() => {
-      if (loginData.email === 'user@example.com' && loginData.password === 'password123') {
-        setErrorMessage('');
-        navigate('/dashboard');
-      } else {
-        setErrorMessage('Invalid email or password.');
-      }
-      setSubmitting(false);
-    }, 1000);
-  };
-
+const SignUp = () => {
   return (
-    <div className='responsive-padding-sides'>
-      <div className='form-wrapper px-5 pt-5 pb-3 mt-5'>
-        <h3 className='text-center'>SignUp</h3>
-        <div className='d-flex justify-content-center'>
-          <Logo/>
-        </div>
-
-        <Form className="form py-2" noValidate validated={validated} onSubmit={handleSubmit}>
-          <Row>
-            <Form.Group as={Col} lg="12" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                required
-                name="email"
-                value={loginData.email}
-                onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
-              />
-              <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-
-          <Form.Group as={Col} lg="12" controlId="password">
-            <Form.Label>Password</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type={passwordType}
-                required
-                name="password"
-                value={loginData.password}
-                onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
-              />
-              <InputGroup.Text onClick={showPassword}>
-                <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
-              </InputGroup.Text>
-            </InputGroup>
-            <Form.Control.Feedback type="invalid">Please enter your password.</Form.Control.Feedback>
+    <Card className='w-100' style={{ maxWidth: '400px' }}>
+      <Card.Body>
+        <Card.Title className='text-neutral-950 mb-4 fs-4'>Sign Up</Card.Title>
+        <Form>
+          <Form.Group className='mb-3' controlId='formName'>
+            <Form.Label className='text-sm text-neutral-950 mb-2'>Name</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter your full name'
+              className='rounded-md'
+            />
           </Form.Group>
-          <a 
-  className="small-font grey-text" 
-  href='/forgot-password'
-  style={{ cursor: 'pointer' }}
->
-  Forgot Password
-</a>
-
-          <div className='d-flex justify-content-evenly w-100 pt-3'>
-            <button className='auth-button text-light' type={submitting ? 'button' : 'submit'}>
-              {submitting ? <Spinner animation='border' size='sm' /> : 'Submit'}
-            </button>
-          </div>
+          <Form.Group className='mb-3' controlId='formEmail'>
+            <Form.Label className='text-sm text-neutral-950 mb-2'>Email Address</Form.Label>
+            <Form.Control
+              type='email'
+              placeholder='Enter your email'
+              className='rounded-md'
+            />
+          </Form.Group>
+          <Form.Group className='mb-3' controlId='formWhatsAppTelegram'>
+            <Form.Label className='text-sm text-neutral-950 mb-2'>WhatsApp / Telegram Number</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter your WhatsApp or Telegram'
+              className='rounded-md'
+            />
+          </Form.Group>
+          <Form.Group className='mb-3' controlId='formPassword'>
+            <Form.Label className='text-sm text-neutral-950 mb-2'>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Create a password'
+              className='rounded-md'
+            />
+          </Form.Group>
+          <Form.Group className='mb-3' controlId='formConfirmPassword'>
+            <Form.Label className='text-sm text-neutral-950 mb-2'>Confirm Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Confirm your password'
+              className='rounded-md'
+            />
+          </Form.Group>
+          <Button
+            type='submit'
+            className='w-100 bg-primary rounded-md py-2 text-primary-50'
+          >
+            Sign Up
+          </Button>
         </Form>
-        <ErrorMessage message={errorMessage} />
-      </div>
-      <div className='mt-5'>
-        <AuthOption route={'signup'} title={"Don't have an account?"} buttonText={'Sign Up'} />
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 

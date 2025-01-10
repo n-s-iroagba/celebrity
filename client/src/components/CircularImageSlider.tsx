@@ -49,7 +49,7 @@ const CircularImageSlider = () => {
   );
 
   return (
-    <Container className="text-center">
+    <Container className="text-center text-light">
       <Row className="justify-content-center">
         {displayedImages.map((image, index) => (
           <Col key={index} xs={6} md={3} lg={2} className="mb-3">
@@ -72,7 +72,6 @@ const CircularImageSlider = () => {
             <p
               style={{
                 textDecoration: "none",
-                color: "black",
                 display: "block",
                 marginTop: "0.5rem",
               }}
@@ -81,7 +80,7 @@ const CircularImageSlider = () => {
             </p>
             {dropdownVisibleIndex === index && (
               <Dropdown show>
-                <Dropdown.Menu >
+                <Dropdown.Menu className="text-light">
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/shout-out`)}>
                     Make a Shout Out
                   </Dropdown.Item>
@@ -103,12 +102,12 @@ const CircularImageSlider = () => {
       {(isSmallScreen || isMediumScreen) && (
         <div className="d-flex justify-content-center align-items-center mt-3">
           {currentIndex > 0 && (
-            <Button variant="dark" className="me-2" onClick={handlePrev}>
+            <Button variant="light" className="me-2" onClick={handlePrev}>
               <FontAwesomeIcon icon={faArrowLeft} /> Prev
             </Button>
           )}
           {currentIndex + imagesPerSlide < images.length && (
-            <Button variant="outline-dark" onClick={handleNext}>
+            <Button variant="outline-light" onClick={handleNext}>
               <FontAwesomeIcon icon={faArrowRight} /> Next
             </Button>
           )}

@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/fan/HomePage';
-import BookCall from './components/BookCall';
 import DonationCampaigns from './pages/fan/DonationCampaigns';
 import EventTickets from './pages/fan/EventTickets';
 import ForgotPassword from './pages/fan/ForgotPassword';
@@ -23,17 +21,24 @@ import Gallery from './pages/fan/Gallery';
 import SignUp from './pages/fan/SignUp';
 import Profile from './pages/fan/Profile';
 import NewPassword from './pages/fan/NewPassword';
+import BookCall from './pages/fan/BookCall';
+import Home from './pages/fan/Home';
+import AdminDashboardLayout from './components/AdminDashboardLayout';
+import Clients from './pages/admin/Client';
+import Donations from './pages/admin/Donations';
+import Schedules from './pages/admin/Schedules';
+import Tours from './pages/admin/Tours';
+import CelebrityDashboardLayout from './components/CelebrityDashboardLayout';
 
 
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
 
       <Routes>
         {/*
-         <Route  path="/send/:talent/shout-out" element={<BookShoutOut/>} />
-        <Route  path="/book/:talent/personal-video" element={<RequestVideo/>}/>
+  
    
         <Route  path="verification" Component={Verify()} />
       
@@ -43,10 +48,11 @@ const App: React.FC = () => {
         
         */}
 
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
 
         <Route path="/book/:talent/video-call" element={<BookCall isVideo />} />
         <Route path="/book/:talent/phone-call" element={<BookCall />} />
+        
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -71,6 +77,12 @@ const App: React.FC = () => {
         <Route path="/news/:id" element={<MyCelebrityNews />} />
         <Route path="/bio/:id" element={<Bio />} />
         <Route path="/gallery/:id" element={<Gallery />} />
+
+        <Route path="/admin/schedules" element={<AdminDashboardLayout><Schedules /></AdminDashboardLayout>} />
+        <Route path="/admin/clients" element={<AdminDashboardLayout><Clients /></AdminDashboardLayout>} />
+
+          <Route path="/celebrity/donations" element={<CelebrityDashboardLayout><Donations /></CelebrityDashboardLayout>} />
+          <Route path="/celebrity/tours" element={<CelebrityDashboardLayout><Tours /></CelebrityDashboardLayout>} />
 
       </Routes>
     </Router>

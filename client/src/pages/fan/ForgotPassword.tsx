@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import { Spinner } from 'react-bootstrap';
 import ErrorMessage from '../../components/ErrorMessage';
-import '../../styles/Auth.css';
+import '../../assets/styles/Auth.css';
 import MiniFooter from '../../components/MiniFooter';
 import Logo from '../../components/Logo';
 

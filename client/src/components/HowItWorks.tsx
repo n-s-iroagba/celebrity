@@ -7,22 +7,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const HowItWorks: React.FC = () => {
   const steps = [
     {
-      icon:faUser,
+      icon: faUser,
       title: 'Click the button for the preferred conversation',
       text: 'Select the type of conversation you want to initiate by clicking the appropriate button.',
     },
     {
-      icon:faSearch,
+      icon: faSearch,
       title: 'Search celeb',
       text: 'Find your favorite celebrity by searching their name in our search bar.',
     },
     {
-      icon:faArrowAltCircleLeft,
-      title: ' Book a schedule (for calls only)',
-      text: 'Schedule a call at a time that is convenient for you.',
+      icon: faArrowAltCircleLeft,
+      title: ' Book a schedule for calls or Request Personalized Video',
+      text: 'Schedule a call at a time that is convenient for you or request for a personalized video.',
     },
     {
-      icon:faArrowAltCircleRight,
+      icon: faArrowAltCircleRight,
       title: ' Get a response',
       text: 'Receive a prompt response tailored to your selected conversation type.',
     },
@@ -33,11 +33,22 @@ const HowItWorks: React.FC = () => {
       <Row className="g-4">
         {steps.map((step, index) => (
           <Col key={index} sm={12} md={6} lg={3}>
-            <Card className="shadow-sm bg-grey rounded-4 border-0 h-100">
+            <Card className="shadow-sm bg-grey text-light rounded-4 border-0 h-100">
               <Card.Body>
-                <Card.Title className="text-start">{step.title}</Card.Title>
-                <FontAwesomeIcon color='black' icon ={step.icon}  />
-                <Card.Text className="text-start">{step.text}</Card.Text>
+                <Card.Title
+                  style={window.innerWidth >= 992 ? { height: '2cm' } : {}}
+                  className="text-start"
+                >
+                  {step.title}
+                </Card.Title>
+                <FontAwesomeIcon className="mb-3" color="white" icon={step.icon} />
+                <Card.Text
+                  style={window.innerWidth >= 992 ? { height: '2cm' } : {}}
+                  className="text-start"
+                >
+                  {step.text}
+                </Card.Text>
+
               </Card.Body>
             </Card>
           </Col>

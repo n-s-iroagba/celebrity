@@ -4,7 +4,7 @@ import Cropper from 'react-cropper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import 'cropperjs/dist/cropper.css';
-import '../../styles/Profile.css';
+// import '../../assets/styles/Profile.css';
 
 const Profile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | undefined>();
