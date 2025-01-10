@@ -1,6 +1,8 @@
-import { Sequelize, DataTypes, ForeignKey, Model, Optional } from "sequelize";
+import { Sequelize, DataTypes, ForeignKey, Model, Optional, NonAttribute } from "sequelize";
 import { Admin } from "./Admin";
 import { SocialMediaType } from "../enums/SocialMediaType";
+import { User } from "./User";
+import sequelize from "../config/orm";
 
 interface FanAttributes {
   id: number;
@@ -15,11 +17,15 @@ interface FanAttributes {
   resetPasswordToken: string|null;
   verificationToken: string |null;
   adminId: ForeignKey<Admin["id"]>;
+  userId: ForeignKey <User['id']>
+//   user: NonAttribute<User>
+//   admin : NonAttribute<Admin>
 }
 
 export type FanCreationAttributes = Optional<FanAttributes, "id" | "resetPasswordToken" | "verificationToken">;
 
 export class Fan extends Model<FanAttributes, FanCreationAttributes> implements FanAttributes {
+  public userId!: number
   public id!: number;
   public firstName!: string;
   public surname!: string;
@@ -42,7 +48,6 @@ export class Fan extends Model<FanAttributes, FanCreationAttributes> implements 
   }
 }
 
-export const initializeFan = (sequelize: Sequelize) => {
   Fan.init(
     {
       id: {
@@ -94,10 +99,14 @@ export const initializeFan = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       tableName: "Fans",
     }
   );
-};
+
