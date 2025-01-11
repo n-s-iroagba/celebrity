@@ -4,6 +4,7 @@ import { User } from "./User";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
 import { Schedule } from "./Schedule";
+import sequelize from "../config/orm";
 
 interface BookingAttributes {
   id: number;
@@ -34,7 +35,7 @@ export class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   }
 }
 
-export const initializeBooking = (sequelize: Sequelize) => {
+
   Booking.init(
     {
       id: {
@@ -64,4 +65,4 @@ export const initializeBooking = (sequelize: Sequelize) => {
       tableName: "Bookings",
     }
   );
-};
+

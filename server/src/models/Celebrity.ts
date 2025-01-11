@@ -4,6 +4,7 @@ import {
   Optional,
   Sequelize,
 } from "sequelize";
+import sequelize from "../config/orm";
 
 export interface CelebrityAttributes {
   id: number;
@@ -30,7 +31,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
   public readonly updatedAt!: Date;
 }
 
-export const initCelebrity = (sequelize: Sequelize) => {
+
   Celebrity.init(
     {
       id: {
@@ -65,4 +66,4 @@ export const initCelebrity = (sequelize: Sequelize) => {
       tableName: "celebrities",
     }
   );
-};
+

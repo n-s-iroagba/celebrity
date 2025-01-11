@@ -4,6 +4,7 @@ import {
     Optional,
     Sequelize,
   } from "sequelize";
+import sequelize from "../config/orm";
 
   export interface JobAttributes {
     id: number;
@@ -30,7 +31,7 @@ import {
     public readonly updatedAt!: Date;
   }
   
-  export const initJob = (sequelize: Sequelize) => {
+
     Job.init(
       {
         id: {
@@ -72,5 +73,5 @@ import {
         tableName: 'jobs',
       }
     );
-  };
+  
   

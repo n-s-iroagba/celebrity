@@ -5,8 +5,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Role } from "../enums/Role";
+import sequelize from "../config/orm";
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   username: string;
   password: string;
@@ -27,11 +28,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  
-  // Optional: add any instance or class methods here if needed
+}
 
-  // Sequelize initialization
-  static initialize(sequelize: Sequelize) {
     User.init(
       {
         id: {
@@ -66,5 +64,4 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
         timestamps: true,
       }
     );
-  }
-}
+  

@@ -7,6 +7,7 @@ import {
   } from "sequelize";
 import { Fan } from "./Fan";
 import { Admin } from "./Admin";
+import sequelize from "../config/orm";
 
 
   export interface NotificationAttributes {
@@ -29,7 +30,7 @@ import { Admin } from "./Admin";
     public readonly updatedAt!: Date;
   }
   
-  export const initNotification = (sequelize: Sequelize) => {
+
     Notification.init(
       {
         id: {
@@ -59,4 +60,4 @@ import { Admin } from "./Admin";
         tableName: 'membership_packages',
       }
     );
-  };
+  

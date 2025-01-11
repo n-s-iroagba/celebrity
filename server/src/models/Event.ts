@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, Sequelize, ForeignKey } from "sequelize";
 import { Celebrity } from "./Celebrity";
 import { TicketTier } from "./TicketTiers";
+import sequelize from "../config/orm";
 
 interface EventAttributes {
   id: number;
@@ -30,7 +31,7 @@ export class Event extends Model<EventAttributes, EventCreationAttributes>
   }
 }
 
-export const initializeEvent = (sequelize: Sequelize) => {
+
   Event.init(
     {
       id: {
@@ -60,4 +61,4 @@ export const initializeEvent = (sequelize: Sequelize) => {
       tableName: "events",
     }
   );
-};
+

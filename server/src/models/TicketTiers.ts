@@ -1,5 +1,6 @@
 import { ForeignKey, Optional, Model, Sequelize, DataTypes } from "sequelize";
 import { Event } from "./Event";
+import sequelize from "../config/orm";
 
 interface TicketTierAttributes {
   id: number;
@@ -26,7 +27,6 @@ export class TicketTier extends Model<TicketTierAttributes, TicketTierCreationAt
   }
 }
 
-export const initializeTicketTier = (sequelize: Sequelize) => {
   TicketTier.init(
     {
       id: {
@@ -52,5 +52,5 @@ export const initializeTicketTier = (sequelize: Sequelize) => {
       tableName: "ticket_tiers",
     }
   );
-};
+
   

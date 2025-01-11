@@ -3,6 +3,7 @@ import { ClubMembershipTier } from "../enums/ClubMembershipTier";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
 import { Job } from "./Job";
+import sequelize from "../config/orm";
 
 interface ClubMembershipAttributes {
   id: number;
@@ -34,7 +35,7 @@ export class ClubMembership extends Model<ClubMembershipAttributes, ClubMembersh
   }
 }
 
-export const initializeClubMembership = (sequelize: Sequelize) => {
+
   ClubMembership.init(
     {
       id: {
@@ -64,4 +65,3 @@ export const initializeClubMembership = (sequelize: Sequelize) => {
       tableName: "ClubMemberships",
     }
   );
-};

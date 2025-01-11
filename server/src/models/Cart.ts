@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional, Sequelize, ForeignKey } from "sequelize";
 import { Fan } from "./Fan";
+import sequelize from "../config/orm";
 
 export interface CartAttributes {
   id: number;
@@ -35,7 +36,7 @@ export class Cart extends Model<CartAttributes, CartCreationAttributes> implemen
   }
 }
 
-export const initializeCart = (sequelize: Sequelize) => {
+
   Cart.init(
     {
       id: {
@@ -64,4 +65,4 @@ export const initializeCart = (sequelize: Sequelize) => {
       tableName: "Carts",
     }
   );
-};
+
