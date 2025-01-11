@@ -6,21 +6,25 @@ import {
     ForeignKey,
   } from "sequelize";
 import { Fan } from "./Fan";
+import { Admin } from "./Admin";
 
 
   export interface NotificationAttributes {
     id: number;
     title: string;
-    description: string;
-    fanId:ForeignKey<Fan['id']>
+    message: string;
+    read:boolean
+    recepientId:ForeignKey<Fan['id']|Admin['id']>
   }
-  
-  export class Notification extends Model<NotificationAttributes>
+  type NotificationCreationAttributes = Optional<NotificationAttributes,'id'>
+
+  export class Notification extends Model<NotificationAttributes, NotificationCreationAttributes> 
     implements NotificationAttributes {
+    public read: boolean = false;
     public id!: number;
     title!: string;
-    description!: string;
-    fanId!: ForeignKey<Fan['id']>;
+    message!: string;
+    recepientId!: ForeignKey<Fan['id']|Admin['id']>;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
   }
@@ -37,9 +41,17 @@ import { Fan } from "./Fan";
           type: DataTypes.STRING,
           allowNull: false,
         },
-        description: {
+        message: {
           type: DataTypes.STRING,
           allowNull: false,
+        },
+        recepientId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        read: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false,
         }
       },
       {

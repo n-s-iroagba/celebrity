@@ -10,6 +10,7 @@ interface FanAttributes {
   surname: string;
   password: string;
   socialMediaHandle: string;
+  profilePicture:string|null;
   socialMediaType: SocialMediaType;
   phoneNumber: string;
   country: string;
@@ -25,6 +26,7 @@ interface FanAttributes {
 export type FanCreationAttributes = Optional<FanAttributes, "id" | "resetPasswordToken" | "verificationToken">;
 
 export class Fan extends Model<FanAttributes, FanCreationAttributes> implements FanAttributes {
+  public profilePicture: string | null=null;
   public userId!: number
   public id!: number;
   public firstName!: string;
@@ -54,6 +56,10 @@ export class Fan extends Model<FanAttributes, FanCreationAttributes> implements 
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      profilePicture: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       firstName: {
         type: DataTypes.STRING,

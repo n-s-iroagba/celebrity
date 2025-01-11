@@ -4,6 +4,7 @@ import {
     Optional,
     Sequelize,
   } from "sequelize";
+import sequelize from "../config/orm";
 
   interface CharityAttributes {
     id: number;

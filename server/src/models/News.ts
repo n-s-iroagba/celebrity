@@ -2,8 +2,10 @@ import {
   Model,
   DataTypes,
   ForeignKey,
+  Optional,
 } from "sequelize";
 import { Celebrity } from "./Celebrity";
+import sequelize from "../config/orm";
 
 
 export interface NewsAttributes {
@@ -12,8 +14,8 @@ export interface NewsAttributes {
   content: string;
   celebrityId: ForeignKey<Celebrity['id']>
 }
-
-export class News extends Model<NewsAttributes>
+type NewsCreationAttributes = Optional<NewsAttributes, "id">;
+export class News extends Model<NewsAttributes, NewsCreationAttributes >
   implements NewsAttributes {
   public id!: number;
 public title!: string;

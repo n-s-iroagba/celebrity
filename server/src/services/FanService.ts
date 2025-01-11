@@ -1,4 +1,5 @@
 import { Fan } from "../models/Fan";
+import { User } from "../models/User";
 
 export class FanService {
 
@@ -16,8 +17,9 @@ export class FanService {
     return await fan.update(updates);
   }
 
-  static async deleteFan(id: number): Promise<boolean> {
-    const deleted = await Fan.destroy({ where: { id } });
+  static async deleteFan(userId: number): Promise<boolean> {
+    const deleted = await User.destroy({ where: { id:userId
+ } });
     return deleted > 0;
   }
 }

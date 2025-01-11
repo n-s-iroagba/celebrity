@@ -12,13 +12,15 @@ interface AdminAttributes {
   id: number;
   firstName: string;
   surname: string;
-  userId: number; // Assuming this references another model's ID
+  phoneNumber: string;
+  userId: number; 
 }
 
 type AdminCreationAttributes = Optional<AdminAttributes, "id">;
 
 export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
   implements AdminAttributes {
+ public phoneNumber!: string;
   public id!: number;
   public firstName!: string;
   public surname!: string;
@@ -45,6 +47,10 @@ export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
         allowNull: false,
       },
       firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phoneNumber: {
         type: DataTypes.STRING,
         allowNull: false,
       },
