@@ -54,14 +54,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className='responsive-padding-sides'>
-      <div className='form-wrapper px-5 pt-5 pb-3 mt-5'>
+    <div className='responsive-padding-sides '>
+      <div className='form-wrapper px-5 pt-5 pb-3 mt-5 mb-3'>
         <h3 className='text-center'>Login</h3>
         <div className='d-flex justify-content-center'>
           <Logo/>
         </div>
 
-        <Form className="form py-2" noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form className=" py-2" noValidate validated={validated} onSubmit={handleSubmit}>
           <Row>
             <Form.Group as={Col} lg="12" controlId="email">
               <Form.Label>Email</Form.Label>
@@ -108,11 +108,13 @@ const Login: React.FC = () => {
             </button>
           </div>
         </Form>
-        <ErrorMessage message={errorMessage} />
+
       </div>
+      {errorMessage&&<ErrorMessage message={errorMessage} />}
       <div className='mt-5'>
         <AuthOption route={'signup'} title={"Don't have an account?"} buttonText={'Sign Up'} />
       </div>
+
     </div>
   );
 };

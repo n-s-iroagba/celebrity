@@ -1,3 +1,6 @@
+import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -30,16 +33,16 @@ const Footer: React.FC = () => {
             <h5 className="fw-bold">Follow Us</h5>
             <div className="d-flex justify-content-center justify-content-lg-start gap-3">
               <a href="https://facebook.com" className="text-light" target="_blank" rel="noopener noreferrer">
-                <i className="bi bi-facebook" style={{ fontSize: '1.5rem' }}></i>
+                 <FontAwesomeIcon icon ={faFacebook}/>
               </a>
               <a href="https://twitter.com" className="text-light" target="_blank" rel="noopener noreferrer">
-                <i className="bi bi-twitter" style={{ fontSize: '1.5rem' }}></i>
+              <FontAwesomeIcon icon ={faX}/>
               </a>
               <a href="https://instagram.com" className="text-light" target="_blank" rel="noopener noreferrer">
-                <i className="bi bi-instagram" style={{ fontSize: '1.5rem' }}></i>
+              <FontAwesomeIcon icon ={faInstagram}/>
               </a>
               <a href="https://linkedin.com" className="text-light" target="_blank" rel="noopener noreferrer">
-                <i className="bi bi-linkedin" style={{ fontSize: '1.5rem' }}></i>
+              <FontAwesomeIcon icon ={faLinkedin}/>
               </a>
             </div>
           </Col>

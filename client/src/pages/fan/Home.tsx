@@ -5,6 +5,7 @@ import ActionButtons from "../../components/ActionButtons";
 import Footer from "../../components/Footer";
 import HowItWorks from "../../components/HowItWorks";
 import VideoContent from "../../components/VideoContent";
+import  '../../assets/styles/Home.css'
 
  const Home = () => {
   const howItWorksRef = useRef<any>(null);
@@ -37,8 +38,8 @@ import VideoContent from "../../components/VideoContent";
 
       <Container className="py-5">
         <header className="text-center mb-5">
-          <h6 className="display-4 "><b>Book Personalized Experiences with Your Favorite Celebrities</b></h6>
-          <p className="text-muted">
+          <h6 className="display-4"><b>Book Personalized Experiences with Your Favorite Celebrities</b></h6>
+          <p className="text-grey">
             Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences.
           </p>
           <CircularImageSlider />

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Form, ListGroup, Spinner } from 'react-bootstrap';
 
+
 interface SearchBarProps<T> {
   query: string;
   onQueryChange: (query: string) => void;
   items: T[];
   onSelectItem: (item: T) => void;
   renderItem: (item: T) => React.ReactNode;
-  noResultMessage?: string;
   isLoading?: boolean;
+  createEntity: (name:string) => void
 }
 
 const SearchBar = <T extends unknown>({
@@ -17,7 +18,7 @@ const SearchBar = <T extends unknown>({
   items,
   onSelectItem,
   renderItem,
-  noResultMessage = 'No results found.',
+  createEntity,
   isLoading = false,
 }: SearchBarProps<T>) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +51,7 @@ const SearchBar = <T extends unknown>({
               </ListGroup.Item>
             ))
           ) : (
-            <ListGroup.Item>{noResultMessage}</ListGroup.Item>
+            <ListGroup.Item onClick={()=>(createEntity(query))}>{query}</ListGroup.Item>
           )}
         </ListGroup>
       )}

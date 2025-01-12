@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import SearchPic from '../../assets/images/search.png';
+
 import '../../assets/styles/BookCall.css';
 import Celebrity from '../../types/Celebrity';
 import SearchBar from '../../components/SearchBar';
 import Schedule from '../../types/Schedule';
+import SearchPic from '../../components/SearchPic';
+import { Button, Modal } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import { useUserContext } from '../../context/useUserContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isVideo }) => {
@@ -12,13 +17,13 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
       stageName: 'Adele',
       firstName: 'Adele',
       lastName: 'Adkins',
-      picture: 'https://example.com/adele.jpg',
+      picture: ''
     },
     {
       stageName: 'Drake',
       firstName: 'Aubrey',
       lastName: 'Graham',
-      picture: 'https://example.com/drake.jpg',
+      picture: '',
     },
   ];
 
@@ -35,6 +40,29 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
 
   const [query, setQuery] = useState('');
   const [selectedCelebrity, setSelectedCelebrity] = useState<Celebrity | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const navigate = useNavigate();
+  const { isSignedIn } = useUserContext();
+  
+
+  const handleBookClick = () => {
+    if (isSignedIn) {
+      // Navigate to /contact for signed-in users
+      navigate('/contact');
+    } else {
+      const state ={}
+      navigate('/signup', { state });
+    }
+  };
+
+  const handleOpenCalendar = () => setShowCalendar(true);
+  const handleCloseCalendar = () => setShowCalendar(false);
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    setShowCalendar(false); // Close modal after date selection
+  };
 
   const handleSearchChange = (searchQuery: string) => {
     setQuery(searchQuery);
@@ -45,6 +73,19 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
     setQuery('');
   };
 
+  const createCelebrity = (name:string) => {
+    const newCelebrity: Celebrity = {
+      stageName: name,
+      firstName: name.split(' ')[0],
+      lastName: name.split(' ')[1]||'',
+      picture: '',
+    };
+    celebrities.push(newCelebrity);
+    setSelectedCelebrity(newCelebrity);
+    setQuery('');
+
+  }
+
   const filteredCelebrities = celebrities.filter((celebrity) =>
     celebrity.stageName.toLowerCase().includes(query.toLowerCase()) ||
     celebrity.firstName.toLowerCase().includes(query.toLowerCase()) ||
@@ -53,17 +94,20 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
 
   return (
     <div className="d-flex justify-content-center">
-      <div className="w-50">
+      <div className="md-w-50 px-5 ">
         <h6 className="mt-3 text-center">
           Connect With Your Favorite Celebrities All Over The World!
         </h6>
         <SearchPic />
-        <small>Search the celebrity you wish to connect with.</small>
+        <div className="d-flex justify-content-center text-center py-3">
+        <small >kindly search the celebrity you wish to connect with via {isVideo?'Video Call': 'Phone Call'}.</small>
+        </div>
         <SearchBar
           query={query}
           onQueryChange={handleSearchChange}
           items={filteredCelebrities}
           onSelectItem={handleSelectCelebrity}
+          createEntity={createCelebrity}
           renderItem={(celebrity) => (
             <div className="d-flex align-items-center">
               <img
@@ -81,7 +125,6 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
               </div>
             </div>
           )}
-          noResultMessage={`No results found for "${query}"`}
         />
 
         {selectedCelebrity && (
@@ -91,35 +134,61 @@ const BookCall: React.FC<{ isVideo?: boolean; isFan?: boolean }> = ({ isFan, isV
                 You picked {selectedCelebrity.firstName} {selectedCelebrity.lastName}
               </b>
             </p>
-            <div className="lin mt-2"></div>
+            <div className="line my-2"></div>
             <p className="mt-0 mb-0">
-              <b>Video Call Schedules</b>
+              <b> {isVideo?'Video Call': 'Phone Call'} Schedules For {selectedCelebrity.firstName} {selectedCelebrity.lastName}</b>
             </p>
-            <div className="lin mb-3"></div>
+            <div className="line my-2"></div>
 
             {schedules.length > 0 ? (
               <ul className="list-unstyled">
                 {schedules.map((schedule, index) => (
                   <li
                     key={index}
-                    className="border-0 d-flex justify-content-between align-items-center border-bottom pb-4 border-black"
+                    className="border-0 d-flex flex-wrap gap-4 justify-content-center py-4 align-items-center border-bottom  border-black"
                   >
-                    <p className="mb-2">
+                    <p className="mb-0">
                       <small>Date: {schedule.date}</small>
                     </p>
-                    <p>
+                    <p className="mb-0">
                       <small>Time: {schedule.time}</small>
                     </p>
-                    <p>
+                    <p className="mb-0">
                       <small>Duration: 10 minutes</small>
                     </p>
-                    <small>Medium: Zoom</small>
-                    <button>Book</button>
+                    <p  className="mb-0 text-center">
+                   {isVideo&&<small>**The medium of this video call shall be sent to your mail</small>}
+                   </p>
+
+                    <button className='book-button' onClick={handleBookClick}>Book</button>
                   </li>
                 ))}
               </ul>
             ) : (
+              <>
               <p>No schedules available for this celebrity.</p>
+              <Button variant="primary" onClick={handleOpenCalendar}>
+        Create Schedule
+      </Button>
+
+      <Modal show={showCalendar} onHide={handleCloseCalendar} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Select a Date</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            inline
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseCalendar}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+              </>
             )}
           </>
         )}

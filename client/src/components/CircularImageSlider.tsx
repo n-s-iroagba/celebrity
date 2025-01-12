@@ -53,6 +53,7 @@ const CircularImageSlider = () => {
       <Row className="justify-content-center">
         {displayedImages.map((image, index) => (
           <Col key={index} xs={6} md={3} lg={2} className="mb-3">
+            <div    onClick={() => handleDropdownToggle(index)}>
             <div
               style={{
                 width: "11rem",
@@ -61,7 +62,7 @@ const CircularImageSlider = () => {
                 overflow: "hidden",
                 border: "2px solid grey",
               }}
-              onClick={() => handleDropdownToggle(index)}
+           
             >
               <img
                 src={image.src}
@@ -78,6 +79,7 @@ const CircularImageSlider = () => {
             >
               {image.linkLabel}
             </p>
+            </div>
             {dropdownVisibleIndex === index && (
               <Dropdown show>
                 <Dropdown.Menu className="text-light">

@@ -31,6 +31,15 @@
     color:white;
     border:none;
     width:100%;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+  .date-input{
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    width: 10rem;
   }
   .authOption-button{
     border-top-left-radius: 1.5rem;
@@ -48,7 +57,7 @@
     font-size: x-small;
   }
   
-  .line {
+  .auth-line {
     width: 100%;
     height: 2px;
     background-color: gray;
@@ -71,10 +80,6 @@
   
 }
 
-.responsive-padding-sides {
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
 
 /* Medium screens (≥768px) */
 @media (min-width: 768px) {

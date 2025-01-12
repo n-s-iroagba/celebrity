@@ -11,11 +11,11 @@ const AuthOption: React.FC<{
   const navigate = useNavigate();
 
   return (
-    <div className='d-flex flex-column align-items-center' >
+    <div className='d-flex flex-column align-items-center justify-content-center' >
       <div className='w-100 d-flex align-items-center mb-3'>
-        <div className='line'></div>
+        <div className='auth-line'></div>
         <small className='mx-1 inline-block'>{title}</small>
-        <div className='line'></div>
+        <div className='auth-line'></div>
       </div>
 
       <div className='px-5 w-100 d-flex justify-content-center'>

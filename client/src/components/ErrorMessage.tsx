@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 
 const ErrorMessage:React.FC<{message:string}> = ({message})=>{
     return(
-        <Alert variant='danger'>{message}</Alert>
+        <Alert variant='danger' className='text-center'>{message}</Alert>
     
     )
 }
