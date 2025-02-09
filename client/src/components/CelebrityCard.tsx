@@ -23,8 +23,8 @@ const CelebrityCard: React.FC<CelebrityCardProps> = ({
   imageUrl,
 }) => {
   return (
-    <Card className="shadow-sm w-100">
-      <Card.Header className="d-flex justify-content-between align-items-center">
+    <Card style={{height:'6cm'}} className="shadow-sm w-100">
+      <Card.Header className="d-flex justify-content-between ">
         <Card.Title className="mb-0">{name}</Card.Title>
         <Dropdown>
           <Dropdown.Toggle
@@ -52,23 +52,23 @@ const CelebrityCard: React.FC<CelebrityCardProps> = ({
           height={48}
         />
         <>
-            { communications.map((communication, inde)=>(
-                <div className="d-flex justify-content-evenly w-100">
-                <p className="text-muted small mb-0">{communication.communicationType}</p>
-                <div className="d-flex align-items-center">
-                  <FontAwesomeIcon
-                    icon={communication.status === "completed" ? faCheckCircle : faBan}
-                    className={`me-2 ${
-                      communication.status === "completed" ? "text-success" : "text-warning"
-                    }`}
-                  />
-                  <span className="small text-capitalize">{communication.status}</span>
-                </div>
-                </div>
+        <div className="d-flex flex-column gap-3">
+  {communications.map((communication, index) => (
+    <div key={index} className="d-flex justify-content-between align-items-center">
+      <small className="text-muted me-2">{communication.communicationType}</small>
+      <div className="d-flex align-items-center">
+        <FontAwesomeIcon
+          icon={communication.status === "completed" ? faCheckCircle : faBan}
+          className={`me-2 ${
+            communication.status === "completed" ? "text-success" : "text-warning"
+          }`}
+        />
+        <small className="text-capitalize">{communication.status}</small>
+      </div>
+    </div>
+  ))}
+</div>
 
-            ))
-        
-}
         </>
       </Card.Body>
     </Card>

@@ -18,8 +18,10 @@ const HowItWorks: React.FC = () => {
     },
     {
       icon: faArrowAltCircleLeft,
-      title: ' Book a schedule for calls or Request Personalized Video',
-      text: 'Schedule a call at a time that is convenient for you or request for a personalized video.',
+      title: 'Send a shoutout message',
+      text: 'Type and send your shout out message.'
+      // title: ' Book a schedule for calls or Request Personalized Video',
+      // text: 'Schedule a call at a time that is convenient for you or request for a personalized video.',
     },
     {
       icon: faArrowAltCircleRight,

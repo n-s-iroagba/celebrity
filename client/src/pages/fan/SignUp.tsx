@@ -119,7 +119,7 @@ const SignUp: React.FC = () => {
 
     // Prepare the form data to be submitted
     const formData = { ...fanData, contactNumber, preferredContact };
-    formData && navigate('/contacts')
+    formData && navigate('/temp')
     // try {
    
     
@@ -141,7 +141,7 @@ const SignUp: React.FC = () => {
     <>
       <div className="responsive-padding-sides bg-light my-4">
         <div className="my-3">
-          <AuthOption route={'login'} title={'Already have an account?'} buttonText={'Login'} />
+          <AuthOption route={'temp'} title={'Already have an account?'} buttonText={'Login'} />
         </div>
         <p className="text-sm text-muted text-center">
           <small>

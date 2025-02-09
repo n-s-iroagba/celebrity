@@ -22,6 +22,22 @@ const souvenirs: Souvenir[] = [
     image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
   },
   {
+    id: 1,
+    celebrityName: "Leonardo DiCaprio",
+    name: "Eco-Friendly Water Bottle",
+    description: "Limited edition reusable water bottle featuring Leo's environmental message",
+    price: 29.99,
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
+  },
+  {
+    id: 1,
+    celebrityName: "Leonardo DiCaprio",
+    name: "Eco-Friendly Water Bottle",
+    description: "Limited edition reusable water bottle featuring Leo's environmental message",
+    price: 29.99,
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
+  },
+  {
     id: 2,
     celebrityName: "Emma Watson",
     name: "Feminist Book Collection",
@@ -40,7 +56,7 @@ const souvenirs: Souvenir[] = [
 ];
 
 
-
+//SOUVENIRS SHOULD RECEIVE LOCATION WHEN BOOKING
 const MySouvenirs = () => {
 
 
@@ -54,7 +70,7 @@ const MySouvenirs = () => {
   }, {} as Record<string, Souvenir[]>);
 
   return (
-    <Container className="py-5">
+    <div > 
       <h1 className="text-center mb-4">Fan Souvenirs</h1>
       <p className="text-center text-muted mb-5">
         Here's a list of all the souvenirs fans have bought, grouped by celebrity.
@@ -69,7 +85,7 @@ const MySouvenirs = () => {
                 {groupedByCelebrity[celebrityName].map((souvenir) => (
                   <Col key={souvenir.id}>
                     <Card>
-                      <Card.Img variant="top" src={souvenir.image} alt={souvenir.name} />
+                      <Card.Img variant="top" style={{height:'9cm', width:'9cm'}} src={souvenir.image} alt={souvenir.name} />
                       <Card.Body>
                         <Card.Title>{souvenir.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">
@@ -89,7 +105,7 @@ const MySouvenirs = () => {
           </Accordion.Item>
         ))}
       </Accordion>
-    </Container>
+    </div>
   );
 };
 

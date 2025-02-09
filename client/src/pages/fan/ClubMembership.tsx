@@ -28,7 +28,7 @@ export const ClubMembership: React.FC = () => {
   return (
     <div className="w-100 bg-white shadow rounded-lg p-4">
       <h2 className="font-title text-neutral-950 mb-4">Fan Club Membership Tiers</h2>
-      <Row className="g-4">
+      <Row className="g-4 d-flex w-100 bg-danger">
         {membershipTiers.map((membership, i) => (
           <Col key={i} xs={12} md={4}>
             <Card className="bg-light border-0 rounded-md shadow-md text-neutral-950 h-100">

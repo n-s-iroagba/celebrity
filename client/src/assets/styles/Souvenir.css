@@ -1,0 +1,11 @@
+.souvenir-width {
+    width: 100vw; /* Default for small and medium screens */
+  }
+  
+  @media (min-width: 992px) {
+    /* Large screens (min-width: 992px) */
+    .responsive-width {
+      width: 75vw;
+    }
+  }
+  

@@ -30,10 +30,12 @@ import Schedules from './pages/admin/Schedules';
 import Tours from './pages/admin/Tours';
 import CelebrityDashboardLayout from './components/CelebrityDashboardLayout';
 import CryptoCheckOut from './pages/fan/CryptoCheckOut';
-import Contacts from './pages/fan/Contacts';
 import PersonalizedVideo from './pages/fan/PersonalizedVideo';
 import Shoutout from './pages/fan/ShoutOut';
 import VerificationForm from './pages/fan/VerificationForm';
+import Interactions from './pages/fan/Interactions';
+import FanDashboardLayout from './components/FanDashboardLayout';
+import CelebrityReply from './pages/fan/CelebrityReply';
 
 const App = () => {
   return (
@@ -47,7 +49,7 @@ const App = () => {
 
         <Route path="/book/:talent/video-call" element={<BookCall isVideo />} />
         <Route path="/book/:talent/phone-call" element={<BookCall />} />
-        <Route path="/book/:talent/personalised-video" element={<PersonalizedVideo />} />
+        <Route path="/book/:talent/personalized-video" element={<PersonalizedVideo />} />
         <Route path="/book/:talent/shout-out" element={<Shoutout/>}/>
         
         <Route path="/signup" element={<SignUp />} />
@@ -56,16 +58,17 @@ const App = () => {
         <Route path="/reset-password" element={<NewPassword />} />
         <Route path="/verify/:email" element={<VerificationForm />} />
 
-        <Route path="/profile" element={<Profile />} />
-        <Route  path="/contacts" element={<Contacts/>} /> 
-        <Route path="/my-club-membership/:id" element={<MyClubMembership />} />
-        <Route path="/my-events/:id" element={<MyEventTickets />} />
-        <Route path="/my-tours/:id" element={<MyTours />} />
-        <Route path="/my-donations/:id" element={<MyDonationCampaigns />} />
-        <Route path="/my-souvenirs/:id" element={<MySouvenirs />} />
-        <Route path="/news" element={<News />} />
+        <Route path="/replies" element={<CelebrityReply />} />
+        <Route path="/profile" element={<FanDashboardLayout><Profile /></FanDashboardLayout>} />
+        <Route  path="/interactions" element={<Interactions/>} /> 
+        <Route path="/my-club-membership/:id" element={<FanDashboardLayout><MyClubMembership /></FanDashboardLayout>} />
+        <Route path="/my-events/:id" element={<FanDashboardLayout><MyEventTickets /></FanDashboardLayout>} />
+        <Route path="/my-tours/:id" element={<FanDashboardLayout><MyTours /></FanDashboardLayout>} />
+        <Route path="/my-donations/:id" element={<FanDashboardLayout><MyDonationCampaigns /></FanDashboardLayout>} />
+        <Route path="/my-souvenirs/:id" element={<FanDashboardLayout><MySouvenirs /></FanDashboardLayout>} />
+        <Route path="/news" element={<FanDashboardLayout><News /></FanDashboardLayout>} />
         <Route path="/news-details/:id" element={<NewsDetails />} />
-        <Route path="/cart/:id" element={<Cart />} />
+        <Route path="/cart/:id" element={<FanDashboardLayout><Cart /></FanDashboardLayout>} />
 
         <Route path="/tours/:id" element={<TourPackages />} />
         <Route path="/events/:id" element={<EventTickets />} />

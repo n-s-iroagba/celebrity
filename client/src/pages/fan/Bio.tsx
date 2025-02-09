@@ -1,5 +1,5 @@
 import React from 'react';
-const CelebrityCard = () => {
+const Bio = () => {
   return (
     <div className="w-full shadow-lg rounded-lg bg-white p-4">
       <div className="flex gap-4">
@@ -23,4 +23,4 @@ const CelebrityCard = () => {
   );
 };
 
-export default CelebrityCard;
+export default Bio;

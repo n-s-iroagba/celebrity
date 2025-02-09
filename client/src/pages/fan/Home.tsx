@@ -25,9 +25,9 @@ import  '../../assets/styles/Home.css'
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="/login" className="text-white hover-underline">
+            {/* <Nav.Link href="/login" className="text-white hover-underline">
               Login
-            </Nav.Link>
+            </Nav.Link> */}
             <Nav.Link onClick={scrollToHowItWorks} className="text-white hover-underline">
               How It Works
             </Nav.Link>
@@ -38,9 +38,14 @@ import  '../../assets/styles/Home.css'
 
       <Container className="py-5">
         <header className="text-center mb-5">
-          <h6 className="display-4"><b>Book Personalized Experiences with Your Favorite Celebrities</b></h6>
+          <h6 className="display-4"><b>
+            {/* Book Personalized Experiences with Your Favorite Celebrities */}
+            Send Personalized Shoutout Messages to your Favorite Celebrities.
+            
+            </b></h6>
           <p className="text-grey">
-            Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences.
+            {/* Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences. */}
+          Connect with actors, musicians, athletes, tv hosts and more all over the world.
           </p>
           <CircularImageSlider />
         </header>

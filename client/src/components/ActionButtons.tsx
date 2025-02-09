@@ -15,8 +15,8 @@ const ActionButtons: React.FC = () => {
       <Button variant="outline-light"  onClick={() => navigate(`book/all/shout-out`)} className="w-100 action-button">
         Shout Out
       </Button>
-      <Button variant="outline-light" onClick={() => navigate(`book/all/personalised-video`)} className="w-100 action-button">
-        Personalised Video
+      <Button variant="outline-light" onClick={() => navigate(`book/all/personalized-video`)} className="w-100 action-button">
+        personalized Video
       </Button>
     </div>
   );

@@ -84,17 +84,17 @@ const CircularImageSlider = () => {
               <Dropdown show>
                 <Dropdown.Menu className="text-light">
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/shout-out`)}>
-                    Make a Shout Out
+                    Send a Shoutout
                   </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/video-call`)}>
+                  {/* <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/video-call`)}>
                    Book Video Call
                   </Dropdown.Item>
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/phone-call`)}>
                     Book Phone Call
                   </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/personalised-video`)}>
+                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/personalized-video`)}>
                   Request Personalized Video
-                  </Dropdown.Item>
+                  </Dropdown.Item> */}
                 </Dropdown.Menu>
               </Dropdown>
             )}
