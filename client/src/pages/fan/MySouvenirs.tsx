@@ -1,5 +1,5 @@
 import { Card, Container, Row, Col, Accordion } from "react-bootstrap";
-
+import '../../'
 
 interface Souvenir {
   id: number;

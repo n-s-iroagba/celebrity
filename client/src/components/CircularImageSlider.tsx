@@ -56,8 +56,8 @@ const CircularImageSlider = () => {
             <div    onClick={() => handleDropdownToggle(index)}>
             <div
               style={{
-                width: "11rem",
-                height: "11rem",
+                width: "9rem",
+                height: "9rem",
                 borderRadius: "50%",
                 overflow: "hidden",
                 border: "2px solid grey",
