@@ -86,7 +86,7 @@ const CircularImageSlider = () => {
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/shout-out`)}>
                     Send a Shoutout
                   </Dropdown.Item>
-                  {/* <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/video-call`)}>
+                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/video-call`)}>
                    Book Video Call
                   </Dropdown.Item>
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/phone-call`)}>
@@ -94,7 +94,7 @@ const CircularImageSlider = () => {
                   </Dropdown.Item>
                   <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/personalized-video`)}>
                   Request Personalized Video
-                  </Dropdown.Item> */}
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}

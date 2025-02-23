@@ -23,9 +23,9 @@ const Footer: React.FC = () => {
           {/* Contact Info */}
           <Col sm={12} md={6} lg={4} className="mb-3">
             <h5 className="fw-bold">Contact</h5>
-            <p className="mb-1"><strong>Email:</strong> support@example.com</p>
-            <p className="mb-1"><strong>Phone:</strong> +123 456 7890</p>
-            <p><strong>Address:</strong> 123 Main Street, Anytown, USA</p>
+            <p className="mb-1"><strong>Email:</strong> vercelcelebrityconnect@gmail</p>
+            <p className="mb-1"><strong>Phone:</strong> +1(213) 787-4896</p>
+            <p><strong>Address:</strong> Downtown, Los Angeles, California, USA</p>
           </Col>
 
           {/* Social Media Links */}
