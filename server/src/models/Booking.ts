@@ -1,6 +1,5 @@
 import { DataTypes, ForeignKey, Model, Optional, Sequelize } from "sequelize";
 import { BookingType } from "../enums/BookingType";
-import { User } from "./User";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
 import { Schedule } from "./Schedule";
@@ -62,7 +61,7 @@ export class Booking extends Model<BookingAttributes, BookingCreationAttributes>
     },
     {
       sequelize,
-      tableName: "Bookings",
+      tableName: "bookings",
     }
   );
 

@@ -1,19 +1,28 @@
-import twilio from 'twilio';
+import axios from "axios";
+import twilio from "twilio";
+import dotenv from "dotenv";
+import { Fan } from "../models/Fan";
 
-export class WhatsAppService {
-  private static client = twilio('TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN');
+dotenv.config();
 
-  static async sendAlert(phoneNumber: string, message: string): Promise<void> {
-    try {
-      await this.client.messages.create({
-        body: message,
-        from: 'whatsapp:+14155238886',  // Twilio WhatsApp Sandbox Number
-        to: `whatsapp:${phoneNumber}`,
-      });
-      console.log(`WhatsApp message sent to ${phoneNumber}`);
-    } catch (error:any) {
-      console.error(`Error sending WhatsApp message to ${phoneNumber}: ${error.message}`);
-      throw new Error(`Failed to send WhatsApp message: ${error.message}`);
-    }
-  }
+const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+
+
+export class WhatsappService {
+
+static generateAndSendWhatsappCodeAndUpdateFan = async (fan:Fan)=>{
+  const verificationCode = Math.floor(100000 + Math.random() * 900000);
+  fan.whatsappCode = String(verificationCode);
+  await WhatsappService.sendWhatsAppVerification(fan.whatsappNumber, verificationCode);
+ 
+}
+
+static  sendWhatsAppVerification = async (phoneNumber: string, verificationCode:number) => {
+  await client.messages.create({
+    from: "whatsapp:+14155238886", 
+    to: `whatsapp:${phoneNumber}`,
+    body: `Your verification code is: ${verificationCode}`,
+  });
+};
+
 }

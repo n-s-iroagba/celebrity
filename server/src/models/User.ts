@@ -9,9 +9,11 @@ import sequelize from "../config/orm";
 
 export interface UserAttributes {
   id: number;
-  username: string;
+  email: string;
   password: string;
   role:Role;
+  isVerified:boolean|null
+  verificationCode: string|null;
   verificationToken: string|null;
   passwordResetToken: string|null;
 }
@@ -23,9 +25,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public passwordResetToken!: string | null;
   public role!: Role;
   public id!: number;
-  public username!: string;
+  public email!: string;
   public password!: string;
-
+  public verificationCode!: string|null;
+  public isVerified!:boolean|null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -37,11 +40,20 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
           primaryKey: true,
           autoIncrement: true,
         },
-        username: {
+        email: {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        isVerified:{
+        type:DataTypes.BOOLEAN,
+        allowNull:true,
+        defaultValue:null
+        },
         verificationToken: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        verificationCode: {
           type: DataTypes.STRING,
           allowNull: true,
         },

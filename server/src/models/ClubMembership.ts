@@ -62,6 +62,6 @@ export class ClubMembership extends Model<ClubMembershipAttributes, ClubMembersh
     },
     {
       sequelize,
-      tableName: "ClubMemberships",
+      tableName: "clubMemberships",
     }
   );

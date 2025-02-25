@@ -1,10 +1,39 @@
+import { Role } from "../enums/Role";
 import { Admin } from "../models/Admin";
+import { User } from "../models/User";
+import { MailService } from "./MailService";
 import { NotificationService } from "./NotificationService";
-import { WhatsAppService } from "./WhatsappService";
+import { UserService } from "./UserService";
+
 
 
 export class AdminService {
-  // Update an admin's name fields (firstName and surname)
+
+  static async addAdmin(adminData: Partial <Admin>,userData: Partial<User>){
+        const { firstName, surname, phoneNumber } = adminData;
+        const {
+          email,
+          password,
+        }= userData
+        if (
+          !firstName ||
+          !surname ||
+          !email ||
+          !password ||
+          !phoneNumber
+        ) {
+          throw new Error("Missing required fields");
+        }
+    const user = await UserService.createUser(Role.ADMIN, userData as {email:string,password:string})
+    const admin = await Admin.create({
+      firstName, surname, userId: user.id,
+      phoneNumber
+    })
+    await MailService.sendVerificationEmail(user);
+    return admin;
+
+  }
+
   static async updateAdminName(
     id: number,
     updates: { firstName?: string; surname?: string }
@@ -25,11 +54,7 @@ export class AdminService {
     return await admin.save();
   }
 
-  // Delete an admin
-  static async deleteAdmin(id: number): Promise<boolean> {
-    const deleted = await Admin.destroy({ where: { id } });
-    return deleted > 0;
-  }
+
 
   static async notifyAdmin(adminId: number, notificationData: { subject: string, message?: string }): Promise<void> {
     try {
@@ -41,11 +66,6 @@ export class AdminService {
       const { subject, message = "You have a new notification" } = notificationData;
 
       await NotificationService.publishNotification(adminId, subject, message);
-
-      if (admin.phoneNumber) {
-        await WhatsAppService.sendAlert(admin.phoneNumber, message);
-      }
-
     
       console.log(`Admin ${adminId} notified successfully`);
 

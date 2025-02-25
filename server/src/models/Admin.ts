@@ -2,7 +2,6 @@ import {
   Model,
   DataTypes,
   Optional,
-  Sequelize,
   ForeignKey,
 } from "sequelize";
 import { User } from "./User";
@@ -59,7 +58,7 @@ export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
         allowNull: false,
       },
     },
-    { sequelize, tableName: "superadmins", timestamps: true }
+    { sequelize, tableName: "admins", timestamps: true }
   );
 
   

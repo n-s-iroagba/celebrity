@@ -1,6 +1,5 @@
-import { Sequelize, DataTypes, ForeignKey, Model, Optional, NonAttribute } from "sequelize";
+import { DataTypes, ForeignKey, Model, Optional, NonAttribute } from "sequelize";
 import { Admin } from "./Admin";
-import { SocialMediaType } from "../enums/SocialMediaType";
 import { User } from "./User";
 import sequelize from "../config/orm";
 
@@ -9,36 +8,31 @@ interface FanAttributes {
   firstName: string;
   surname: string;
   password: string;
-  socialMediaHandle: string;
   profilePicture:string|null;
-  socialMediaType: SocialMediaType;
-  phoneNumber: string;
+  whatsappNumber: string;
+  whatsappCode: string|null
   country: string;
   dateOfBirth: Date;
-  resetPasswordToken: string|null;
-  verificationToken: string |null;
   adminId: ForeignKey<Admin["id"]>;
   userId: ForeignKey <User['id']>
 //   user: NonAttribute<User>
 //   admin : NonAttribute<Admin>
 }
 
-export type FanCreationAttributes = Optional<FanAttributes, "id" | "resetPasswordToken" | "verificationToken">;
+export type FanCreationAttributes = Optional<FanAttributes, "id">;
 
-export class Fan extends Model<FanAttributes, FanCreationAttributes> implements FanAttributes {
+export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implements FanAttributes {
   public profilePicture: string | null=null;
   public userId!: number
   public id!: number;
   public firstName!: string;
   public surname!: string;
   public password!: string;
-  public socialMediaHandle!: string;
-  public socialMediaType!: SocialMediaType;
-  public phoneNumber!: string;
+  public whatsappNumber!: string;
+  public whatsappCode!: string | null;
   public country!: string;
   public dateOfBirth!: Date;
-  public resetPasswordToken: string|null = null;
-  public verificationToken: string|null = null;
+
   public adminId!: number;
 
   // Timestamps
@@ -73,17 +67,14 @@ export class Fan extends Model<FanAttributes, FanCreationAttributes> implements 
         type: DataTypes.STRING,
         allowNull: false,
       },
-      socialMediaHandle: {
+      whatsappNumber: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      socialMediaType: {
-        type: DataTypes.ENUM(...Object.values(SocialMediaType)),
-        allowNull: false,
-      },
-      phoneNumber: {
+      whatsappCode: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+
       },
       country: {
         type: DataTypes.STRING,
@@ -93,14 +84,6 @@ export class Fan extends Model<FanAttributes, FanCreationAttributes> implements 
         type: DataTypes.DATE,
         allowNull: false,
       },
-      resetPasswordToken: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      verificationToken: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       adminId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -109,10 +92,11 @@ export class Fan extends Model<FanAttributes, FanCreationAttributes> implements 
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+    
     },
     {
       sequelize,
-      tableName: "Fans",
+      tableName: "fans",
     }
   );
 

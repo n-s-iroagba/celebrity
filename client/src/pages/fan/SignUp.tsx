@@ -25,6 +25,7 @@ type FanData = {
   preferredContact: string;
   contactNumber: string;
   password: string;
+  confirmPassword: string;
 };
 
 const SignUp: React.FC = () => {
@@ -42,6 +43,7 @@ const SignUp: React.FC = () => {
     preferredContact: '',
     contactNumber: '',
     password: '',
+    confirmPassword: '',
   });
   const [contactNumber, setContactNumber] = useState<string>('');
 
@@ -297,6 +299,22 @@ const SignUp: React.FC = () => {
                 required
                 name="password"
                 value={fanData.password}
+                onChange={handleChange}
+                className="custom-input bg-transparent form-control text-light"
+              />
+              <InputGroup.Text onClick={showPassword}>
+                <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label>Confirm password</Form.Label>
+            <InputGroup>
+              <Form.Control
+                type={passwordType}
+                required
+                name="confirmPassword"
+                value={fanData.confirmPassword}
                 onChange={handleChange}
                 className="custom-input bg-transparent form-control text-light"
               />
