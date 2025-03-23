@@ -45,8 +45,8 @@ const App = () => {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/book/shout-out" element={<Shoutout/>}/>
-        
+        <Route path="/book/shout-out" element={<Shoutout />} />
+
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -54,8 +54,9 @@ const App = () => {
         <Route path="/verify/:email" element={<VerificationForm />} />
 
         <Route path="/replies" element={<CelebrityReply />} />
+
         <Route path="/profile" element={<FanDashboardLayout><Profile /></FanDashboardLayout>} />
-        <Route  path="/interactions" element={<Interactions/>} /> 
+        <Route path="/interactions" element={<Interactions />} />
         <Route path="/my-club-membership/:id" element={<FanDashboardLayout><MyClubMembership /></FanDashboardLayout>} />
         <Route path="/my-events/:id" element={<FanDashboardLayout><MyEventTickets /></FanDashboardLayout>} />
         <Route path="/my-tours/:id" element={<FanDashboardLayout><MyTours /></FanDashboardLayout>} />
@@ -73,7 +74,7 @@ const App = () => {
         <Route path="/news/:id" element={<MyCelebrityNews />} />
         <Route path="/bio/:id" element={<Bio />} />
         <Route path="/gallery/:id" element={<Gallery />} />
-        <Route path="/check-out/:id" element={<CryptoCheckOut/>} />
+        <Route path="/check-out/:id" element={<CryptoCheckOut />} />
 
         <Route path="/admin/schedules" element={<AdminDashboardLayout><Schedules /></AdminDashboardLayout>} />
         <Route path="/admin/clients" element={<AdminDashboardLayout><Clients /></AdminDashboardLayout>} />

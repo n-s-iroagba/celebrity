@@ -1,5 +1,5 @@
 import { faTeamspeak } from "@fortawesome/free-brands-svg-icons";
-import { faUser,    faVideo, faPhone, faUsersRays, faGifts, faUsers, faFighterJet, faDollar, faLocation } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faUsersRays, faGifts, faUsers, faFighterJet, faDollar, faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { JSX } from "react";
 import { Navbar, Nav } from "react-bootstrap";
@@ -8,9 +8,6 @@ const id = 1
  
  const navigationItems = [
   { title: "Make a shoutout", icon: <FontAwesomeIcon icon={faTeamspeak} />, url: "/book/all/shout-out" },
-  { title: "Book a video call", icon: <FontAwesomeIcon icon={faVideo} />, url:  "/book/all/video-call" },
-  { title: "Book a Phone call", icon: <FontAwesomeIcon icon={faPhone} />, url:  "/book/all/phone-call" },
-  { title: "Request personalized Video", icon: <FontAwesomeIcon icon={faVideo} />, url:  "/book/all/personalized-video" },
   { title: "Profile", icon: <FontAwesomeIcon icon={faUser} />, url: "/profile" },
   { title: "My Interactions", icon: <FontAwesomeIcon icon={faUsersRays} />, url: "/interactions" },
   { title: "My Club Memberships", icon: <FontAwesomeIcon icon={faUsers} />, url: `/my-club-membership/:${id}` },

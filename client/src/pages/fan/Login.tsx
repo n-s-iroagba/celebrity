@@ -112,7 +112,7 @@ const Login: React.FC = () => {
       </div>
       {errorMessage&&<ErrorMessage message={errorMessage} />}
       <div className='mt-5'>
-        <AuthOption route={'signup'} title={"Don't have an account?"} buttonText={'Sign Up'} />
+        <AuthOption route={'book/shout-out'} title={"Haven't sent a shoutout yet?"} buttonText={'Send Shoutout'} />
       </div>
 
     </div>

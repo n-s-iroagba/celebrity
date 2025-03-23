@@ -2,7 +2,7 @@
 import { faBars, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode, useState } from "react";
-import { Button, Offcanvas } from "react-bootstrap";
+import { Badge, Button, Offcanvas } from "react-bootstrap";
 import { getGreeting } from "../utils/utils";
 import FanDashboardSidebar from "./FanDashboardSideBar";
 import Logo from "./Logo";
@@ -68,25 +68,13 @@ const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
             <FontAwesomeIcon icon={faBell} size="lg" />
           </Button>
           {notifications.length > 0 && (
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "red",
-                color: "white",
-                borderRadius: "50%",
-                padding: "0.5rem",
-                minWidth: "1.5rem",
-                height: "1.5rem",
-                fontSize: "0.7rem",
-                fontWeight: "bold",
-                textAlign: "center",
-                lineHeight: 1,
-              }}
-            >
-              +{notifications.length}
-            </div>
+           
+           <div className="d-flex justify-content-center align-items-center notification-badge-container">
+           <Badge pill bg="danger">
+             +{notifications.length}
+           </Badge>
+         </div>
+
           )}
         </div>
       </div>

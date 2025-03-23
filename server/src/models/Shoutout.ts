@@ -1,24 +1,26 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
-import sequelize from "../config/orm";
-import { Fan } from "./Fan";
-import { Celebrity } from "./Celebrity";
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config/orm';
 
 interface ShoutoutAttributes {
   id: number;
-  fanId: ForeignKey<Fan['id']>;
-  celebrityId: ForeignKey<Celebrity['id']>;
-  message: string;
-  status: 'pending' | 'approved' | 'rejected';
+  celebrityId: number;
+  userId: number;
+  message: string | null;
+  mediaType: 'text' | 'video' | 'voice';
+  mediaUrl: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-type ShoutoutCreationAttributes = Optional<ShoutoutAttributes, 'id'>;
+interface ShoutoutCreationAttributes extends Optional<ShoutoutAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
-export class Shoutout extends Model<ShoutoutAttributes, ShoutoutCreationAttributes> {
+class Shoutout extends Model<ShoutoutAttributes, ShoutoutCreationAttributes> implements ShoutoutAttributes {
   public id!: number;
-  public fanId!: number;
   public celebrityId!: number;
-  public message!: string;
-  public status!: 'pending' | 'approved' | 'rejected';
+  public userId!: number;
+  public message!: string | null;
+  public mediaType!: 'text' | 'video' | 'voice';
+  public mediaUrl!: string | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -30,29 +32,25 @@ Shoutout.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    fanId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'fans',
-        key: 'id',
-      },
-    },
     celebrityId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'celebrities',
-        key: 'id',
-      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     message: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    mediaType: {
+      type: DataTypes.ENUM('text', 'video', 'voice'),
       allowNull: false,
     },
-    status: {
-      type: DataTypes.ENUM('pending', 'approved', 'rejected'),
-      defaultValue: 'pending',
+    mediaUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
@@ -60,3 +58,5 @@ Shoutout.init(
     tableName: 'shoutouts',
   }
 );
+
+export default Shoutout;

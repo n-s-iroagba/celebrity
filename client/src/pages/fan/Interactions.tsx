@@ -1,53 +1,116 @@
-import { Row, Col } from "react-bootstrap"
-import CelebrityCard from "../../components/CelebrityCard"
-import ContactedCelebrity from "../../types/ContactedCelebrity";
-import FanDashboardLayout from "../../components/FanDashboardLayout";
+import React from 'react';
+import { ListGroup, Image, Badge } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckDouble, faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
+import '../../assets/styles/Interactions.css'; // Updated CSS file name
+import FanDashboardLayout from '../../components/FanDashboardLayout';
+import { truncateString } from '../../utils/truncateString';
 
-
-const Interactions    = ()=>{
-    const celebrities : ContactedCelebrity[] = [
-
-        {
-          id: 1,
-          name: "Ariana Grande",
-          communications: [
-            { communicationType: "Personalized Video", status: 'completed' },
-          ],
-          imageUrl: "/placeholder.svg",
-        },
-
-        {
-            id: 1,
-            name: "Ariana Grande",
-            communications: [
-              { communicationType: "Personalized Video", status: 'completed' },
-            ],
-            imageUrl: "/placeholder.svg",
-          },
-
-        {
-            id: 1,
-            name: "Ariana Grande",
-            communications: [
-              { communicationType: "Personalized Video", status: 'completed' },
-            ],
-            imageUrl: "/placeholder.svg",
-          },
-      ];
-    return (
-<FanDashboardLayout>
-<Row   className="d-flex g-2">
-{celebrities.map((celebrity) => (
-  <Col className="" xs={12}  md={6} lg={6} key={celebrity.name}>
-    <CelebrityCard
-      name={celebrity.name}
-      communications={celebrity.communications}
-      imageUrl={celebrity.imageUrl}
-    />
-  </Col>
-))}
-</Row>
-</FanDashboardLayout>
-    )
+interface MessageListItem {
+  id: number;
+  name: string;
+  image: string;
+  lastMessage: string;
+  lastMessageType: 'text' | 'voice' | 'video'; // Type of the last message
+  lastMessageTime: string;
+  unreadCount: number;
 }
-export default Interactions
+
+const celebrities: MessageListItem[] = [
+  {
+    id: 1,
+    name: 'Adele',
+    image: 'https://via.placeholder.com/50',
+    lastMessage: 'Thank you for your support!',
+    lastMessageType: 'text',
+    lastMessageTime: '20 hours ago',
+    unreadCount: 2,
+  },
+  {
+    id: 2,
+    name: 'Drake',
+    image: 'https://via.placeholder.com/50',
+    lastMessage: '0:15', // Duration of the voice note
+    lastMessageType: 'voice',
+    lastMessageTime: 'Yesterday',
+    unreadCount: 0,
+  },
+  {
+    id: 3,
+    name: 'Beyoncé',
+    image: 'https://via.placeholder.com/50',
+    lastMessage: '0:30', // Duration of the video
+    lastMessageType: 'video',
+    lastMessageTime: 'Last week',
+    unreadCount: 5,
+  },
+];
+
+const Interactions: React.FC = () => {
+  return (
+    <div className="interactions-container">
+      <FanDashboardLayout>
+        <h4 className="mb-4">My Interactions</h4>
+        <ListGroup>
+          {celebrities.map((celebrity) => (
+            <ListGroup.Item key={celebrity.id} className="interaction-item">
+              <div className="d-flex justify-content-between align-items-center w-100">
+                {/* Left Side: Celebrity Image and Details */}
+                <div className="d-flex align-items-center flex-grow-1">
+                  <Image
+                    src={celebrity.image}
+                    alt={celebrity.name}
+                    roundedCircle
+                    className="celebrity-image"
+                  />
+                  <div className="ms-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h6 className="mb-0">{celebrity.name}</h6>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      {/* Display icon and label based on message type */}
+                      {celebrity.lastMessageType === 'voice' && (
+                        <>
+                          <FontAwesomeIcon icon={faMicrophone} className="text-muted me-2" />
+                          <small className="text-muted me-2">Voice note · {celebrity.lastMessage}</small>
+                        </>
+                      )}
+                      {celebrity.lastMessageType === 'video' && (
+                        <>
+                          <FontAwesomeIcon icon={faVideo} className="text-muted me-2" />
+                          <small className="text-muted me-2">Video · {celebrity.lastMessage}</small>
+                        </>
+                      )}
+                      {celebrity.lastMessageType === 'text' && (
+                        <small className="text-muted me-2">{truncateString(celebrity.lastMessage, 13)}</small>
+                      )}
+               
+                  <small className="text-muted me-3">{celebrity.lastMessageTime}</small>
+                  {celebrity.unreadCount > 0 && (
+                    <Badge pill bg="success" className="me-2">
+                      {celebrity.unreadCount}
+                    </Badge>
+                  )}
+                  {celebrity.unreadCount === 0 && (
+                    <FontAwesomeIcon
+                      icon={faCheckDouble}
+                      className="text-primary"
+                    />
+                  )}
+                </div>
+                    </div>
+                    
+                  </div>
+                </div>
+
+             
+             
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </FanDashboardLayout>
+    </div>
+  );
+};
+
+export default Interactions;
