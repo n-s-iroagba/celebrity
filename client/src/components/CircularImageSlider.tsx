@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import '../assets/styles/CircularImageSlider.css'
@@ -20,7 +20,6 @@ const images = [
 
 const CircularImageSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [dropdownVisibleIndex, setDropdownVisibleIndex] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const isSmallScreen = window.innerWidth <= 768;

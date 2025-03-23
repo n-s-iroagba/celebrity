@@ -111,40 +111,49 @@
   };
 
   
-
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
   
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-  
-      if (!isSignedIn) {
-        // Navigate to signup if user is not signed in
-        navigate('/signup', { state: { selectedCelebrity, shoutout, mediaType, mediaFile } });
-        return;
-      }
-  
-      // Handle shoutout submission for signed-in users
-      const formData = new FormData();
-      formData.append('celebrityId', selectedCelebrity?.id || '');
-      formData.append('shoutout', shoutout);
-      formData.append('mediaType', mediaType);
-      if (mediaFile) {
-        formData.append('mediaFile', mediaFile);
-      }
-  
-      // Send the shoutout to the server
-      fetch('/api/shoutouts', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Shoutout sent successfully:', data);
-          navigate('/confirmation'); // Navigate to a confirmation page
+    if (!isSignedIn) {
+      // Save shoutout data to localStorage
+      localStorage.setItem(
+        'shoutoutData',
+        JSON.stringify({
+          selectedCelebrity,
+          shoutout,
+          mediaType,
+          mediaFile: recordedMedia, // Save the recorded media URL or file
         })
-        .catch((error) => {
-          console.error('Error sending shoutout:', error);
-        });
-    };
+      );
+  
+      // Navigate to signup if user is not signed in
+      navigate('/signup');
+      return;
+    }
+  
+    // Handle shoutout submission for signed-in users
+    const formData = new FormData();
+    formData.append('celebrityId', selectedCelebrity?.id || '');
+    formData.append('shoutout', shoutout);
+    formData.append('mediaType', mediaType);
+    if (mediaFile) {
+      formData.append('mediaFile', mediaFile);
+    }
+  
+    // Send the shoutout to the server
+    fetch('/api/shoutouts', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Shoutout sent successfully:', data);
+        navigate('/confirmation'); // Navigate to a confirmation page
+      })
+      .catch((error) => {
+        console.error('Error sending shoutout:', error);
+      });
+  };
   
     const handleSearchChange = (searchQuery: string) => {
       setQuery(searchQuery);

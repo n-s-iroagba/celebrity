@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Form, Button, InputGroup, Spinner } from 'react-bootstrap';
 import { useNavigate} from 'react-router-dom';
 import '../../assets/styles/Auth.css';
@@ -51,6 +51,38 @@ const SignUp: React.FC = () => {
   const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
   const options = useMemo(() => countryList().getData(), []);
   const [startDate, setStartDate] = useState(new Date());
+  const [shoutoutData, setShoutoutData] = useState<any>(null);
+
+  useEffect(() => {
+    // Retrieve shoutout data from localStorage
+    const savedShoutoutData = localStorage.getItem('shoutoutData');
+    if (savedShoutoutData) {
+      setShoutoutData(JSON.parse(savedShoutoutData));
+    }
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setSubmitting(true);
+    setErrorMessage('');
+    try {
+      await postWithNoAuth<any, string>(fanSignUpUrl, {fandata:fanData,shoutoutData:shoutoutData});
+
+      // Clear shoutout data from localStorage after successful signup
+      localStorage.removeItem('shoutoutData');
+
+      navigate('/waiting-for-response');
+    } catch (error) {
+      setErrorMessage('Something went wrong. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const showPassword = () => {
     setPasswordType((prev) => (prev === 'text' ? 'password' : 'text'));
@@ -83,25 +115,6 @@ const SignUp: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-  
-
-    if (!validateForm()) {
-      return; 
-    }
-
-    setSubmitting(true);
-    setErrorMessage('');
-    try {
-      await postWithNoAuth<FanData,string>(fanSignUpUrl, fanData);
-      navigate('/waiting-for-response')
-      }catch (error) {
-      setErrorMessage('Something went wrong. Please try again later.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
 
   return (
