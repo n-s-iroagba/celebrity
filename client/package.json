@@ -22,7 +22,9 @@
     "@types/sequelize": "^4.28.20",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
+    "dotenv-webpack": "^8.1.0",
     "google-libphonenumber": "^3.2.40",
+    "path-browserify": "^1.0.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.7",
     "react-datepicker": "^7.6.0",
@@ -37,8 +39,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "NODE_ENV=development react-scripts start",
+    "build": "NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -61,7 +63,10 @@
     ]
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/dotenv-webpack": "^7.0.8",
     "@types/google-libphonenumber": "^7.4.30",
-    "@types/react": "^19.0.2"
+    "@types/react": "^19.0.2",
+    "dotenv": "^16.4.7"
   }
 }

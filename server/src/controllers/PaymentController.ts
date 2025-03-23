@@ -9,6 +9,7 @@ class PaymentController {
       const payment = await paymentService.createPayment(fanId, amount, item, itemId);
       res.status(201).json(payment);
     } catch (error:any) {
+      console.error(error)
       res.status(500).json({ message: `Error creating payment: ${error.message}` });
     }
   }
@@ -19,6 +20,7 @@ class PaymentController {
       const payments = await paymentService.getAllPayments();
       res.status(200).json(payments);
     } catch (error:any) {
+      console.error(error)
       res.status(500).json({ message: `Error fetching payments: ${error.message}` });
     }
   }
@@ -30,6 +32,7 @@ class PaymentController {
       const payments = await paymentService.getPaymentsByFanId(fanId);
       res.status(200).json(payments);
     } catch (error:any) {
+      console.error(error)
       res.status(500).json({ message: `Error fetching payments by fanId: ${error.message}` });
     }
   }

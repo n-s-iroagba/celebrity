@@ -3,6 +3,9 @@ import sequelize  from './config/orm';
 import fanRouter from './routes/fanRouter';
 import adminRouter from './routes/adminRouter';
 import cors from 'cors'
+import authRouter from './routes/authRouter';
+import celebrityRouter from './routes/celebrityRouter';
+import { seedDatabase } from '../seedDatabase';
 
 
 
@@ -27,12 +30,15 @@ app.use(
 );
 app.use("/admin", adminRouter)
 app.use("/fans", fanRouter);
+app.use ('/auth',authRouter)
+app.use('/celebrities',celebrityRouter )
 
 
 sequelize.sync(
   { force: true } 
 ).then(() => {
   console.log('Database synced successfully!');
+  seedDatabase()
 }).catch((error: Error) => {
   console.error('Error syncing the database: ', error);
 });

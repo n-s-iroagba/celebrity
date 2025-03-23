@@ -11,6 +11,7 @@ export class AdminController {
       const admin = await AdminService.addAdmin(adminData, userData);
       return res.status(201).json(admin);
     } catch (error: any) {
+      console.error(error)
       return res.status(500).json({ error: error.message });
     }
   }
@@ -22,6 +23,7 @@ export class AdminController {
       const updatedAdmin = await AdminService.updateAdminName(id, { firstName, surname });
       return res.status(200).json(updatedAdmin);
     } catch (error: any) {
+      console.error(error)
       return res.status(500).json({ error: error.message });
     }
   }

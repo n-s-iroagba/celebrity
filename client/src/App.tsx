@@ -21,7 +21,6 @@ import Gallery from './pages/fan/Gallery';
 import SignUp from './pages/fan/SignUp';
 import Profile from './pages/fan/Profile';
 import NewPassword from './pages/fan/NewPassword';
-import BookCall from './pages/fan/BookCall';
 import Home from './pages/fan/Home';
 import AdminDashboardLayout from './components/AdminDashboardLayout';
 import Clients from './pages/admin/Client';
@@ -30,8 +29,7 @@ import Schedules from './pages/admin/Schedules';
 import Tours from './pages/admin/Tours';
 import CelebrityDashboardLayout from './components/CelebrityDashboardLayout';
 import CryptoCheckOut from './pages/fan/CryptoCheckOut';
-import PersonalizedVideo from './pages/fan/PersonalizedVideo';
-import Shoutout from './pages/fan/ShoutOut';
+import Shoutout from './pages/fan/Shoutout';
 import VerificationForm from './pages/fan/VerificationForm';
 import Interactions from './pages/fan/Interactions';
 import FanDashboardLayout from './components/FanDashboardLayout';
@@ -47,10 +45,7 @@ const App = () => {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/book/:talent/video-call" element={<BookCall isVideo />} />
-        <Route path="/book/:talent/phone-call" element={<BookCall />} />
-        <Route path="/book/:talent/personalized-video" element={<PersonalizedVideo />} />
-        <Route path="/book/:talent/shout-out" element={<Shoutout/>}/>
+        <Route path="/book/shout-out" element={<Shoutout/>}/>
         
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />

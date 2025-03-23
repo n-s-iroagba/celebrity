@@ -105,7 +105,7 @@ static async resendVerificationToken(email: string): Promise<void> {
     return user.passwordResetToken;
   }
 
-  static async resetPassword(payload:NewPasswordPayload,id:string): Promise<void> {
+  static async resetPassword(payload:NewPasswordPayload): Promise<void> {
     const decodedToken = JwtService.verifyToken<NewPasswordToken>(payload.token)
     const user = await User.findOne({ where: { email:decodedToken.email } });
     if (!user) throw new Error("User not found");

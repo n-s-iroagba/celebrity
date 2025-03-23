@@ -12,6 +12,7 @@ export interface CelebrityAttributes {
   surname: string;
   bio: string;
   image: string;
+  isConfirmed:boolean;
   stageName: string;
 }
 
@@ -24,6 +25,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
   public surname!: string;
   public bio!: string;
   public image!: string;
+  public isConfirmed!: boolean;
   public stageName!: string;
 
   // Timestamps
@@ -52,7 +54,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
         allowNull: false,
       },
       image: {
-        type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of image URLs
+        type: DataTypes.STRING,
         allowNull: true,
       },
       stageName: {
@@ -60,6 +62,10 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
         allowNull: false,
         unique: true,
       },
+      isConfirmed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      }
     },
     {
       sequelize,

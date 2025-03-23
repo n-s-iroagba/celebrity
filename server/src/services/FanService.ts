@@ -30,7 +30,7 @@ export class FanService {
             !country ||
             !dateOfBirth
           ) {
-            throw new Error("Missing required fields");
+            throw new Error("Missing user fields  required in createFan Service function");
           }
       
           const user = await UserService.createUser(Role.FAN, userData as {email:string, password:string})

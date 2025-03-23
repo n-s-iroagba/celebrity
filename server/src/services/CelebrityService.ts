@@ -13,8 +13,9 @@ export class CelebrityService {
         throw new Error("Missing required fields for one or more celebrities");
       }
     return await Celebrity.create({
-        firstName, surname, bio, stageName,
-        image: image||''
+      firstName, surname, bio, stageName,
+      image: image || '',
+      isConfirmed: image === ''? false: true
     });
   }
 

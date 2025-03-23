@@ -8,7 +8,7 @@ interface Survey {
   formData: Record<string, any>;
   fanDetails: {
     firstName: string;
-    lastName: string;
+    surname: string;
   };
 }
 

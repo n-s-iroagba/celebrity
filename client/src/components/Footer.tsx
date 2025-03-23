@@ -3,6 +3,8 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { COMPANY_EMAIL } from '../data/data';
+
 
 const Footer: React.FC = () => {
   return (
@@ -23,7 +25,7 @@ const Footer: React.FC = () => {
           {/* Contact Info */}
           <Col sm={12} md={6} lg={4} className="mb-3">
             <h5 className="fw-bold">Contact</h5>
-            <p className="mb-1"><strong>Email:</strong> vercelcelebrityconnect@gmail</p>
+            <p className="mb-1"><strong>Email:</strong> {COMPANY_EMAIL}</p>
             <p className="mb-1"><strong>Phone:</strong> +1(213) 787-4896</p>
             <p><strong>Address:</strong> Downtown, Los Angeles, California, USA</p>
           </Col>

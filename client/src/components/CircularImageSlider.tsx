@@ -11,12 +11,12 @@ import image5 from "../assets/images/reality.webp";
 import { useNavigate } from "react-router-dom";
 
 const images = [
-  { src: image1, alt: "Image 1", linkLabel: "ACTORS",talent:'actor' },
-  { src: image2, alt: "Image 2", linkLabel: "MUSICIANS",talent:'musician' },
-  { src: image3, alt: "Image 3", linkLabel: "ATHLETES",talent:'athlete' },
-  { src: image4, alt: "Image 4", linkLabel: "ENTREPRENUERS",talent:'entreprenuer' },
-  { src: image5, alt: "Image 5", linkLabel: "REALITY TV" ,talent:'reality-tv'},
-];
+  { src: image1, alt: "Image 1", linkLabel: "MESSAGE AN ACTOR", },
+  { src: image2, alt: "Image 2", linkLabel: "MESSAGE A MUSICIAN", },
+  { src: image3, alt: "Image 3", linkLabel: "MESSAGE AN ATHLETE",},
+  { src: image4, alt: "Image 4", linkLabel: "MESSAGE AN ENTREPRENUER",},
+  { src: image5, alt: "Image 5", linkLabel: "MESSAGE A REALITY TV STAR" ,},
+]
 
 const CircularImageSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,9 +39,7 @@ const CircularImageSlider = () => {
     }
   };
 
-  const handleDropdownToggle = (index: number) => {
-    setDropdownVisibleIndex(dropdownVisibleIndex === index ? null : index);
-  };
+
 
   const displayedImages = images.slice(
     currentIndex,
@@ -53,7 +51,7 @@ const CircularImageSlider = () => {
       <Row className="justify-content-center">
         {displayedImages.map((image, index) => (
           <Col key={index} xs={6} md={3} lg={2} className="mb-3">
-            <div    onClick={() => handleDropdownToggle(index)}>
+            <div    onClick={() => navigate('book/shout-out')}>
             <div
               style={{
                 width: "9rem",
@@ -77,27 +75,10 @@ const CircularImageSlider = () => {
                 marginTop: "0.5rem",
               }}
             >
-              {image.linkLabel}
+              <small>{image.linkLabel}</small>
             </p>
             </div>
-            {dropdownVisibleIndex === index && (
-              <Dropdown show>
-                <Dropdown.Menu className="text-light">
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/shout-out`)}>
-                    Send a Shoutout
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/video-call`)}>
-                   Book Video Call
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/phone-call`)}>
-                    Book Phone Call
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-select" onClick={() => navigate(`book/${image.talent}/personalized-video`)}>
-                  Request Personalized Video
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
+            
           </Col>
         ))}
       </Row>
