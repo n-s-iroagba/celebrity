@@ -7,13 +7,14 @@ import { UserService } from "./UserService";
 
 export class FanService {
 
-      static async createFan(fanData: Partial<Fan>,userData: Partial<User>): Promise<Fan> {
+      static async createFan(fanData: Partial<Fan>,userData: Partial<User>): Promise<string> {
           const {
             firstName,
             surname,
             whatsappNumber,
             country,
             dateOfBirth,
+            gender,
           } = fanData;
         const {
           email,
@@ -24,6 +25,7 @@ export class FanService {
             !surname ||
             !email||
             !password ||
+            !gender||
             !whatsappNumber ||
             !country ||
             !dateOfBirth
@@ -33,17 +35,19 @@ export class FanService {
       
           const user = await UserService.createUser(Role.FAN, userData as {email:string, password:string})
     
-         const fan = await Fan.create({
+          await Fan.create({
           firstName,
           surname,
           whatsappNumber,
           country,
           dateOfBirth,
-          userId:user.id
+          userId:user.id,
+          gender
+
         } as FanCreationAttributes);
     
         await MailService.sendVerificationEmail(user);
-        return fan;
+        return user.verificationToken as string;
       }
 
   static async getAllFans(): Promise<Fan[]> {

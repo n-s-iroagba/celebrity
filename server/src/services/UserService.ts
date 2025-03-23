@@ -10,7 +10,7 @@ export class UserService {
         const code = Math.random() * 1000000
         const hashedPassword = await AuthService.hashPassword(password)
         const user = await User.create({
-            email,
+            email:email,
             password: hashedPassword,
             role: role,
             verificationToken: null,

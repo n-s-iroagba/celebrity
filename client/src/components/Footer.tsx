@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
         {/* Copyright Section */}
         <Row>
           <Col className="text-center mt-3">
-            <p className="mb-0 ">&copy; {new Date().getFullYear()} MyBrand. All rights reserved.</p>
+            <p className="mb-0 ">&copy; {new Date().getFullYear()} Vercel Celebrity Connect. All rights reserved.</p>
           </Col>
         </Row>
       </Container>

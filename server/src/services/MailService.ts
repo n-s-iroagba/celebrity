@@ -27,4 +27,15 @@ export class MailService {
       html,
     });
   }
+  static async SendForgotPasswordMail (user:User){
+    this.sendMail(
+      user.email,
+      "Password Reset Code",
+      `Password Reset`,
+      //make href link to the change password route
+      `<p>Your password reset veriicationCode is: <b>${user.passwordResetToken}</b></p>`
+    );
+  }
 }
+
+

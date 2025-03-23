@@ -5,8 +5,8 @@ dotenv.config();
 export const config = {
     development: {
       username: process.env.DEV_DB_USERNAME || "root",
-      password: process.env.DEV_DB_PASSWORD || "password",
-      database: process.env.DEV_DB_NAME || "dev_db",
+      password: process.env.DEV_DB_PASSWORD || "97chocho",
+      database: process.env.DEV_DB_NAME || "celebrity",
       host: process.env.DEV_DB_HOST || "127.0.0.1",
       dialect: "mysql",
     },

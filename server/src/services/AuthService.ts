@@ -1,11 +1,14 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 import { Admin } from "../models/Admin";
 import { Fan } from "../models/Fan";
 import { MailService } from "./MailService";
-import { UserService } from "./UserService";
+
 import { JwtService } from "./JWTService";
+
+import { VerificationPayload } from "../types/VerificationPayload";
+import { NewPasswordPayload } from "../types/NewPasswordPayload";
+import { NewPasswordToken } from "../types/NewPasswordToken";
 
 const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
@@ -15,19 +18,22 @@ export class AuthService {
     return bcrypt.hash(password, SALT_ROUNDS);
   };
 
-  static async verifyEmail(payload: { veriicationCode: string; token: string }): Promise<{ token: string; user: Admin | Fan }> {
+  static async verifyEmail(payload:VerificationPayload): Promise<string> {
     try {
-      const user = await User.findOne({ where: { verificationToken: payload.token } });
+      const user = await User.findOne({ where: { verificationToken: payload.verificationToken } });
+
       if (!user) throw new Error("User not found");
-      const token = user.verificationToken;
-      if (!token) throw new Error("Token not found");
-  
-      const decoded = JwtService.verifyToken<{verificationCode:string,email:string}>(token);
-      if (!decoded.verificationCode || !decoded.email) throw new Error("Invalid token structure");
-      if (user.email !== decoded.email || decoded.verificationCode !== payload.veriicationCode) {
-        throw new Error("Invalid verification");
+      const userToken = user.verificationToken;
+      if (!userToken) throw new Error("User token not found");
+      const payloadToken = payload.verificationToken;
+      if (!payloadToken) throw new Error("Payload token not found");
+      if (userToken !== payloadToken){
+        throw Error ('invalid Token')
       }
-      user.verificationToken = null;
+      if (payload.verificationCode !== user.verificationCode) throw new Error ('wrong email verification code')
+      user.isVerified = true
+      user.verificationToken = null
+      ;
       await user.save();
       let detailedUser;
       switch (user.role) {
@@ -41,18 +47,18 @@ export class AuthService {
           throw new Error("Role not recognized");
       }
       if (!detailedUser) throw new Error("User details not found for the specified role");
-      const newToken = JwtService.generateLoginToken(user);
-      return { token: newToken, user: detailedUser };
+      const loginToken = JwtService.generateLoginToken(user);
+      return loginToken;
     } catch (error) {
       throw new Error("Invalid or expired verification token");
     }
   }
   
-
-  static async login(email: string, password: string): Promise<{ token: string; user: Admin | Fan }> {
+  static async login(email: string, password: string): Promise<string> {
+    try{
     const user = await User.findOne({ where: { email } });
     if (!user) throw new Error("User not found");
-    if (user.verificationToken) throw new Error("Email not verified");
+    if (!user.isVerified) throw new Error("Email not verified");
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new Error("Invalid credentials");
     let detailedUser;
@@ -67,38 +73,49 @@ export class AuthService {
         throw new Error("Role not recognized");
     }
     if (!detailedUser) throw new Error("User details not found for the specified role");
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
-    return { token, user: detailedUser };
+    const loginToken = JwtService.generateLoginToken(user);
+    return loginToken;
+  } catch (error) {
+    throw new Error("Invalid or expired verification token");
   }
+}
+
+static async resendVerificationToken(email: string): Promise<void> {
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) throw new Error("User not found");
+    if (user.isVerified) throw new Error("User is already verified");
+
+    user.verificationToken = JwtService.generateEmailVerificationToken(user);
+    user.verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); 
+    await user.save();
+
+    await MailService.sendVerificationEmail(user);
+  } catch (error) {
+    throw new Error("Failed to resend verification token");
+  }
+}
 
   static async forgotPassword(email: string): Promise<string> {
     const user = await User.findOne({ where: { email } });
     if (!user) throw new Error("User not found");
-    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const resetToken = jwt.sign({ id: user.id, email: user.email, veriicationCode: resetCode }, JWT_SECRET, { expiresIn: "15m" });
-    user.passwordResetToken = resetToken;
+    user.passwordResetToken = JwtService.generateForgotPasswordToken(user)
     await user.save();
-    await MailService.sendMail(
-      user.email,
-      "Password Reset Code",
-      `Your password reset veriicationCode is: ${resetCode}`,
-      `<p>Your password reset veriicationCode is: <b>${resetCode}</b></p>`
-    );
-    return user.email;
+    await MailService.SendForgotPasswordMail(user);
+    return user.passwordResetToken;
   }
 
-  static async resetPassword(email: string, resetCode: string, newPassword: string): Promise<void> {
-    const user = await User.findOne({ where: { email } });
+  static async resetPassword(payload:NewPasswordPayload,id:string): Promise<void> {
+    const decodedToken = JwtService.verifyToken<NewPasswordToken>(payload.token)
+    const user = await User.findOne({ where: { email:decodedToken.email } });
     if (!user) throw new Error("User not found");
+    if (user.passwordResetToken !== payload.token) throw new Error("Invalid token");
     const token = user.passwordResetToken || "";
-    const decoded = jwt.verify(token, JWT_SECRET) as { email: string; veriicationCode: string };
-    if (!decoded || decoded.veriicationCode !== resetCode || decoded.email !== email) {
-      throw new Error("Invalid or expired reset veriicationCode");
-    }
-    const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(payload.password, SALT_ROUNDS);
     user.password = hashedPassword;
     user.passwordResetToken = null;
     user.verificationToken = null;
     await user.save();
   }
 }
+

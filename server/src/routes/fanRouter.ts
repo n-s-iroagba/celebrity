@@ -3,7 +3,7 @@ import { FanController } from "../controllers/FanController";
 
 const fanRouter = Router();
 
-fanRouter.post("/", FanController.createFan);
+fanRouter.post("/signup", FanController.createFan);
 
 fanRouter.get("/", FanController.getAllFans);
 

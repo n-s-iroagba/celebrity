@@ -24,10 +24,10 @@ const apiInstance = axios.create({
 });
 
 
-export const postDataNoAuth = async (url: string, data: any) => {
+export const postWithNoAuth = async<T,U> (url: string, data:T) => {
   try {
     const response = await apiInstance.post(url, data);
-    return response.data;
+    return response.data as U;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Something went wrong.');
   }

@@ -7,13 +7,12 @@ interface FanAttributes {
   id: number;
   firstName: string;
   surname: string;
-  password: string;
   profilePicture:string|null;
   whatsappNumber: string;
   whatsappCode: string|null
   country: string;
+  gender: string;
   dateOfBirth: Date;
-  adminId: ForeignKey<Admin["id"]>;
   userId: ForeignKey <User['id']>
 //   user: NonAttribute<User>
 //   admin : NonAttribute<Admin>
@@ -27,21 +26,17 @@ export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implemen
   public id!: number;
   public firstName!: string;
   public surname!: string;
-  public password!: string;
   public whatsappNumber!: string;
   public whatsappCode!: string | null;
   public country!: string;
   public dateOfBirth!: Date;
-
+  public gender!: string;
   public adminId!: number;
 
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  static associate(models: { Admin: typeof Admin }) {
-    Fan.belongsTo(models.Admin, { foreignKey: "adminId", as: "admin" });
-  }
 }
 
   Fan.init(
@@ -63,7 +58,7 @@ export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implemen
         type: DataTypes.STRING,
         allowNull: false,
       },
-      password: {
+      gender: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -82,10 +77,6 @@ export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implemen
       },
       dateOfBirth: {
         type: DataTypes.DATE,
-        allowNull: false,
-      },
-      adminId: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       userId: {

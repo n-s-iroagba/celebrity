@@ -11,7 +11,7 @@ export interface CelebrityAttributes {
   firstName: string;
   surname: string;
   bio: string;
-  galleryImages: string[];
+  image: string;
   stageName: string;
 }
 
@@ -23,7 +23,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
   public firstName!: string;
   public surname!: string;
   public bio!: string;
-  public galleryImages!: string[];
+  public image!: string;
   public stageName!: string;
 
   // Timestamps
@@ -51,7 +51,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      galleryImages: {
+      image: {
         type: DataTypes.ARRAY(DataTypes.STRING), // Stores an array of image URLs
         allowNull: true,
       },

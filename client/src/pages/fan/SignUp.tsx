@@ -5,7 +5,7 @@ import '../../assets/styles/Auth.css';
 import Logo from '../../components/Logo';
 import AuthOption from '../../components/AuthOption';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTelegram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import countryList from 'react-select-country-list';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
@@ -13,6 +13,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import MiniFooter from '../../components/MiniFooter';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import ErrorMessage from '../../components/ErrorMessage';
+import { postWithNoAuth } from '../../utils/apiUtils';
+import { fanSignUpUrl } from '../../data/urls';
 
 
 type FanData = {
@@ -22,8 +24,7 @@ type FanData = {
   country: string;
   gender: string;
   email: string;
-  preferredContact: string;
-  contactNumber: string;
+  whatsappNumber: string;
   password: string;
   confirmPassword: string;
 };
@@ -31,8 +32,6 @@ type FanData = {
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
 
-
-  const [preferredContact, setPreferredContact] = useState<string | null>(null);
   const [fanData, setFanData] = useState<FanData>({
     firstName: '',
     surname: '',
@@ -40,40 +39,23 @@ const SignUp: React.FC = () => {
     country: '',
     gender: '',
     email: '',
-    preferredContact: '',
-    contactNumber: '',
+    whatsappNumber: '',
     password: '',
     confirmPassword: '',
   });
-  const [contactNumber, setContactNumber] = useState<string>('');
+
 
   const [errors,setErrors] = useState <Record<string, string>> ({});
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
-
-
   const options = useMemo(() => countryList().getData(), []);
   const [startDate, setStartDate] = useState(new Date());
-
-    // const savedState = localStorage.getItem('signupPreviousState')
-    // if (savedState) {
-    //   alert('You have not chosen a celebrity to contact')
-    //   navigate('/')
-    // }
-    
-  const handleContactChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPreferredContact(event.target.value);
-    setContactNumber('');
-  };
 
   const showPassword = () => {
     setPasswordType((prev) => (prev === 'text' ? 'password' : 'text'));
   };
 
-  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContactNumber(event.target.value);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFanData({ ...fanData, [event.target.name]: event.target.value });
@@ -97,13 +79,6 @@ const SignUp: React.FC = () => {
     } else if (fanData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters.';
     }
-    if ( !contactNumber.trim()) {
-      newErrors.contactNumber = 'Contact Number is required.';
-    }
-    if (preferredContact === '') {
-      newErrors.preferredContact = 'Chosing a preferred contact means is required is required.';
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -118,24 +93,14 @@ const SignUp: React.FC = () => {
 
     setSubmitting(true);
     setErrorMessage('');
-
-    // Prepare the form data to be submitted
-    const formData = { ...fanData, contactNumber, preferredContact };
-    formData && navigate('/temp')
-    // try {
-   
-    
-    //   const response = await postDataNoAuth('/signup', formData);
-    //   if (response.status === 200) {
-    //    navigate('/contacts')
-    //   } else {
-    //     setErrorMessage('Something went wrong. Please try again.');
-    //   }
-    // } catch (error) {
-    //   setErrorMessage('An error occurred. Please try again.');
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    try {
+      await postWithNoAuth<FanData,string>(fanSignUpUrl, fanData);
+      navigate('/waiting-for-response')
+      }catch (error) {
+      setErrorMessage('Something went wrong. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
 
@@ -227,66 +192,21 @@ const SignUp: React.FC = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formPreferredContact">
-            <Form.Label className="text-sm text-neutral-950 mb-2">Preferred Contact Method</Form.Label>
-            <Form.Check
-              type="radio"
-              id="contactWhatsApp"
-              name="preferredContact"
-              value="WhatsApp"
-              checked={preferredContact === 'WhatsApp'}
-              className="d-flex align-items-center mb-2"
-            >
-              <Form.Check.Input
-                type="radio"
-                id="contactWhatsApp"
-                name="preferredContact"
-                value="WhatsApp"
-                className="me-2"
-                onChange={handleContactChange}
-              />
-              <Form.Check.Label htmlFor="contactWhatsApp" className="d-flex align-items-center" style={{ fontWeight: 'bold', color: '#25D366' }}>
-                <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
-                WhatsApp
-              </Form.Check.Label>
-            </Form.Check>
-            <Form.Check
-              type="radio"
-              id="contactTelegram"
-              name="preferredContact"
-              value="Telegram"
-              checked={preferredContact === 'Telegram'}
-              className="d-flex align-items-center"
-            >
-              <Form.Check.Input
-                type="radio"
-                id="contactTelegram"
-                name="preferredContact"
-                value="Telegram"
-                className="me-2"
-                onChange={handleContactChange}
-              />
-              <Form.Check.Label htmlFor="contactTelegram" className="d-flex align-items-center" style={{ fontWeight: 'bold', color: '#0088cc' }}>
-                <FontAwesomeIcon icon={faTelegram} className="me-2" />
-                Telegram
-              </Form.Check.Label>
-            </Form.Check>
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="formContactNumber">
             <Form.Label className="text-sm text-neutral-950 mb-2">
-              {preferredContact ? `${preferredContact} Number` : 'Phone Number'}
+                Whatsapp Number
+              <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
             </Form.Label>
             <Form.Control
               type="tel"
-              placeholder={`Enter your ${preferredContact || 'WhatsApp or Telegram'} number`}
+              name='whatsappNumber'
+              placeholder={`Enter your Whatsapp number`}
               className="custom-input"
-              value={contactNumber}
+              value={fanData.whatsappNumber}
               required
               pattern="^\+?[1-9]\d{1,14}$"
               maxLength={15}
-              onChange={handleNumberChange}
-              disabled={!preferredContact}
+              onChange={handleChange}
             />
             <Form.Text className="text-muted">Please enter a valid phone number (e.g., +1234567890).</Form.Text>
           </Form.Group>

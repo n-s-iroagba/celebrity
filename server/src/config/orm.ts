@@ -1,6 +1,6 @@
 // db/index.ts
 import { Sequelize } from "sequelize";
-import {config }from "./envConfig";
+import {config }from "./.envConfig";
 
 
 const env = process.env.NODE_ENV || "development";

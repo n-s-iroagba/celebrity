@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import sequelize  from './config/orm';
-import { Booking } from './models/Booking';
-import { Admin } from './models/Admin';
 import fanRouter from './routes/fanRouter';
 import adminRouter from './routes/adminRouter';
+import cors from 'cors'
+
 
 
 
@@ -18,13 +18,19 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello from server!');
 }
 )
-
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Allow only this domain
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+  })
+);
 app.use("/admin", adminRouter)
 app.use("/fans", fanRouter);
 
 
 sequelize.sync(
-  { force: false } 
+  { force: true } 
 ).then(() => {
   console.log('Database synced successfully!');
 }).catch((error: Error) => {
