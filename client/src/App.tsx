@@ -18,7 +18,6 @@ import NewsDetails from './pages/fan/NewsDetails';
 import { MyCelebrityNews } from './pages/fan/MyCelebrityNews';
 import Bio from './pages/fan/Bio';
 import Gallery from './pages/fan/Gallery';
-import SignUp from './pages/fan/SignUp';
 import Profile from './pages/fan/Profile';
 import NewPassword from './pages/fan/NewPassword';
 import Home from './pages/fan/Home';
@@ -30,10 +29,11 @@ import Tours from './pages/admin/Tours';
 import CelebrityDashboardLayout from './components/CelebrityDashboardLayout';
 import CryptoCheckOut from './pages/fan/CryptoCheckOut';
 import Shoutout from './pages/fan/Shoutout';
-import VerificationForm from './pages/fan/VerificationForm';
+
 import Interactions from './pages/fan/Interactions';
 import FanDashboardLayout from './components/FanDashboardLayout';
 import CelebrityReply from './pages/fan/CelebrityReply';
+import VerifyEmail from './pages/fan/VerifyEmail';
 
 const App = () => {
   return (
@@ -47,11 +47,11 @@ const App = () => {
 
         <Route path="/book/shout-out" element={<Shoutout />} />
 
-        <Route path="/signup" element={<SignUp />} />
+  
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<NewPassword />} />
-        <Route path="/verify/:email" element={<VerificationForm />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         <Route path="/replies" element={<CelebrityReply />} />
 
