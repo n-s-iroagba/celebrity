@@ -106,17 +106,17 @@ export class FanController {
     }
   }
 
-  async getFanMessages(req: Request, res: Response) {
+ static async getFanChats(req: Request, res: Response):Promise<any> {
     try {
-      const { fanId } = req.params;
+      const { id } = req.params;
 
-      if (!fanId || isNaN(Number(fanId))) {
+      if (!id || isNaN(Number(id))) {
         return res.status(400).json({ 
           error: 'Valid fan ID is required' 
         });
       }
 
-      const messages = await FanService.getFanChats(Number(fanId));
+      const messages = await FanService.getFanChats(Number(id));
       return res.status(200).json(messages);
     } catch (error) {
       console.error('Error fetching fan messages:', error);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { fetchFanChatsUrl } from '../data/urls';
 
 interface ChatListItem {
   id: number;
@@ -22,7 +23,7 @@ const useFanChats = (fanId: number) => {
         setError(null);
         
         // Make API call to your backend endpoint
-        const response = await fetch(`/api/fans/${fanId}/chats`);
+        const response = await fetch(`${fetchFanChatsUrl}${fanId}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
