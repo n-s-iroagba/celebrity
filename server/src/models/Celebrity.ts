@@ -60,7 +60,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
       stageName: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+       
       },
       isConfirmed: {
         type: DataTypes.BOOLEAN,

@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import { InputGroup, Spinner } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import ErrorMessage from '../../components/ErrorMessage';
-import AuthOption from '../../components/AuthOption';
-import Logo from '../../components/Logo';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import { InputGroup, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import ErrorMessage from "../../components/ErrorMessage";
+import AuthOption from "../../components/AuthOption";
+import Logo from "../../components/Logo";
+import { postWithNoAuth } from "../../utils/apiUtils";
+import { LoginData } from "../../types/LoginData";
+import { loginUrl } from "../../data/urls";
+import JWTService from "../../assets/services/JWTService";
+import '../../assets/styles/Auth.css'
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: "",
   });
   const [validated, setValidated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [passwordType, setPasswordType] = useState<"text" | "password">(
+    "password"
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,10 +34,10 @@ const Login: React.FC = () => {
   };
 
   const showPassword = () => {
-    setPasswordType((prev) => (prev === 'text' ? 'password' : 'text'));
+    setPasswordType((prev) => (prev === "text" ? "password" : "text"));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -41,27 +48,33 @@ const Login: React.FC = () => {
 
     setSubmitting(true);
 
-    // Simulating local data submission
-    setTimeout(() => {
-      if (loginData.email === 'user@example.com' && loginData.password === 'password123') {
-        setErrorMessage('');
-        navigate('/dashboard');
-      } else {
-        setErrorMessage('Invalid email or password.');
-      }
-      setSubmitting(false);
-    }, 1000);
+    try {
+      const response = await postWithNoAuth<LoginData, string>(
+        loginUrl,
+        loginData
+      );
+      JWTService.saveLoginToken(response);
+      navigate("/interactions");
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Failed to login, please try again later");
+    }
   };
 
   return (
-    <div className='responsive-padding-sides '>
-      <div className='form-wrapper px-5 pt-5 pb-3 mt-5 mb-3'>
-        <h3 className='text-center'>Login</h3>
-        <div className='d-flex justify-content-center'>
-          <Logo/>
+  
+      <div className="form-wrapper">
+        <h3 className="text-center">Login</h3>
+        <div className="d-flex justify-content-center">
+          <Logo />
         </div>
 
-        <Form className=" py-2" noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form
+          className=" py-2"
+          noValidate
+          validated={validated}
+          onSubmit={handleSubmit}
+        >
           <Row>
             <Form.Group as={Col} lg="12" controlId="email">
               <Form.Label>Email</Form.Label>
@@ -73,7 +86,9 @@ const Login: React.FC = () => {
                 onChange={handleChange}
                 className="custom-input bg-transparent form-control text-light"
               />
-              <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid email.
+              </Form.Control.Feedback>
             </Form.Group>
           </Row>
 
@@ -89,32 +104,41 @@ const Login: React.FC = () => {
                 className="custom-input bg-transparent form-control text-light"
               />
               <InputGroup.Text onClick={showPassword}>
-                <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
+                <FontAwesomeIcon
+                  icon={passwordType === "text" ? faEye : faEyeSlash}
+                />
               </InputGroup.Text>
             </InputGroup>
-            <Form.Control.Feedback type="invalid">Please enter your password.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please enter your password.
+            </Form.Control.Feedback>
           </Form.Group>
-          <a 
-  className="small-font grey-text" 
-  href='/forgot-password'
-  style={{ cursor: 'pointer' }}
->
-  Forgot Password
-</a>
+          <a
+            className="small-font grey-text"
+            href="/forgot-password"
+            style={{ cursor: "pointer" }}
+          >
+            Forgot Password
+          </a>
 
-          <div className='d-flex justify-content-evenly w-100 pt-3'>
-            <button className='auth-button text-light' type={submitting ? 'button' : 'submit'}>
-              {submitting ? <Spinner animation='border' size='sm' /> : 'Submit'}
+          <div className="d-flex justify-content-evenly w-100 pt-3">
+            <button
+              className="auth-button text-light"
+              type={submitting ? "button" : "submit"}
+            >
+              {submitting ? <Spinner animation="border" size="sm" /> : "Submit"}
             </button>
           </div>
         </Form>
-
+      
+      {errorMessage && <ErrorMessage message={errorMessage} />}
+      <div className="mt-5">
+        <AuthOption
+          route={"book/shout-out"}
+          title={"Haven't sent a shoutout yet?"}
+          buttonText={"Send Message"}
+        />
       </div>
-      {errorMessage&&<ErrorMessage message={errorMessage} />}
-      <div className='mt-5'>
-        <AuthOption route={'book/shout-out'} title={"Haven't sent a shoutout yet?"} buttonText={'Send Shoutout'} />
-      </div>
-
     </div>
   );
 };

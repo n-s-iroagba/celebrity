@@ -6,6 +6,7 @@ import cors from 'cors'
 import authRouter from './routes/authRouter';
 import celebrityRouter from './routes/celebrityRouter';
 import { seedDatabase } from '../seedDatabase';
+import path from 'path'
 
 
 
@@ -32,8 +33,7 @@ app.use("/admin", adminRouter)
 app.use("/fans", fanRouter);
 app.use ('/auth',authRouter)
 app.use('/celebrities',celebrityRouter )
-
-
+app.use('/uploads', express.static('uploads'));
 sequelize.sync(
   { force: true } 
 ).then(() => {

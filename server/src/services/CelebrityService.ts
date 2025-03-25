@@ -6,16 +6,16 @@ export class CelebrityService {
     const {firstName, surname,bio, stageName,image} =  celebrityData
     if (
         !firstName ||
-        !surname ||
-        !bio ||
         !stageName
       ) {
+        console.log (firstName,surname,stageName)
         throw new Error("Missing required fields for one or more celebrities");
       }
     return await Celebrity.create({
-      firstName, surname, bio, stageName,
+      firstName, surname:surname||'', stageName,
       image: image || '',
-      isConfirmed: image === ''? false: true
+      bio: bio || '',
+      isConfirmed: bio === ''? false: true
     });
   }
 

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import Shoutout from '../models/Shoutout';
+import Message from '../models/Message';
 
-class ShoutoutController {
+class MessageController {
   // Send a shoutout
-  static async sendShoutout(req: Request, res: Response) {
+  static async sendMessage(req: Request, res: Response) {
     const { celebrityId, userId, message, mediaType, mediaUrl } = req.body;
 
     if (!celebrityId || !userId || !mediaType) {
@@ -11,7 +11,7 @@ class ShoutoutController {
     }
 
     try {
-      const shoutout = await Shoutout.create({
+      const shoutout = await Message.create({
         celebrityId,
         userId,
         message,
@@ -20,7 +20,7 @@ class ShoutoutController {
       });
 
       res.status(201).json({
-        message: 'Shoutout sent successfully',
+        message: 'Message sent successfully',
         shoutout,
       });
     } catch (error) {
@@ -30,7 +30,7 @@ class ShoutoutController {
   }
 
   // Retrieve all shoutouts for a user
-  static async getShoutouts(req: Request, res: Response) {
+  static async getMessages(req: Request, res: Response) {
     const { userId } = req.params;
 
     if (!userId) {
@@ -38,7 +38,7 @@ class ShoutoutController {
     }
 
     try {
-      const shoutouts = await Shoutout.findAll({
+      const shoutouts = await Message.findAll({
         where: { userId },
       });
 
@@ -50,4 +50,4 @@ class ShoutoutController {
   }
 }
 
-export default ShoutoutController;
+export default MessageController;

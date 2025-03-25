@@ -1,9 +1,31 @@
-.form-wrapper{
-    border:1px solid black;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+.form-wrapper {
+  border: 1px solid black;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+   /* Default padding for small screens */
+}
+.auth-wrapper{
+  padding-left: 0.5rem ;
+  padding-right: 0.5rem ;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+/* Medium screens (e.g., tablets) */
+@media (min-width: 768px) {
+  .auth-wrapper {
+    padding-left: 10rem;
+    padding-right: 10rem; /* Increase padding-left for medium screens */
+  }
+}
+
+/* Large screens (e.g., desktops) */
+@media (min-width: 1024px) {
+  .auth-wrapper {
+    padding-left: 18rem;
+    padding-right: 10rem; /* Increase padding for large screens */
+  }
 }
 
 .custom-input:focus {

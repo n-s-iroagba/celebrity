@@ -1,42 +1,52 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, ForeignKey, Model, Optional } from 'sequelize';
 import sequelize from '../config/orm';
+import { Celebrity } from './Celebrity';
+import { Fan } from './Fan';
+import Chat from './Chat';
 
-interface ShoutoutAttributes {
+
+interface MessageAttributes {
   id: number;
-  celebrityId: number;
-  userId: number;
+  senderId:ForeignKey<Fan['id']|Celebrity['id']>;
+  chatId: ForeignKey<Chat['id']>
   message: string | null;
   mediaType: 'text' | 'video' | 'voice';
   mediaUrl: string | null;
+  isSeen:boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-interface ShoutoutCreationAttributes extends Optional<ShoutoutAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+interface MessageCreationAttributes extends Optional<MessageAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
-class Shoutout extends Model<ShoutoutAttributes, ShoutoutCreationAttributes> implements ShoutoutAttributes {
+class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
   public id!: number;
-  public celebrityId!: number;
-  public userId!: number;
+  public isSeen!: boolean;
+  public senderId!: number;
   public message!: string | null;
   public mediaType!: 'text' | 'video' | 'voice';
   public mediaUrl!: string | null;
+  public chatId!:number
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-Shoutout.init(
+Message.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    celebrityId: {
+    isSeen: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    senderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    userId: {
+    chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -59,4 +69,4 @@ Shoutout.init(
   }
 );
 
-export default Shoutout;
+export default Message;

@@ -7,7 +7,7 @@ import { UserService } from "./UserService";
 
 export class FanService {
 
-      static async createFan(fanData: Partial<Fan>,userData: Partial<User>): Promise<string> {
+      static async createFan(fanData: Partial<Fan>,userData: Partial<User>): Promise<{token:string|null, fanId:number}> {
           const {
             firstName,
             surname,
@@ -32,10 +32,10 @@ export class FanService {
           ) {
             throw new Error("Missing user fields  required in createFan Service function");
           }
-      
+      try{
           const user = await UserService.createUser(Role.FAN, userData as {email:string, password:string})
     
-          await Fan.create({
+         const fan = await Fan.create({
           firstName,
           surname,
           whatsappNumber,
@@ -45,9 +45,14 @@ export class FanService {
           gender
 
         } as FanCreationAttributes);
+  
     
         await MailService.sendVerificationEmail(user);
-        return user.verificationToken as string;
+        return {token:user.verificationToken,fanId:fan.id};
+      }catch(e:any){
+        console.error(e)
+        throw new Error("Error creating fan in createFan Service function")
+      }
       }
 
   static async getAllFans(): Promise<Fan[]> {

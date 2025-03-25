@@ -1,36 +1,40 @@
 import { Request, Response } from "express";
 import { FanService } from "../services/FanService";
+import { MessageService } from "../services/MesageService";
+import ChatService from "../services/ChatService";
+import { CelebrityService } from "../services/CelebrityService";
 
 export class FanController {
 
   static async createFan(req: Request, res: Response): Promise<any> {
-    const {
-      firstName,
-      surname,
-      whatsappNumber,
-      country,
-      dateOfBirth,
-      gender,
-      email,
-      password,
+    let {
+    
+      fanData,
+      mediaData,
+      celebrity,
+      userData,
+
     } = req.body
 
-    const fanData = {
-      firstName,
-      surname,
-      whatsappNumber,
-      country,
-      dateOfBirth,
-      gender,
-    }
-
-    const userData = {
-      email,
-      password,
+    console.log(req.body)
+    // Parse JSON fields
+    fanData = JSON.parse(fanData);
+    userData = JSON.parse(userData);
+    celebrity = JSON.parse(celebrity);
+    mediaData = JSON.parse(mediaData);
+    if (!req.file) {
+      throw Error ('No file uploaded');
     }
     try {
+      if (!celebrity.id){
+        celebrity = CelebrityService.createCelebrity(
+          celebrity.selectedCelebrity
+        )
 
-      const token = await FanService.createFan(fanData, userData);
+      }
+      const {token,fanId} = await FanService.createFan(fanData, userData);
+      const chat = await ChatService.createChat(fanId,celebrity.id)
+      await MessageService.postMessage({...mediaData,chatId:chat.id,isSeen:false,senderId:fanId})
       return res.status(201).json(token);
     } catch (error: any) {
       console.error(error)
