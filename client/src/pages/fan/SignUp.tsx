@@ -18,7 +18,7 @@ import { fanSignUpUrl } from '../../data/urls';
 import Celebrity from '../../types/Celebrity';
 import axios from 'axios';
 
-type FanData = {
+export type FanData = {
   firstName: string;
   surname: string;
   dateOfBirth: Date | null;
@@ -30,7 +30,7 @@ type FanData = {
   confirmPassword: string;
 };
 
-type MediaData = {
+export type MediaData = {
   // Define the structure of mediaData based on your requirements
   // Example:
   mediaUrl: string;
