@@ -34,7 +34,7 @@ export class FanController {
       if (!celebrity.id){
          console.log('no celebrity id')
          console.log('celebrity',celebrity)
-        celebrity = CelebrityService.createCelebrity(
+        celebrity = await CelebrityService.createCelebrity(
           celebrity
         )
 
