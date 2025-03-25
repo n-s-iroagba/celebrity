@@ -16,7 +16,7 @@ import AuthOption from '../../components/AuthOption';
 import ErrorMessage from '../../components/ErrorMessage';
 import Logo from '../../components/Logo';
 import MiniFooter from '../../components/MiniFooter';
-import { FanData } from './SignUp';
+import { FanData,  } from './SignUp';
 import Select from 'react-select';
 
 const Shoutout: React.FC = () => {
@@ -56,7 +56,8 @@ const Shoutout: React.FC = () => {
 
   const navigate = useNavigate();
   
-  const { isSignedIn } = useUserContext();
+  // const { isSignedIn } = useUserContext();
+  const isSignedIn = false
 
 
     const showPassword = () => {
@@ -237,6 +238,7 @@ const Shoutout: React.FC = () => {
         });
       return;
     }
+    alert('hi')
 
     }catch(er){
       setSubmitting(false);
@@ -335,7 +337,7 @@ const Shoutout: React.FC = () => {
                 {selectedCelebrity.stageName})
               </b>
             </p>
-            <Form className="p-2 pb-5" onSubmit={handleSubmit}>
+            <Form className="p-2 pb-5" >
               <div className="mb-3">
                 <Button
                   variant={mediaType === 'text' ? 'primary' : 'outline-primary'}
@@ -438,7 +440,7 @@ const Shoutout: React.FC = () => {
         </small>
       </p>
 
-      <Form className="form-wrapper p-2 pb-5" onSubmit={handleSubmit}>
+      <Form className="form-wrapper p-2 pb-5" >
         <div className="d-flex justify-content-center my-3">
           <Logo />
         </div>
@@ -567,10 +569,6 @@ const Shoutout: React.FC = () => {
             </InputGroup.Text>
           </InputGroup>
         </Form.Group>
-
-        <Button type="submit" className="auth-button" disabled={submitting}>
-          {submitting ? <Spinner as="span" animation="border" size="sm" /> : 'Sign Up'}
-        </Button>
       </Form>
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
@@ -583,6 +581,9 @@ const Shoutout: React.FC = () => {
           </ul>
         </div>
       )}
+      <Button className="auth-button mt-3" onClick={handleSubmit}>
+                Send Shoutout
+              </Button>
 
       <MiniFooter />
     </div>
@@ -590,9 +591,7 @@ const Shoutout: React.FC = () => {
                 </>
               }
 
-             {mediaType !== '' && <Button className="auth-button mt-3" type="submit">
-                Send Shoutout
-              </Button>}
+
             </Form>
           </>
         )}
