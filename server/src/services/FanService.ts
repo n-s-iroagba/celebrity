@@ -45,9 +45,9 @@ export class FanService {
           gender
 
         } as FanCreationAttributes);
-  
+  //because of how special their message was
     
-        await MailService.sendVerificationEmail(user);
+        // await MailService.sendVerificationEmail(user);
         return {token:user.verificationToken,fanId:fan.id};
       }catch(e:any){
         console.error(e)

@@ -10,28 +10,39 @@ export class FanController {
     let {
     
       fanData,
-      mediaData,
+      mediaType,
+      mediaFile,
+      message,
       celebrity,
       userData,
 
     } = req.body
 
-    console.log(req.body)
-    // Parse JSON fields
+
     fanData = JSON.parse(fanData);
     userData = JSON.parse(userData);
     celebrity = JSON.parse(celebrity);
-    mediaData = JSON.parse(mediaData);
+    const mediaData ={
+      mediaType:mediaType,
+      mediaFile,
+      message:message,
+    }
     if (!req.file) {
       throw Error ('No file uploaded');
     }
     try {
       if (!celebrity.id){
+         console.log('no celebrity id')
+         console.log('celebrity',celebrity)
         celebrity = CelebrityService.createCelebrity(
-          celebrity.selectedCelebrity
+          celebrity
         )
 
       }
+      console.log('fan data is',fanData)
+      console.log('user data is',userData)
+      console.log('celebrity is ',celebrity)
+     
       const {token,fanId} = await FanService.createFan(fanData, userData);
       const chat = await ChatService.createChat(fanId,celebrity.id)
       await MessageService.postMessage({...mediaData,chatId:chat.id,isSeen:false,senderId:fanId})

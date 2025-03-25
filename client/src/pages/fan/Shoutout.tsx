@@ -16,11 +16,11 @@ import AuthOption from '../../components/AuthOption';
 import ErrorMessage from '../../components/ErrorMessage';
 import Logo from '../../components/Logo';
 import MiniFooter from '../../components/MiniFooter';
-import { FanData,  } from './SignUp';
 import Select from 'react-select';
+import { Fan } from '../../types/Fan';
 
 const Shoutout: React.FC = () => {
-  const [fanData, setFanData] = useState<FanData>({
+  const [fanData, setFanData] = useState<Fan>({
     firstName: '',
     surname: '',
     dateOfBirth: null,
@@ -56,8 +56,8 @@ const Shoutout: React.FC = () => {
 
   const navigate = useNavigate();
   
-  // const { isSignedIn } = useUserContext();
-  const isSignedIn = false
+  const { isSignedIn } = useUserContext();
+
 
 
     const showPassword = () => {
@@ -230,10 +230,10 @@ const Shoutout: React.FC = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Shoutout sent successfully:', data);
-          navigate('/verify-email'); 
+          navigate(`verify-email/${data}`); 
         })
         .catch((error) => {
+          setErrorMessage('Sorry an error, occurred try again later')
           console.error('Error sending shoutout:', error);
         });
       return;
@@ -582,8 +582,8 @@ const Shoutout: React.FC = () => {
         </div>
       )}
       <Button className="auth-button mt-3" onClick={handleSubmit}>
-                Send Shoutout
-              </Button>
+             {submitting ? <Spinner as="span" animation="border" size="sm" /> : 'Send Shoutout'}
+        </Button>
 
       <MiniFooter />
     </div>
