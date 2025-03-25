@@ -1,11 +1,16 @@
 import { Role } from "../enums/Role";
+import Chat from "../models/Chat";
 import { Fan, FanCreationAttributes } from "../models/Fan";
 import { User } from "../models/User";
+import ChatService from "./ChatService";
 import { MailService } from "./MailService";
+import { MessageService } from "./MesageService";
 import { UserService } from "./UserService";
 
 
 export class FanService {
+  static ChatService: any;
+  static MessageService: any;
 
       static async createFan(fanData: Partial<Fan>,userData: Partial<User>): Promise<{token:string|null, fanId:number}> {
           const {
@@ -73,5 +78,32 @@ export class FanService {
     const deleted = await User.destroy({ where: { id:userId
  } });
     return deleted > 0;
+  }
+
+
+  static async getFanChats(fanId: number) {
+
+    const chats = await ChatService.getFanChatsWithCelebrity(fanId);
+    
+    if (!chats || chats.length === 0) {
+      return [];
+    }
+
+    // Process each chat
+    const messageListItems = await Promise.all(
+      chats.map(async (chat:Chat) => {
+        const [lastMessage, unreadCount] = await Promise.all([
+          MessageService.getLastChatMessage(chat.id),
+          MessageService.getUnreadCount(chat.id, chat.celebrityId)
+        ]);
+
+        return messageListToDto(chat, lastMessage, unreadCount);
+      })
+    );
+
+
+    return messageListItems.sort((a, b) => 
+      new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+    );
   }
 }

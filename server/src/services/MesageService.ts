@@ -49,5 +49,23 @@ export class MessageService {
     }
   }
 
+  static async getLastChatMessage(chatId: number) {
+    return Message.findOne({
+      where: { chatId },
+      order: [['createdAt', 'DESC']],
+      attributes: ['id', 'message', 'mediaType', 'mediaUrl', 'createdAt', 'isSeen', 'senderId']
+    });
+  }
+
+  static async getUnreadCount(chatId: number, celebrityId: number) {
+    return Message.count({
+      where: {
+        chatId,
+        isSeen: false,
+        senderId: celebrityId
+      }
+    });
+  }
+
 
 }
