@@ -1,4 +1,5 @@
 import { Role } from "../enums/Role";
+import { messageListToDto } from "../helper/messageDto";
 import Chat from "../models/Chat";
 import { Fan, FanCreationAttributes } from "../models/Fan";
 import { User } from "../models/User";
@@ -83,7 +84,7 @@ export class FanService {
 
   static async getFanChats(fanId: number) {
 
-    const chats = await ChatService.getFanChatsWithCelebrity(fanId);
+    const chats:Chat[] = await ChatService.getFanChatsWithCelebrity(fanId);
     
     if (!chats || chats.length === 0) {
       return [];
@@ -91,7 +92,7 @@ export class FanService {
 
     // Process each chat
     const messageListItems = await Promise.all(
-      chats.map(async (chat:Chat) => {
+      chats.map(async (chat) => {
         const [lastMessage, unreadCount] = await Promise.all([
           MessageService.getLastChatMessage(chat.id),
           MessageService.getUnreadCount(chat.id, chat.celebrityId)

@@ -105,4 +105,25 @@ export class FanController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async getFanMessages(req: Request, res: Response) {
+    try {
+      const { fanId } = req.params;
+
+      if (!fanId || isNaN(Number(fanId))) {
+        return res.status(400).json({ 
+          error: 'Valid fan ID is required' 
+        });
+      }
+
+      const messages = await FanService.getFanChats(Number(fanId));
+      return res.status(200).json(messages);
+    } catch (error) {
+      console.error('Error fetching fan messages:', error);
+      return res.status(500).json({ 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error' 
+      });
+    }
+  }
 }

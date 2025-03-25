@@ -14,7 +14,7 @@ export interface MessageListItem {
 }
 
 export function messageListToDto(
-  chat: Chat & { Celebrity: { stageName: string; image: string | null } },
+  chat: Chat  ,
   lastMessage: Message | null,
   unreadCount: number
 ): MessageListItem {
@@ -30,8 +30,8 @@ export function messageListToDto(
 
   return {
     id: chat.id,
-    name: chat.Celebrity.stageName,
-    image: chat.Celebrity.image || 'https://via.placeholder.com/50',
+    name: chat.Celebrity?.stageName||chat.Celebrity?.firstName ||'',
+    image: chat.Celebrity?.image || 'https://via.placeholder.com/50',
     lastMessage: lastMessageContent,
     lastMessageType,
     lastMessageTime: lastMessage 
