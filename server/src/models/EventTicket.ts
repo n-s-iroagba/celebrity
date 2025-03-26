@@ -11,7 +11,7 @@ interface TicketTierAttributes {
 
 type TicketTierCreationAttributes = Optional<TicketTierAttributes, "id">;
 
-export class TicketTier extends Model<TicketTierAttributes, TicketTierCreationAttributes>
+export class TicketPackage extends Model<TicketTierAttributes, TicketTierCreationAttributes>
   implements TicketTierAttributes {
   public id!: number;
   public eventId!: number;
@@ -27,7 +27,7 @@ export class TicketTier extends Model<TicketTierAttributes, TicketTierCreationAt
   }
 }
 
-  TicketTier.init(
+  TicketPackage.init(
     {
       id: {
         type: DataTypes.INTEGER,

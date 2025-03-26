@@ -23,7 +23,7 @@ const useFanChats = (fanId: number) => {
         setError(null);
         
         // Make API call to your backend endpoint
-        const response = await fetch(`${fetchFanChatsUrl}${fanId}`);
+        const response = await fetch(`${fetchFanChatsUrl}/${fanId}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

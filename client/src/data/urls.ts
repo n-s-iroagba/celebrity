@@ -6,7 +6,7 @@ export const loginUrl =`${BACKEND_SERVER_URL}/auth/login`
 export const verifyEmailUrl = `${BACKEND_SERVER_URL}/auth/verify-email`;
 export const resendVerificationCodeUrl = `${BACKEND_SERVER_URL}/resend-verification-code`;
 
-export const fetchFanChatsUrl = `${BACKEND_SERVER_URL}/fan/chats`
+export const fetchFanChatsUrl = `${BACKEND_SERVER_URL}/fans/chats`
 
 
 

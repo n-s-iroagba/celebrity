@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, Col, Row, Button } from "react-bootstrap";
 import CircularImageSlider from "../../components/CircularImageSlider";
 import ActionButtons from "../../components/ActionButtons";
 import Footer from "../../components/Footer";
 import HowItWorks from "../../components/HowItWorks";
 import VideoContent from "../../components/VideoContent";
 import '../../assets/styles/Home.css';
+import Hero from "../../components/Hero";
+import ResponsiveCarousel from "../../components/ResponsiveCarousel";
 
 const Home = () => {
   const howItWorksRef = useRef<any>(null);
@@ -60,17 +62,36 @@ const Home = () => {
             Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences.
             Connect with actors, musicians, athletes, tv hosts and more all over the world.
           </p>
-          <CircularImageSlider />
+    
         </header>
+       <Row >
+        <Col xs={12} lg={6}>
+        <Hero/>
+        </Col>
+        <Col xs={12} lg={6}>
+          
+                 <div className="fs-6">
+                   <h5>Connect With Your Favorite Celebrities All Over The World!</h5>
+                   <p>
+                     Send a shoutout, book a phone or video call with your favorite celebrities from anywhere on the globe!
+                   </p>
+                   <p>It's simple and free.</p>
+                   <p>Click any of the buttons below to get started</p>
+                 </div>
+                 <ActionButtons />
+               </Col>
 
+       </Row>
+      
         <section id="py-5">
-          <VideoContent />
+        
 
           {/* Add ref to HowItWorks */}
           <div ref={howItWorksRef}>
-            <HowItWorks />
+          <VideoContent />
           </div>
           <ActionButtons />
+          <ResponsiveCarousel/>
         </section>
       </Container>
 

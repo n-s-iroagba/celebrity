@@ -27,7 +27,7 @@ export class FanController {
       mediaFile,
       message:message,
     }
-    if (!req.file) {
+    if (!req.file&& mediaType !=='text') {
       throw Error ('No file uploaded');
     }
     try {

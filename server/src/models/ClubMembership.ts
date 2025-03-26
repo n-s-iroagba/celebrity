@@ -1,67 +1,81 @@
-import { DataTypes, ForeignKey, Model, Optional, Sequelize } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { ClubMembershipTier } from "../enums/ClubMembershipTier";
-import { Celebrity } from "./Celebrity";
-import { Fan } from "./Fan";
-import { Job } from "./Job";
 import sequelize from "../config/orm";
+import { ClubMembershipGroup } from "./ClubMembershipGroup";
 
 interface ClubMembershipAttributes {
   id: number;
   tier: ClubMembershipTier;
-  JobId: ForeignKey<Job["id"]>|null;
-  fanId: ForeignKey<Fan["id"]>|null;
-  celebrityId: ForeignKey<Celebrity["id"]>;
+  price: number;
 }
 
-type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes, "id">;
+interface ClubMembershipAssociationMethods {
+  // Association methods for ClubMembershipGroup
+  addGroup: (group: ClubMembershipGroup) => Promise<void>;
+  addGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+  removeGroup: (group: ClubMembershipGroup) => Promise<void>;
+  removeGroups: (groups?: ClubMembershipGroup[]) => Promise<void>;
+  hasGroup: (group: ClubMembershipGroup) => Promise<boolean>;
+  hasGroups: (groups: ClubMembershipGroup[]) => Promise<boolean>;
+  countGroups: () => Promise<number>;
+  getGroups: () => Promise<ClubMembershipGroup[]>;
+  setGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+}
 
-export class ClubMembership extends Model<ClubMembershipAttributes, ClubMembershipCreationAttributes>
-  implements ClubMembershipAttributes {
-  public JobId!: number  | null;
-  public fanId!: number  | null;
+export type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes, "id">;
+
+export class ClubMembership 
+  extends Model<ClubMembershipAttributes, ClubMembershipCreationAttributes> 
+  implements ClubMembershipAttributes, ClubMembershipAssociationMethods {
+  
+  // Attributes
   public id!: number;
   public tier!: ClubMembershipTier;
-  public jobId!: number|null;
-  public celebrityId!: number;
+  public price!: number;
 
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  static associate(models: { Fan: typeof Fan; Celebrity: typeof Celebrity; Job: typeof Job }) {
-    ClubMembership.belongsTo(models.Fan, { foreignKey: "fanId", as: "fan" });
-    ClubMembership.belongsTo(models.Celebrity, { foreignKey: "celebrityId", as: "celebrity" });
-    ClubMembership.belongsTo(models.Job, { foreignKey: "jobId", as: "job" });
-  }
+  // Association methods
+  declare addGroup: (group: ClubMembershipGroup) => Promise<void>;
+  declare addGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+  declare removeGroup: (group: ClubMembershipGroup) => Promise<void>;
+  declare removeGroups: (groups?: ClubMembershipGroup[]) => Promise<void>;
+  declare hasGroup: (group: ClubMembershipGroup) => Promise<boolean>;
+  declare hasGroups: (groups: ClubMembershipGroup[]) => Promise<boolean>;
+  declare countGroups: () => Promise<number>;
+  declare getGroups: () => Promise<ClubMembershipGroup[]>;
+  declare setGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+
+  // Association properties (added by Sequelize)
+  public readonly groups?: ClubMembershipGroup[];
 }
 
-
-  ClubMembership.init(
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      tier: {
-        type: DataTypes.ENUM(...Object.values(ClubMembershipTier)),
-        allowNull: false,
-      },
-      JobId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      fanId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      celebrityId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+ClubMembership.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-      sequelize,
-      tableName: "clubMemberships",
-    }
-  );
+    tier: {
+      type: DataTypes.ENUM(...Object.values(ClubMembershipTier)),
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    tableName: "clubMemberships",
+    timestamps: true,
+  }
+);
+
+// Associations are typically set up in a separate file, but you could add them here if preferred
+// ClubMembership.belongsToMany(ClubMembershipGroup, { through: 'ClubMembershipGroupMembership' });
+
+export default ClubMembership;

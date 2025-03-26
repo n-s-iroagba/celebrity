@@ -1,16 +1,11 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import '../assets/styles/HowItWorks.css'
-import { faArrowAltCircleLeft, faArrowAltCircleRight, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faArrowAltCircleRight, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const HowItWorks: React.FC = () => {
   const steps = [
-    {
-      icon: faUser,
-      title: 'Click the button for the preferred conversation',
-      text: 'Select the type of conversation you want to initiate by clicking the appropriate button.',
-    },
     {
       icon: faSearch,
       title: 'Search celeb',
@@ -31,21 +26,22 @@ const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <div className="py-4">
-      <Row className="g-4">
+    <div className="py-1 mt-4 text-light">
+    <h2 className='pl-4'>How it works</h2>
+      <Row className="gx-4">
         {steps.map((step, index) => (
-          <Col key={index} sm={12} md={6} lg={3}>
+          <Col key={index} sm={12} md={6} lg={12}>
             <Card className="shadow-sm bg-grey text-light rounded-4 border-0 h-100">
               <Card.Body>
                 <Card.Title
-                  style={window.innerWidth >= 992 ? { height: '2cm' } : {}}
+                  style={window.innerWidth >= 992 ? { height: '1cm' } : {}}
                   className="text-start"
                 >
                   {step.title}
                 </Card.Title>
-                <FontAwesomeIcon className="mb-3" color="white" icon={step.icon} />
+                <FontAwesomeIcon className="mb-1" color="white" icon={step.icon} />
                 <Card.Text
-                  style={window.innerWidth >= 992 ? { height: '2cm' } : {}}
+                  style={window.innerWidth >= 992 ? { height: '1cm' } : {}}
                   className="text-start"
                 >
                   {step.text}

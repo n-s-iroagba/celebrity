@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 fanRouter.post("/signup",upload.single('mediaFile'), FanController.createFan);
-fanRouter.get("/fans/chats/:id", FanController.getFanChats);
+fanRouter.get("/chats/:id", FanController.getFanChats);
 
 fanRouter.get("/", FanController.getAllFans);
 

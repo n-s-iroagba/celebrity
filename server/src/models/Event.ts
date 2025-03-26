@@ -1,16 +1,16 @@
 import { Optional, Model } from "sequelize";
 
-interface AdminAttributes {
+interface EventAttributes {
     id: number;
     name: string;
     email: string;
     password: string;
   }
   
-type AdminCreationAttributes = Optional<AdminAttributes, "id">;
+type EventCreationAttributes = Optional<EventAttributes, "id">;
   
-  export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
-    implements AdminAttributes {
+  export class Event extends Model<EventAttributes, EventCreationAttributes>
+    implements EventAttributes {
     public id!: number;
     public name!: string;
     public email!: string;

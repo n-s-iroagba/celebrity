@@ -8,6 +8,7 @@ import {
   Button,
   Form,
   InputGroup,
+  Modal,
   ProgressBar,
   Spinner,
 } from "react-bootstrap";
@@ -37,6 +38,8 @@ const Shoutout: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [showRecordingModal, setShowRecordingModal] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -107,6 +110,9 @@ const Shoutout: React.FC = () => {
   };
 
   const startRecording = async () => {
+    setShowRecordingModal(true);
+    setIsRecording(true);
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: mediaType === "video",
@@ -115,13 +121,11 @@ const Shoutout: React.FC = () => {
 
       mediaStreamRef.current = stream;
 
-      // Show video preview
       if (mediaType === "video" && videoPreviewRef.current) {
         videoPreviewRef.current.srcObject = stream;
         videoPreviewRef.current.play();
       }
 
-      // Initialize MediaRecorder
       mediaRecorderRef.current = new MediaRecorder(stream);
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -133,32 +137,14 @@ const Shoutout: React.FC = () => {
         const blob = new Blob(recordedChunksRef.current, {
           type: mediaType === "video" ? "video/webm" : "audio/webm",
         });
-        const mediaUrl = URL.createObjectURL(blob);
-        setRecordedMedia(mediaUrl);
-
-        // Convert Blob to File for submission
-        const file = new File(
-          [blob],
-          `recording.${mediaType === "video" ? "webm" : "webm"}`,
-          {
-            type: blob.type,
-          }
-        );
-        setMediaFile(file);
+        setRecordedMedia(URL.createObjectURL(blob));
+        setShowRecordingModal(false);
       };
 
       mediaRecorderRef.current.start();
-      setIsRecording(true);
-
-      // Start recording timer for voice notes
-      if (mediaType === "voice") {
-        setRecordingTime(0);
-        recordingIntervalRef.current = setInterval(() => {
-          setRecordingTime((prevTime) => prevTime + 1);
-        }, 1000);
-      }
     } catch (error) {
       console.error("Error accessing media devices:", error);
+      setShowRecordingModal(false);
     }
   };
 
@@ -166,17 +152,13 @@ const Shoutout: React.FC = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-
-      // Stop recording timer
-      if (recordingIntervalRef.current) {
-        clearInterval(recordingIntervalRef.current);
-      }
-
-      // Stop all tracks in the stream
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
     }
+  };
+
+  const discardRecording = () => {
+    setRecordedMedia(null);
+    recordedChunksRef.current = [];
+    setShowRecordingModal(false);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -382,6 +364,38 @@ const Shoutout: React.FC = () => {
                   Voice Note
                 </Button>
               </div>
+              <Modal show={showRecordingModal} onHide={discardRecording} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Recording {mediaType}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          {mediaType === "video" && (
+            <video ref={videoPreviewRef} className="w-100" autoPlay muted />
+          )}
+          {mediaType === "voice" && <Spinner animation="border" />}
+          <p>Recording in progress...</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={discardRecording}>
+            Discard
+          </Button>
+          <Button variant="success" onClick={stopRecording}>
+            Stop Recording
+          </Button>
+        </Modal.Footer>
+      </Modal>
+              {recordedMedia && (
+        <div className="mt-3">
+          {mediaType === "video" ? (
+            <video src={recordedMedia} controls className="w-100" />
+          ) : (
+            <audio src={recordedMedia} controls />
+          )}
+          <Button variant="danger" onClick={discardRecording} className="mt-2">
+            Discard & Retake
+          </Button>
+        </div>
+      )}
 
               {mediaType === "text" && (
                 <Form.Group className="mb-3" controlId="formMessage">
@@ -447,24 +461,7 @@ const Shoutout: React.FC = () => {
                       </Button>
                     </div>
 
-                    {/* Preview Recorded Media */}
-                    {recordedMedia && (
-                      <div className="mt-3">
-                        {mediaType === "video" ? (
-                          <video
-                            controls
-                            src={recordedMedia}
-                            style={{ width: "100%" }}
-                          />
-                        ) : (
-                          <audio
-                            controls
-                            src={recordedMedia}
-                            style={{ width: "100%" }}
-                          />
-                        )}
-                      </div>
-                    )}
+
                   </div>
                 </Form.Group>
               )}
