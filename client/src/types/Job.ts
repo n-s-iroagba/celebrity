@@ -4,7 +4,7 @@ import { ClubMembership } from "./ClubMembership";
 import { Message } from "./Messages";
 import { Souvenir } from "./Souvenir";
 import { TourPackage } from "./TourPackage";
-
+import { Event } from "./Event";
 export interface Job {
     id: number;
     title: string;
