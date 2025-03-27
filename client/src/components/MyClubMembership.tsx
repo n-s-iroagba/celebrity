@@ -1,39 +1,17 @@
 import React from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
+import useFanMemberships from "../hooks/useFanMemberships";
+import { ClubMembership } from "../types/ClubMembership";
+import { IdProps } from "../types/idProps";
 
-const memberships = [
-  {
-    celebrity: "John Doe",
-    membership: {
-      tier: "Gold",
-      isHighestTier: false,
-      dateSubscribed: "2024-01-01",
-    },
-  },
-  
-  {
-    celebrity: "Jane Smith",
-    membership: {
-      tier: "Platinum",
-      isHighestTier: true,
-      dateSubscribed: "2023-12-15",
-    },
-  },
-  {
-    celebrity: "Emily Johnson",
-    membership: {
-      tier: "Silver",
-      isHighestTier: false,
-      dateSubscribed: "2023-11-20",
-    },
-  },
-];
 
-const MyClubMembership = () => {
+
+const MyClubMembership:React.FC<IdProps> = ({id}) => {
+  const {fanMemberships} = useFanMemberships(id)
   return (
     <>
       <Row className=" d-flex ">
-      {memberships.map((membership, index) => (
+      {fanMemberships.map((membership:ClubMembership, index) => (
         <Col
           key={index}
           xs={12}     // 1 column on small screens
@@ -43,14 +21,14 @@ const MyClubMembership = () => {
         >
           <Card style={{width:'8cm'}} >
             <Card.Body className="d-flex flex-column align-items-center">
-              <Card.Title>{membership.celebrity}</Card.Title>
+              <Card.Title>{membership.celebrityName}</Card.Title>
               <Card.Text>
                 Membership Tier: {membership.membership.tier}
               </Card.Text>
               <Card.Text>
-                Date Subscribed: {membership.membership.dateSubscribed}
+                Date Subscribed: {membership.membership.dateOfSubscription}
               </Card.Text>
-              {!membership.membership.isHighestTier && (
+              {!membership.membership.isHighesTier && (
                 <Button variant="primary">Upgrade to Higher Tier</Button>
               )}
             </Card.Body>

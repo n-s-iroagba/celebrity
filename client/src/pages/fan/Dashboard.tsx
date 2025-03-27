@@ -3,10 +3,13 @@ import { faBars, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode, useState } from "react";
 import { Badge, Button, Offcanvas } from "react-bootstrap";
-import { getGreeting } from "../utils/utils";
-import FanDashboardSidebar from "./FanDashboardSideBar";
-import Logo from "./Logo";
-import Notifications from "./Notifications";
+import DashboardBar from "../../components/DashboardBar";
+import Interactions from "../../components/Interactions";
+import Logo from "../../components/Logo";
+import Notifications from "../../components/Notifications";
+import { getGreeting } from "../../utils/utils";
+import returnDashboardNavItems from "../../helpers/returnDashboardNavItems";
+
 
 
 
@@ -38,17 +41,20 @@ const notifications = [
   },
 ];
 
-interface MyComponentProps {
-  children: ReactNode;
-}
 
-const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
+
+const Dashboard: React.FC= () => {
+  const id = 1
   const [showSidebar, setShowSidebar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const toggleSidebar = () => setShowSidebar((prev) => !prev);
   const toggleNotifications = () => setShowNotifications((prev) => !prev);
-
-
+  const [component, setComponent] = useState<ReactNode>(<Interactions id={id}/>);
+  const clickHandler = (component:ReactNode) => {
+    setComponent(component)
+  }
+  const props = returnDashboardNavItems(id,clickHandler)
+ 
   return (
     <div className=" min-vh-100 bg-light ">
       <div className="d-flex w-100  justify-content-between">
@@ -82,7 +88,7 @@ const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
 
       <div className="d-flex">
         <div className="d-none d-lg-block w-25">
-          <FanDashboardSidebar />
+          <DashboardBar props={props} />
         </div>
 
         {/* Toggleable Sidebar for small screens */}
@@ -92,7 +98,7 @@ const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
           <Offcanvas.Header closeButton>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <FanDashboardSidebar />
+          <DashboardBar props={props} />
           </Offcanvas.Body>
         </Offcanvas>
 
@@ -101,7 +107,7 @@ const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
           <p className="mb-0">{`${getGreeting()},`}</p>
           <h6 className="fw-bold text-dark">{'Nnamdi'}</h6>
         </div>
-        {children}
+        {component}
       </div>
 </div>
       <Notifications show={showNotifications} onClose={() => setShowNotifications(false)} notifications={notifications} />
@@ -110,5 +116,5 @@ const FanDashboardLayout: React.FC<MyComponentProps> = ({children}) => {
   );
 };
 
-export default FanDashboardLayout;
+export default Dashboard;
 ;

@@ -25,8 +25,9 @@ import Logo from "../../components/Logo";
 import MiniFooter from "../../components/MiniFooter";
 import Select from "react-select";
 import { Fan } from "../../types/Fan";
+import { OptionalIdProps } from "../../types/idProps";
 
-const Shoutout: React.FC = () => {
+const Shoutout: React.FC<OptionalIdProps>= (id) => {
   const [fanData, setFanData] = useState<Fan>({
     firstName: "",
     surname: "",

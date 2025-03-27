@@ -1,5 +1,11 @@
+
+
+
 export interface Souvenir {
-    id: number;
-    name: string;
-    price: number;
-  }
+  id: number;
+  celebrityName: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[]; // Changed to an array of images
+}

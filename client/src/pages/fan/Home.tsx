@@ -4,7 +4,7 @@ import CircularImageSlider from "../../components/CircularImageSlider";
 import ActionButtons from "../../components/ActionButtons";
 import Footer from "../../components/Footer";
 import HowItWorks from "../../components/HowItWorks";
-import VideoContent from "../../components/VideoContent";
+import VideoContent from "../../components/VideoSection";
 import '../../assets/styles/Home.css';
 import Hero from "../../components/Hero";
 import ResponsiveCarousel from "../../components/ResponsiveCarousel";

@@ -2,6 +2,7 @@ import { DataTypes, ForeignKey, Model, Optional, NonAttribute } from "sequelize"
 import { Admin } from "./Admin";
 import { User } from "./User";
 import sequelize from "../config/orm";
+import Chat from "./Chat";
 
 interface FanAttributes {
   id: number;
@@ -14,6 +15,7 @@ interface FanAttributes {
   gender: string;
   dateOfBirth: Date;
   userId: ForeignKey <User['id']>
+  Chats?: NonAttribute<Chat[]>;
 //   user: NonAttribute<User>
 //   admin : NonAttribute<Admin>
 }
@@ -90,4 +92,9 @@ export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implemen
       tableName: "fans",
     }
   );
+  Fan.hasMany(Chat, {
+    foreignKey: 'fanId',
+    as: 'Chats'
+  });
+  
 

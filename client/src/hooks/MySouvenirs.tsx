@@ -1,65 +1,15 @@
-import { Card, Container, Row, Col, Accordion } from "react-bootstrap";
-import '../../'
+import { Card, Row, Col, Accordion } from "react-bootstrap";
+import { useSouvenirs } from "../../hooks/useSouvenirs";
+import React from "react";
+import { IdProps } from "../../types/idProps";
+import { Souvenir } from "../../types/Souvenir";
 
-interface Souvenir {
-  id: number;
-  celebrityName: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-
-
-const souvenirs: Souvenir[] = [
-  {
-    id: 1,
-    celebrityName: "Leonardo DiCaprio",
-    name: "Eco-Friendly Water Bottle",
-    description: "Limited edition reusable water bottle featuring Leo's environmental message",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
-  },
-  {
-    id: 1,
-    celebrityName: "Leonardo DiCaprio",
-    name: "Eco-Friendly Water Bottle",
-    description: "Limited edition reusable water bottle featuring Leo's environmental message",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
-  },
-  {
-    id: 1,
-    celebrityName: "Leonardo DiCaprio",
-    name: "Eco-Friendly Water Bottle",
-    description: "Limited edition reusable water bottle featuring Leo's environmental message",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80",
-  },
-  {
-    id: 2,
-    celebrityName: "Emma Watson",
-    name: "Feminist Book Collection",
-    description: "Curated collection of feminist literature signed by Emma Watson",
-    price: 89.99,
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80",
-  },
-  {
-    id: 3,
-    celebrityName: "Matt Damon",
-    name: "Charity Bracelet",
-    description: "Handcrafted bracelet supporting clean water initiatives",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80",
-  },
-];
 
 
 //SOUVENIRS SHOULD RECEIVE LOCATION WHEN BOOKING
-const MySouvenirs = () => {
+const MySouvenirs:React.FC<IdProps> = ({id}) => {
 
-
+const {souvenirs} = useSouvenirs()
   // Group souvenirs by celebrity
   const groupedByCelebrity = souvenirs.reduce((acc, souvenir) => {
     if (!acc[souvenir.celebrityName]) {

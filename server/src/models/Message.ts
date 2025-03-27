@@ -1,34 +1,36 @@
-import { DataTypes, ForeignKey, Model, Optional } from 'sequelize';
+import { DataTypes, ForeignKey, Model, Optional, NonAttribute } from 'sequelize';
 import sequelize from '../config/orm';
-import { Celebrity } from './Celebrity';
-import { Fan } from './Fan';
 import Chat from './Chat';
-
 
 interface MessageAttributes {
   id: number;
-  senderId:ForeignKey<Fan['id']|Celebrity['id']>;
-  chatId: ForeignKey<Chat['id']>
-  message: string | null;
-  mediaType: 'text' | 'video' | 'voice';
+  senderType: 'fan' | 'celebrity';
+  senderId: number;
+  chatId: ForeignKey<Chat['id']>;
+  content: string;
+  mediaType: 'text' | 'video' | 'voice' | 'image';
   mediaUrl: string | null;
-  isSeen:boolean;
+  isSeen: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  Chat?: NonAttribute<Chat>;
 }
 
-interface MessageCreationAttributes extends Optional<MessageAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+interface MessageCreationAttributes extends Optional<MessageAttributes, 'id' | 'isSeen' | 'createdAt' | 'updatedAt'> {}
 
 class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
-  public id!: number;
-  public isSeen!: boolean;
-  public senderId!: number;
-  public message!: string | null;
-  public mediaType!: 'text' | 'video' | 'voice';
-  public mediaUrl!: string | null;
-  public chatId!:number
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id: number;
+  declare senderType: 'fan' | 'celebrity';
+  declare senderId: number;
+  declare chatId: ForeignKey<Chat['id']>;
+  declare content: string;
+  declare mediaType: 'text' | 'video' | 'voice' | 'image';
+  declare mediaUrl: string | null;
+  declare isSeen: boolean;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
+  
+  declare Chat?: NonAttribute<Chat>;
 }
 
 Message.init(
@@ -38,35 +40,52 @@ Message.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    isSeen: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
+    senderType: {
+      type: DataTypes.ENUM('fan', 'celebrity'),
+      allowNull: false
     },
     senderId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'chats',
+        key: 'id'
+      }
     },
-    message: {
+    content: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false
     },
     mediaType: {
-      type: DataTypes.ENUM('text', 'video', 'voice'),
+      type: DataTypes.ENUM('text', 'video', 'voice', 'image'),
       allowNull: false,
+      defaultValue: 'text'
     },
     mediaUrl: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
+    isSeen: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   },
   {
     sequelize,
-    tableName: 'shoutouts',
+    tableName: 'messages',
+    timestamps: true
   }
 );
+
+// Associations
+Message.belongsTo(Chat, {
+  foreignKey: 'chatId',
+  as: 'Chat'
+});
 
 export default Message;

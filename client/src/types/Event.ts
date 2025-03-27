@@ -1,8 +1,11 @@
-import { TicketTier } from "./TicketTier";
+import { Ticket } from "./Ticket";
 
-export interface Event {
-    id: number;
-    name: string;
-    date: string;
-    ticketTiers: TicketTier[];
-  }
+export type Event = {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+  image: string;
+  ticketTiers: Ticket[];
+}

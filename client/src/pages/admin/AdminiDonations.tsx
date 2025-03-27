@@ -12,7 +12,7 @@ interface Campaign {
   endDate: string;
 }
 
-export default function Donations() {
+export default function AdminDonation() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   const [showModal, setShowModal] = useState(false);

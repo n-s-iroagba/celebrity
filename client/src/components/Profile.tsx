@@ -4,9 +4,11 @@ import Cropper from 'react-cropper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import 'cropperjs/dist/cropper.css';
-// import '../../assets/styles/Profile.css';
+import { IdProps } from '../types/idProps';
 
-const Profile: React.FC = () => {
+
+
+const Profile: React.FC<IdProps> = ({id}) => {
   const [profileImage, setProfileImage] = useState<string | undefined>();
   const [cropper, setCropper] = useState<any>();
   const [isEditing, setIsEditing] = useState<boolean>(false);

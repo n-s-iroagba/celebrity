@@ -2,19 +2,20 @@ import React from 'react';
 import { ListGroup, Image, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckDouble, faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
-import '../../assets/styles/Interactions.css'; // Updated CSS file name
-import FanDashboardLayout from '../../components/FanDashboardLayout';
-import { truncateString } from '../../utils/truncateString';
-import useFanChats from '../../hooks/useFanMessages';
+import '../assets/styles/Interactions.css'; // Updated CSS file name
+import useFanChats from '../hooks/useFanMessages';
+import { IdProps } from '../types/idProps';
+import { truncateString } from '../utils/truncateString';
 
 
 
-const Interactions: React.FC = () => {
 
-const {chats} = useFanChats(1)
+const Interactions: React.FC<IdProps> = ({id}) => {
+
+const {chats} = useFanChats(id)
   return (
     <div className="interactions-container">
-      <FanDashboardLayout>
+ 
         <h4 className="mb-4">My Interactions</h4>
         <ListGroup>
           {chats.map((chat) => (
@@ -73,7 +74,7 @@ const {chats} = useFanChats(1)
             </ListGroup.Item>
           ))}
         </ListGroup>
-      </FanDashboardLayout>
+    
     </div>
   );
 };

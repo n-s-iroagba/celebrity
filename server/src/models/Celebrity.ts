@@ -3,8 +3,10 @@ import {
   DataTypes,
   Optional,
   Sequelize,
+  NonAttribute,
 } from "sequelize";
 import sequelize from "../config/orm";
+import Chat from "./Chat";
 
 export interface CelebrityAttributes {
   id: number;
@@ -14,6 +16,7 @@ export interface CelebrityAttributes {
   image: string;
   isConfirmed:boolean;
   stageName: string;
+  Chats?: NonAttribute<Chat[]>;
 }
 
 type CelebrityCreationAttributes = Optional<CelebrityAttributes, "id">;
@@ -27,6 +30,7 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
   public image!: string;
   public isConfirmed!: boolean;
   public stageName!: string;
+  public Chats?: NonAttribute<Chat[]>;
 
   // Timestamps
   public readonly createdAt!: Date;
@@ -73,3 +77,8 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
     }
   );
 
+// Associations
+Celebrity.hasMany(Chat, {
+  foreignKey: 'celebrityId',
+  as: 'Chats'
+});

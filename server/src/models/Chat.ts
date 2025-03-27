@@ -1,26 +1,34 @@
 import { Model, DataTypes, Optional, NonAttribute, ForeignKey } from 'sequelize';
 import sequelize from '../config/orm';
-import { Celebrity } from './Celebrity'; // Fixed typo in import (was Celebrity)
+import {Celebrity} from './Celebrity';
+import {Fan} from './Fan';
+import Message from './Message';
 
 interface ChatAttributes {
   id: number;
-  fanId: number;
+  fanId: ForeignKey<Fan['id']>;
   celebrityId: ForeignKey<Celebrity['id']>;
+  status: 'not_yet_seen' | 'seen' | 'responded';
   createdAt?: Date;
   updatedAt?: Date;
-  Celebrity?: NonAttribute<Celebrity>; // Changed to uppercase to match Sequelize convention
+  Celebrity?: NonAttribute<Celebrity>;
+  Fan?: NonAttribute<Fan>;
+  Messages?: NonAttribute<Message[]>;
 }
 
 interface ChatCreationAttributes extends Optional<ChatAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
 class Chat extends Model<ChatAttributes, ChatCreationAttributes> implements ChatAttributes {
   declare id: number;
-  declare fanId: number;
+  declare fanId: ForeignKey<Fan['id']>;
   declare celebrityId: ForeignKey<Celebrity['id']>;
+  declare status: 'not_yet_seen' | 'seen' | 'responded';
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
   
-  declare Celebrity?: NonAttribute<Celebrity>; // Association field
+  declare Celebrity?: NonAttribute<Celebrity>;
+  declare Fan?: NonAttribute<Fan>;
+  declare Messages?: NonAttribute<Message[]>;
 }
 
 Chat.init(
@@ -33,7 +41,7 @@ Chat.init(
     fanId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { // Added foreign key reference
+      references: {
         model: 'fans',
         key: 'id'
       }
@@ -41,24 +49,39 @@ Chat.init(
     celebrityId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { // Added foreign key reference
+      references: {
         model: 'celebrities',
         key: 'id'
       }
     },
+    status: {
+      type: DataTypes.ENUM('not_yet_seen', 'seen', 'responded'),
+      allowNull: false,
+      defaultValue: 'not_yet_seen'
+    }
   },
   {
     sequelize,
     tableName: 'chats',
     timestamps: true,
-    paranoid: false // Add if you want soft deletion
+    paranoid: false
   }
 );
 
-// Associations should be defined separately
+// Associations
 Chat.belongsTo(Celebrity, {
   foreignKey: 'celebrityId',
-  as: 'Celebrity' // Matches the interface definition
+  as: 'Celebrity'
+});
+
+Chat.belongsTo(Fan, {
+  foreignKey: 'fanId',
+  as: 'Fan'
+});
+
+Chat.hasMany(Message, {
+  foreignKey: 'chatId',
+  as: 'Messages'
 });
 
 export default Chat;

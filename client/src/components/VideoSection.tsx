@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import HowItWorks from './HowItWorks';
 
-const VideoContent: React.FC = () => {
+const VideoSection: React.FC = () => {
   return (
-    <Container fluid className="py-4">
+    <section className="py-4">
       <Row className="d-flex flex-column-reverse flex-lg-row align-items-center">
         {/* Video Column */}
         
@@ -25,8 +25,8 @@ const VideoContent: React.FC = () => {
           </video>
         </Col>
       </Row>
-    </Container>
+    </section>
   );
 };
 
-export default VideoContent;
+export default VideoSection;
