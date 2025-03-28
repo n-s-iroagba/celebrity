@@ -1,5 +1,5 @@
 export type CreateMessage ={
-    message?: string,
+    content: string,
     chatId: number,
     senderId: number,
     mediaType:'text'|'video'|'voice',

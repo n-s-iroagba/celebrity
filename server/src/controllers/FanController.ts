@@ -15,6 +15,7 @@ export class FanController {
       message,
       celebrity,
       userData,
+      content
 
     } = req.body
 
@@ -45,7 +46,7 @@ export class FanController {
      
       const {token,fanId} = await FanService.createFan(fanData, userData);
       const chat = await ChatService.createChat(fanId,celebrity.id)
-      await MessageService.postMessage({...mediaData,chatId:chat.id,isSeen:false,senderId:fanId})
+      await MessageService.postMessage({...mediaData,content:content,chatId:chat.id,isSeen:false,senderId:fanId})
       return res.status(201).json(token);
     } catch (error: any) {
       console.error(error)

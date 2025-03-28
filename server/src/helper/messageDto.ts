@@ -8,7 +8,7 @@ export interface MessageListItem {
   name: string;
   image: string;
   lastMessage: string;
-  lastMessageType: 'text' | 'voice' | 'video';
+  lastMessageType: 'text' | 'voice' | 'video'|'image';
   lastMessageTime: string;
   unreadCount: number;
 }
@@ -19,12 +19,12 @@ export function messageListToDto(
   unreadCount: number
 ): MessageListItem {
   let lastMessageContent = '';
-  let lastMessageType: 'text' | 'voice' | 'video' = 'text';
+  let lastMessageType: 'text' | 'voice' | 'video'|'image' = 'text';
 
   if (lastMessage) {
     lastMessageType = lastMessage.mediaType;
     lastMessageContent = lastMessage.mediaType === 'text' 
-      ? lastMessage.message || ''
+      ? lastMessage.content || ''
       : lastMessage.mediaUrl || '';
   }
 

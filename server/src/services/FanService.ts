@@ -84,7 +84,7 @@ export class FanService {
 
   static async getFanChats(fanId: number) {
 
-    const chats:Chat[] = await ChatService.getFanChatsWithCelebrity(fanId);
+    const chats:Chat[] = await ChatService.getFanChatwithMessages(fanId);
     
     if (!chats || chats.length === 0) {
       return [];

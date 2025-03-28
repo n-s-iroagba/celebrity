@@ -34,17 +34,11 @@ class ChatService {
   }
 
   // Get all chats for a user (fan or celebrity) with last message preview
-  async getUserChats(userId: number, userType: 'fan' | 'celebrity'): Promise<Chat[]> {
-    const userField = userType === 'fan' ? 'fanId' : 'celebrityId';
-    const oppositeField = userType === 'fan' ? 'Celebrity' : 'Fan';
-
+  async getFanChatwithMessages(userId: number): Promise<Chat[]> {
+ 
     return await Chat.findAll({
-      where: { [userField]: userId },
+      where: { ['fanId']: userId },
       include: [
-        {
-          association: oppositeField,
-          attributes: ['id', 'name', 'profilePicture']
-        },
         {
           association: 'Messages',
           attributes: ['content', 'createdAt', 'mediaType'],
@@ -138,7 +132,6 @@ class ChatService {
     const [message, updatedChat] = await Promise.all([
       Message.create({
         chatId,
-        senderType,
         senderId,
         content,
         mediaType,
@@ -185,7 +178,6 @@ class ChatService {
       {
         where: {
           chatId,
-          senderType: 'fan',
           isSeen: false
         }
       }
@@ -205,7 +197,6 @@ class ChatService {
         }
       }],
       where: {
-        senderType: 'fan',
         isSeen: false
       }
     });

@@ -68,20 +68,5 @@ Chat.init(
   }
 );
 
-// Associations
-Chat.belongsTo(Celebrity, {
-  foreignKey: 'celebrityId',
-  as: 'Celebrity'
-});
-
-Chat.belongsTo(Fan, {
-  foreignKey: 'fanId',
-  as: 'Fan'
-});
-
-Chat.hasMany(Message, {
-  foreignKey: 'chatId',
-  as: 'Messages'
-});
 
 export default Chat;

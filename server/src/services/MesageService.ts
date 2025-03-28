@@ -6,11 +6,11 @@ import { CreateMessage } from "../types/CreateMessage";
 export class MessageService {
 
   static async postMessage(createMessageData:CreateMessage): Promise<Message> {
-    const {senderId, message, isSeen, chatId, mediaType} = {...createMessageData}
+    const {senderId, content, isSeen, chatId, mediaType} = {...createMessageData}
     try {
       const shoutout = await Message.create({
         senderId,
-        message,
+        content,
         isSeen,
         chatId,
         mediaType,

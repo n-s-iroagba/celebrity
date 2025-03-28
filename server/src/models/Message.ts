@@ -4,7 +4,6 @@ import Chat from './Chat';
 
 interface MessageAttributes {
   id: number;
-  senderType: 'fan' | 'celebrity';
   senderId: number;
   chatId: ForeignKey<Chat['id']>;
   content: string;
@@ -40,10 +39,7 @@ Message.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    senderType: {
-      type: DataTypes.ENUM('fan', 'celebrity'),
-      allowNull: false
-    },
+ 
     senderId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -82,10 +78,6 @@ Message.init(
   }
 );
 
-// Associations
-Message.belongsTo(Chat, {
-  foreignKey: 'chatId',
-  as: 'Chat'
-});
+
 
 export default Message;

@@ -77,8 +77,3 @@ export class Celebrity extends Model<CelebrityAttributes, CelebrityCreationAttri
     }
   );
 
-// Associations
-Celebrity.hasMany(Chat, {
-  foreignKey: 'celebrityId',
-  as: 'Chats'
-});
