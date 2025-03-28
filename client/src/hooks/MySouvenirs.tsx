@@ -1,8 +1,7 @@
 import { Card, Row, Col, Accordion } from "react-bootstrap";
-import { useSouvenirs } from "../../hooks/useSouvenirs";
-import React from "react";
-import { IdProps } from "../../types/idProps";
-import { Souvenir } from "../../types/Souvenir";
+import { IdProps } from "../types/idProps";
+import { Souvenir } from "../types/Souvenir";
+import { useSouvenirs } from "./useSouvenirs";
 
 
 
@@ -35,7 +34,7 @@ const {souvenirs} = useSouvenirs()
                 {groupedByCelebrity[celebrityName].map((souvenir) => (
                   <Col key={souvenir.id}>
                     <Card>
-                      <Card.Img variant="top" style={{height:'9cm', width:'9cm'}} src={souvenir.image} alt={souvenir.name} />
+                      <Card.Img variant="top" style={{height:'9cm', width:'9cm'}} src={souvenir.images[0]} alt={souvenir.name} />
                       <Card.Body>
                         <Card.Title>{souvenir.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">

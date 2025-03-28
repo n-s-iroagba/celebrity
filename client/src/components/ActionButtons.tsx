@@ -7,8 +7,8 @@ const ActionButton: React.FC = () => {
   return (
     <div className="d-flex flex-grow-1 gap-2 small-font px-2 ">
      
-      <Button variant="outline-light"  onClick={() => navigate(`book/shout-out`)} className="w-100 action-button">
-        Shout Out
+      <Button variant="outline-light"  onClick={() => navigate(`book/shout-out`)} className="w-100 action-button button-outline">
+        Send Shoutout
       </Button>
    
     </div>

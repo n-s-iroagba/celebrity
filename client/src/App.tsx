@@ -1,10 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-import { MyCelebrityNews } from './pages/fan/MyCelebrityNews';
-import Bio from './pages/fan/Bio';
-import Gallery from './pages/fan/Gallery';
-
 import NewPassword from './pages/fan/NewPassword';
 import Home from './pages/fan/Home';
 import AdminDashboardLayout from './components/AdminDashboardLayout';

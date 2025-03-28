@@ -1,13 +1,15 @@
 import React, { useRef } from "react";
 import { Container, Navbar, Nav, Col, Row, Button } from "react-bootstrap";
-import CircularImageSlider from "../../components/CircularImageSlider";
+
 import ActionButtons from "../../components/ActionButtons";
 import Footer from "../../components/Footer";
-import HowItWorks from "../../components/HowItWorks";
 import VideoContent from "../../components/VideoSection";
 import '../../assets/styles/Home.css';
 import Hero from "../../components/Hero";
 import ResponsiveCarousel from "../../components/ResponsiveCarousel";
+
+import Typewriter from 'typewriter-effect';
+
 
 const Home = () => {
   const howItWorksRef = useRef<any>(null);
@@ -17,6 +19,8 @@ const Home = () => {
       howItWorksRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  
 
   return (
     <div style={{ backgroundColor: "black", color: "white", minHeight: "100vh" }}>
@@ -54,14 +58,42 @@ const Home = () => {
       </Navbar>
 
       <Container className="py-5">
-        <header className="text-center mb-5">
-          <h6 className="display-4"><b>
-            Book Personalized Experiences with Your Favorite Celebrities
-            </b></h6>
+        <header className=" mb-5">
+          <h1 className="display-inline">
+            <Typewriter
+           
+  onInit={(typewriter) => {
+    typewriter.changeDelay(10)
+    .changeDeleteSpeed(10)
+    .typeString('<span className="">Send A Personal Message To <span style="color:violet;">Your Favorite Celebrity!</span></span>')
+    .pauseFor(2000)
+    .deleteChars(24)
+    .typeString(' <span style="color:purple">An Actor!</span>')
+      .pauseFor(2000)
+      .deleteChars(9)
+      .typeString('<span style="color:violet;">A Musician!</span>')
+      .pauseFor(2000)
+      .deleteChars(11)
+   
+     
+      .typeString('<span style="color:purple;">An Athelete!</span>')
+      .pauseFor(2000)
+      .deleteChars(12)
+    
+ 
+      .typeString('<span style="color:violet;">A TV Or Reality Star!</span>')
+      .pauseFor(2000)
+      .deleteChars(21)
+      
+      .typeString('<span style="color:purple;">Your Favorite Celebrity!</span>')
+      .start();
+  }}
+/>
+            </h1>
           <p className="text-grey">
             Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences.
-            Connect with actors, musicians, athletes, tv hosts and more all over the world.
           </p>
+          
     
         </header>
        <Row >
@@ -71,13 +103,20 @@ const Home = () => {
         <Col xs={12} lg={6}>
           
                  <div className="fs-6">
-                   <h5>Connect With Your Favorite Celebrities All Over The World!</h5>
+                   <h1>Connect With Your Favorite Celebrities All Over The World!</h1>
+                
                    <p>
-                     Send a shoutout, book a phone or video call with your favorite celebrities from anywhere on the globe!
+                     Send a shoutout, favorite celebrities from anywhere on the globe!
                    </p>
+                   
                    <p>It's simple and free.</p>
+                   
+                   <p>And a response is guaranteed.</p>
+                   
                    <p>Click any of the buttons below to get started</p>
+                   
                  </div>
+                 <br/>
                  <ActionButtons />
                </Col>
 

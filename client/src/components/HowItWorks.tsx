@@ -27,11 +27,11 @@ const HowItWorks: React.FC = () => {
 
   return (
     <div className="py-1 mt-4 text-light">
-    <h2 className='pl-4'>How it works</h2>
-      <Row className="gx-4">
+    <h2 className=''>How it works</h2>
+      <Row className="">
         {steps.map((step, index) => (
-          <Col key={index} sm={12} md={6} lg={12}>
-            <Card className="shadow-sm bg-grey text-light rounded-4 border-0 h-100">
+          <Col key={index} className='px-0' sm={12} md={6} lg={12}>
+            <Card className="shadow-sm bg-grey text-light  rounded-4 border-0 h-100">
               <Card.Body>
                 <Card.Title
                   style={window.innerWidth >= 992 ? { height: '1cm' } : {}}
