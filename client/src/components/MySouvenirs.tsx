@@ -1,7 +1,8 @@
 import { Card, Row, Col, Accordion } from "react-bootstrap";
 import { IdProps } from "../types/idProps";
 import { Souvenir } from "../types/Souvenir";
-import { useSouvenirs } from "./useSouvenirs";
+import { useSouvenirs } from "../hooks/useSouvenirs";
+
 
 
 

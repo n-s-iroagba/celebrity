@@ -1,23 +1,23 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/orm";
 import { ClubMembership } from "./ClubMembership";
-import { ClubMembershipGroup } from "./ClubMembershipGroup";
+import { Job } from "./Job";
 
-interface ClubMembershipGroupMembershipAttributes {
+interface JobClubMembershipAttributes {
   clubMembershipId: number;
-  clubMembershipGroupId: number;
+  jobId: number;
 }
 
-export class ClubMembershipGroupMembership extends Model<ClubMembershipGroupMembershipAttributes> 
-  implements ClubMembershipGroupMembershipAttributes {
+export class JobClubMembership extends Model<JobClubMembershipAttributes> 
+  implements JobClubMembershipAttributes {
   public clubMembershipId!: number;
-  public clubMembershipGroupId!: number;
+  public jobId!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-ClubMembershipGroupMembership.init(
+JobClubMembership.init(
   {
     clubMembershipId: {
       type: DataTypes.INTEGER,
@@ -27,20 +27,20 @@ ClubMembershipGroupMembership.init(
         key: 'id'
       }
     },
-    clubMembershipGroupId: {
+    jobId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: ClubMembershipGroup,
+        model: Job,
         key: 'id'
       }
     },
   },
   {
     sequelize,
-    tableName: "clubMembershipGroupMemberships",
+    tableName: "jobMemberships",
     timestamps: true,
   }
 );
 
-export default ClubMembershipGroupMembership;
+export default JobClubMembership;

@@ -1,29 +1,29 @@
 import { ClubMembership } from "./ClubMembership";
-import { ClubMembershipGroup } from "./ClubMembershipGroup";
-import { ClubMembershipGroupMembership } from "./ClubMembershipGroupMembership";
+
+import { JobClubMembership } from "./JobClubMembership";
 
 import { Charity } from "./Charity";
-import { CharityGroup } from "./CharityGroup";
-import CharityGroupCharity from "./CharityGroupCharity";
+import { Job } from "./Job";
+import JobCharity from "./JobCharity";
 
 export function setupAssociations() {
-  // Many-to-Many relationship between ClubMembership and ClubMembershipGroup
-  ClubMembership.belongsToMany(ClubMembershipGroup, {
-    through: ClubMembershipGroupMembership,
+  // Many-to-Many relationship between ClubMembership and Job
+  ClubMembership.belongsToMany(Job, {
+    through: JobClubMembership,
     foreignKey: 'clubMembershipId',
-    otherKey: 'clubMembershipGroupId',
+    otherKey: 'jobId',
     as: 'groups',
   });
 
-  ClubMembershipGroup.belongsToMany(ClubMembership, {
-    through: ClubMembershipGroupMembership,
-    foreignKey: 'clubMembershipGroupId',
+  Job.belongsToMany(ClubMembership, {
+    through: JobClubMembership,
+    foreignKey: 'jobId',
     otherKey: 'clubMembershipId',
     as: 'memberships',
   });
 }
-Charity.belongsToMany(CharityGroup, {
-    through: CharityGroupCharity,
+Charity.belongsToMany(Job, {
+    through: JobCharity,
     foreignKey: 'charityId',
     otherKey: 'charityGroupId',
     as: 'groups',
@@ -31,8 +31,8 @@ Charity.belongsToMany(CharityGroup, {
     onUpdate: 'CASCADE'
   });
 
-  CharityGroup.belongsToMany(Charity, {
-    through: CharityGroupCharity,
+  Job.belongsToMany(Charity, {
+    through: JobCharity,
     foreignKey: 'charityGroupId',
     otherKey: 'charityId',
     as: 'charities',

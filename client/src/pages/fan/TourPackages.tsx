@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTicketAlt, faStar, } from '@fortawesome/free-solid-svg-icons';
-import { TourPackage } from '../../types/TourPackage';
+import { Tour } from '../../types/Tour';
 
-const tourTiers:TourPackage[] = [
+const tourTiers:Tour[] = [
   {
     id:1,
     name: "Backstage Experience",
@@ -20,7 +20,7 @@ const tourTiers:TourPackage[] = [
   },
 ];
 
-const TourPackages = () => {
+const Tours = () => {
   return (
     <div className="bg-light py-5">
       <Container>
@@ -75,4 +75,4 @@ const TourPackages = () => {
   );
 };
 
-export default TourPackages;
+export default Tours;

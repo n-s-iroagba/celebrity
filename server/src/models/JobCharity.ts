@@ -1,18 +1,19 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/orm";
 import { Charity } from "./Charity";
-import { CharityGroup } from "./CharityGroup";
+import { Job } from "./Job";
 
-interface CharityGroupCharityAttributes {
+
+interface JobCharityAttributes {
   charityId: number;
   charityGroupId: number;
   // Additional fields can be added here if needed
   // e.g., joinedAt: Date;
 }
 
-export class CharityGroupCharity 
-  extends Model<CharityGroupCharityAttributes> 
-  implements CharityGroupCharityAttributes {
+export class JobCharity 
+  extends Model<JobCharityAttributes> 
+  implements JobCharityAttributes {
   
   public charityId!: number;
   public charityGroupId!: number;
@@ -21,7 +22,7 @@ export class CharityGroupCharity
   public readonly updatedAt!: Date;
 }
 
-CharityGroupCharity.init(
+JobCharity.init(
   {
     charityId: {
       type: DataTypes.INTEGER,
@@ -37,7 +38,7 @@ CharityGroupCharity.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: CharityGroup,
+        model: Job,
         key: 'id'
       },
       onDelete: 'CASCADE',
@@ -52,4 +53,4 @@ CharityGroupCharity.init(
   }
 );
 
-export default CharityGroupCharity;
+export default JobCharity;

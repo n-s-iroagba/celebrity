@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/orm";
-import { CharityGroup } from "./CharityGroup";
+import { Job } from "./Job";
 
 interface CharityAttributes {
   id: number;
@@ -10,16 +10,16 @@ interface CharityAttributes {
 }
 
 interface CharityAssociationMethods {
-  // Association methods for CharityGroup
-  addGroup: (group: CharityGroup | number) => Promise<void>;
-  addGroups: (groups: (CharityGroup | number)[]) => Promise<void>;
-  removeGroup: (group: CharityGroup | number) => Promise<void>;
-  removeGroups: (groups?: (CharityGroup | number)[]) => Promise<void>;
-  hasGroup: (group: CharityGroup | number) => Promise<boolean>;
-  hasGroups: (groups: (CharityGroup | number)[]) => Promise<boolean>;
+  // Association methods for Job
+  addGroup: (group: Job | number) => Promise<void>;
+  addGroups: (groups: (Job | number)[]) => Promise<void>;
+  removeGroup: (group: Job | number) => Promise<void>;
+  removeGroups: (groups?: (Job | number)[]) => Promise<void>;
+  hasGroup: (group: Job | number) => Promise<boolean>;
+  hasGroups: (groups: (Job | number)[]) => Promise<boolean>;
   countGroups: () => Promise<number>;
-  getGroups: () => Promise<CharityGroup[]>;
-  setGroups: (groups: (CharityGroup | number)[]) => Promise<void>;
+  getGroups: () => Promise<Job[]>;
+  setGroups: (groups: (Job | number)[]) => Promise<void>;
 }
 
 export type CharityCreationAttributes = Optional<CharityAttributes, "id">;
@@ -36,17 +36,17 @@ export class Charity extends Model<CharityAttributes, CharityCreationAttributes>
   public readonly updatedAt!: Date;
 
   // Association methods
-  declare addGroup: (group: CharityGroup | number) => Promise<void>;
-  declare addGroups: (groups: (CharityGroup | number)[]) => Promise<void>;
-  declare removeGroup: (group: CharityGroup | number) => Promise<void>;
-  declare removeGroups: (groups?: (CharityGroup | number)[]) => Promise<void>;
-  declare hasGroup: (group: CharityGroup | number) => Promise<boolean>;
-  declare hasGroups: (groups: (CharityGroup | number)[]) => Promise<boolean>;
+  declare addGroup: (group: Job | number) => Promise<void>;
+  declare addGroups: (groups: (Job | number)[]) => Promise<void>;
+  declare removeGroup: (group: Job | number) => Promise<void>;
+  declare removeGroups: (groups?: (Job | number)[]) => Promise<void>;
+  declare hasGroup: (group: Job | number) => Promise<boolean>;
+  declare hasGroups: (groups: (Job | number)[]) => Promise<boolean>;
   declare countGroups: () => Promise<number>;
-  declare getGroups: () => Promise<CharityGroup[]>;
-  declare setGroups: (groups: (CharityGroup | number)[]) => Promise<void>;
+  declare getGroups: () => Promise<Job[]>;
+  declare setGroups: (groups: (Job | number)[]) => Promise<void>;
 
-  public readonly groups?: CharityGroup[];
+  public readonly groups?: Job[];
 }
 
 Charity.init(

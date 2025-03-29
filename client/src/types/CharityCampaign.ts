@@ -12,4 +12,5 @@ export type CharityCampaign = {
   // Props interface
   export interface CharityCampaignProps {
     campaigns: CharityCampaign[];
+    name:string;
   }

@@ -6,7 +6,7 @@ export interface PaymentAttributes {
   id: number;
   fanId: ForeignKey<Fan['id']>;
   amount: number;
-  item: 'Event' | 'TourPackage' | 'Souvenir' | 'Charity' | 'Clubmembership';
+  item: 'Event' | 'Tour' | 'Souvenir' | 'Charity' | 'Clubmembership';
   itemId: number; // The ID of the specific item
 }
 
@@ -16,7 +16,7 @@ export class Payment extends Model<PaymentAttributes, PaymentCreationAttributes>
   public id!: number;
   public fanId!: number;
   public amount!: number;
-  public item!: 'Event' | 'TourPackage' | 'Souvenir' | 'Charity' | 'Clubmembership';
+  public item!: 'Event' | 'Tour' | 'Souvenir' | 'Charity' | 'Clubmembership';
   public itemId!: number;
 
   public readonly createdAt!: Date;
@@ -47,7 +47,7 @@ Payment.init(
       allowNull: false,
     },
     item: {
-      type: DataTypes.ENUM('Event', 'TourPackage', 'Souvenir', 'Charity', 'Clubmembership'),
+      type: DataTypes.ENUM('Event', 'Tour', 'Souvenir', 'Charity', 'Clubmembership'),
       allowNull: false,
     },
     itemId: {

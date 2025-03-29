@@ -5,7 +5,7 @@ import { ClubMembership } from '../types/ClubMembership';
 
 
 
-export const CelebrityClubMembership: React.FC<{packages:ClubMembership[]}> = ({packages}) => {
+export const CelebrityClubMembership: React.FC<{packages:ClubMembership[],name:string}> = ({packages,name}) => {
   return (
     <div className="w-100 bg-white shadow rounded-lg p-4">
       <h2 className="font-title text-neutral-950 mb-4">Fan Club Membership Tiers</h2>

@@ -6,7 +6,7 @@ import {Souvenir} from '../types/Souvenir'
 
 
 
-const CelebritySouvenirs:React.FC<{souvenirs:Souvenir[]}> = ({souvenirs}) => {
+const CelebritySouvenirs:React.FC<{souvenirs:Souvenir[],name:string}> = ({souvenirs,name}) => {
   const handlePurchase = (souvenir: Souvenir) => {
     alert(`${souvenir.name} has been added to your cart!`);
   };

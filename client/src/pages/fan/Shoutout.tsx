@@ -3,7 +3,7 @@ import SearchBar from "../../components/SearchBar";
 import Celebrity from "../../types/Celebrity";
 import SearchPic from "../../components/SearchPic";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../../context/useUserContext";
+
 import {
   Button,
   Form,
@@ -27,7 +27,7 @@ import Select from "react-select";
 import { Fan } from "../../types/Fan";
 import { OptionalIdProps } from "../../types/idProps";
 
-const Shoutout: React.FC<OptionalIdProps>= (id) => {
+const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
   const [fanData, setFanData] = useState<Fan>({
     firstName: "",
     surname: "",
@@ -62,7 +62,7 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedMedia, setRecordedMedia] = useState<string | null>(null);
-  const [recordingTime, setRecordingTime] = useState(0);
+  const [recordingTime, setRecordingTime] = useState(3000);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
@@ -72,7 +72,7 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
 
   const navigate = useNavigate();
 
-  const { isSignedIn } = useUserContext();
+ const isSignedIn = false
 
   const showPassword = () => {
     setPasswordType((prev) => (prev === "text" ? "password" : "text"));
@@ -373,8 +373,17 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
           {mediaType === "video" && (
             <video ref={videoPreviewRef} className="w-100" autoPlay muted />
           )}
-          {mediaType === "voice" && <Spinner animation="border" />}
-          <p>Recording in progress...</p>
+            {mediaType === "voice" &&(
+                      <div className="mt-3">
+                        <ProgressBar
+                        striped style={{backgroundColor:'black'}}
+                          now={40}
+                          
+                        />
+                      </div>
+                    )}
+            <small>Recording in progress...</small>
+                      
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={discardRecording}>
@@ -416,20 +425,10 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
               )}
 
               {(mediaType === "video" || mediaType === "voice") && (
-                <Form.Group className="mb-3" controlId="formMedia">
-                  <Form.Label>
-                    Upload or Record{" "}
-                    {mediaType === "video" ? "Video" : "Voice Note"}
-                  </Form.Label>
+              
+                  
                   <div className="d-flex flex-column gap-2">
-                    {/* File Upload */}
-                    <Form.Control
-                      type="file"
-                      accept={mediaType === "video" ? "video/*" : "audio/*"}
-                      onChange={handleFileUpload}
-                    />
-
-                    {/* Video Preview */}
+                   
                     {mediaType === "video" && (
                       <video
                         ref={videoPreviewRef}
@@ -442,15 +441,7 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
                     )}
 
                     {/* Voice Recording Bar */}
-                    {mediaType === "voice" && isRecording && (
-                      <div className="mt-3">
-                        <ProgressBar
-                          now={(recordingTime % 30) * (100 / 30)}
-                          label={`${recordingTime}s`}
-                        />
-                        <small>Recording in progress...</small>
-                      </div>
-                    )}
+                 
 
                     {/* Record from Camera/Microphone */}
                     <div className="d-flex gap-2">
@@ -464,7 +455,7 @@ const Shoutout: React.FC<OptionalIdProps>= (id) => {
 
 
                   </div>
-                </Form.Group>
+              
               )}
               {!isSignedIn && (
                 <>

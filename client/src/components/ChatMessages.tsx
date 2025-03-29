@@ -1,17 +1,20 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { Message } from "../types/Messages";
+import { Chat } from "../types/Chat";
+
 
 // Message type based on your model
 
 // Props for the ChatMessages component
 
 
-const ChatMessages: React.FC<{messages:Message[],userId:number}> = ({messages, userId}) => {
+const ChatMessages: React.FC<{chat:Chat}> = ({chat}) => {
+  const fanId=1
+
   return (
     <Container className="py-3">
-      {messages.map((message) => {
-        const isSent = message.senderId === userId;
+      {chat.messages.map((message) => {
+        const isSent = message.senderId === fanId;
         return (
           <Row key={message.id} className="mb-2 justify-content-center">
             <Col xs={10} className={isSent ? "text-end" : "text-start"}>

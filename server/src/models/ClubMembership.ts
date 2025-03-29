@@ -1,25 +1,26 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { ClubMembershipTier } from "../enums/ClubMembershipTier";
 import sequelize from "../config/orm";
-import { ClubMembershipGroup } from "./ClubMembershipGroup";
+import { Job } from "./Job";
 
 interface ClubMembershipAttributes {
   id: number;
   tier: ClubMembershipTier;
   price: number;
+  features:string[]
 }
 
 interface ClubMembershipAssociationMethods {
-  // Association methods for ClubMembershipGroup
-  addGroup: (group: ClubMembershipGroup) => Promise<void>;
-  addGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
-  removeGroup: (group: ClubMembershipGroup) => Promise<void>;
-  removeGroups: (groups?: ClubMembershipGroup[]) => Promise<void>;
-  hasGroup: (group: ClubMembershipGroup) => Promise<boolean>;
-  hasGroups: (groups: ClubMembershipGroup[]) => Promise<boolean>;
+  // Association methods for Job
+  addGroup: (group: Job) => Promise<void>;
+  addGroups: (groups: Job[]) => Promise<void>;
+  removeGroup: (group: Job) => Promise<void>;
+  removeGroups: (groups?: Job[]) => Promise<void>;
+  hasGroup: (group: Job) => Promise<boolean>;
+  hasGroups: (groups: Job[]) => Promise<boolean>;
   countGroups: () => Promise<number>;
-  getGroups: () => Promise<ClubMembershipGroup[]>;
-  setGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+  getGroups: () => Promise<Job[]>;
+  setGroups: (groups: Job[]) => Promise<void>;
 }
 
 export type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes, "id">;
@@ -27,29 +28,31 @@ export type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes
 export class ClubMembership 
   extends Model<ClubMembershipAttributes, ClubMembershipCreationAttributes> 
   implements ClubMembershipAttributes, ClubMembershipAssociationMethods {
+ 
   
   // Attributes
   public id!: number;
   public tier!: ClubMembershipTier;
   public price!: number;
+  public features!: string[];
 
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
   // Association methods
-  declare addGroup: (group: ClubMembershipGroup) => Promise<void>;
-  declare addGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
-  declare removeGroup: (group: ClubMembershipGroup) => Promise<void>;
-  declare removeGroups: (groups?: ClubMembershipGroup[]) => Promise<void>;
-  declare hasGroup: (group: ClubMembershipGroup) => Promise<boolean>;
-  declare hasGroups: (groups: ClubMembershipGroup[]) => Promise<boolean>;
+  declare addGroup: (group: Job) => Promise<void>;
+  declare addGroups: (groups: Job[]) => Promise<void>;
+  declare removeGroup: (group: Job) => Promise<void>;
+  declare removeGroups: (groups?: Job[]) => Promise<void>;
+  declare hasGroup: (group: Job) => Promise<boolean>;
+  declare hasGroups: (groups: Job[]) => Promise<boolean>;
   declare countGroups: () => Promise<number>;
-  declare getGroups: () => Promise<ClubMembershipGroup[]>;
-  declare setGroups: (groups: ClubMembershipGroup[]) => Promise<void>;
+  declare getGroups: () => Promise<Job[]>;
+  declare setGroups: (groups: Job[]) => Promise<void>;
 
   // Association properties (added by Sequelize)
-  public readonly groups?: ClubMembershipGroup[];
+  public readonly groups?: Job[];
 }
 
 ClubMembership.init(
@@ -67,6 +70,10 @@ ClubMembership.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    features: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    }
   },
   {
     sequelize,
@@ -76,6 +83,6 @@ ClubMembership.init(
 );
 
 // Associations are typically set up in a separate file, but you could add them here if preferred
-// ClubMembership.belongsToMany(ClubMembershipGroup, { through: 'ClubMembershipGroupMembership' });
+// ClubMembership.belongsToMany(Job, { through: 'JobClubMembership' });
 
 export default ClubMembership;

@@ -17,7 +17,7 @@ import VerifyEmail from './pages/fan/VerifyEmail';
 import Dashboard from './pages/fan/Dashboard';
 import ForgotPassword from './pages/fan/ForgotPassword';
 import Login from './pages/fan/Login';
-import TourPackages from './pages/fan/TourPackages';
+import Tours from './pages/fan/Tours';
 
 const App = () => {
   return (
@@ -41,7 +41,7 @@ const App = () => {
 
         <Route path="/dashboard" element={<Dashboard/>}/>
        
-        <Route path="/tours/:id" element={<TourPackages />} />
+        <Route path="/tours/:id" element={<Tours />} />
         {/* <Route path="/events/:id" element={<EventTickets />} />
         <Route path="/donations/:id" element={<DonationCampaigns />} />
         <Route path="/souvenirs/:id" element={<Souvenirs />} />

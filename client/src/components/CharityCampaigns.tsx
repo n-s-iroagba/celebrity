@@ -5,7 +5,7 @@ import { CharityCampaignProps } from "../types/CharityCampaign";
 // Define the CharityCampaign type
 
 
-const CharityCampaign: React.FC<CharityCampaignProps> = ({ campaigns }) => {
+const CharityCampaign: React.FC<CharityCampaignProps> = ({ campaigns,name }) => {
   return (
     <Container className="py-4">
       <Row className="g-4">

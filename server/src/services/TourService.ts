@@ -1,10 +1,10 @@
-import { TourPackage } from "../models/TourPackage";
+import { Tour } from "../models/Tour";
 
-export class TourPackageService {
+export class TourService {
 
-  static async createTourPackage(price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<TourPackage> {
+  static async createTour(price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<Tour> {
     try {
-      const tourPackage = await TourPackage.create({
+      const tourPackage = await Tour.create({
         price,
         tier,
         startDate,
@@ -17,25 +17,25 @@ export class TourPackageService {
     }
   }
 
-  static async getTourPackageById(id: number): Promise<TourPackage | null> {
+  static async getTourById(id: number): Promise<Tour | null> {
     try {
-      return await TourPackage.findByPk(id);
+      return await Tour.findByPk(id);
     } catch (error:any) {
       throw new Error(`Failed to fetch tour package by id: ${error.message}`);
     }
   }
 
-  static async getAllTourPackages(): Promise<TourPackage[]> {
+  static async getAllTours(): Promise<Tour[]> {
     try {
-      return await TourPackage.findAll();
+      return await Tour.findAll();
     } catch (error:any) {
       throw new Error(`Failed to fetch all tour packages: ${error.message}`);
     }
   }
 
-  static async updateTourPackage(id: number, price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<TourPackage | null> {
+  static async updateTour(id: number, price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<Tour | null> {
     try {
-      const tourPackage = await TourPackage.findByPk(id);
+      const tourPackage = await Tour.findByPk(id);
       if (tourPackage) {
         tourPackage.price = price;
         tourPackage.tier = tier;
@@ -51,9 +51,9 @@ export class TourPackageService {
     }
   }
 
-  static async deleteTourPackage(id: number): Promise<boolean> {
+  static async deleteTour(id: number): Promise<boolean> {
     try {
-      const result = await TourPackage.destroy({
+      const result = await Tour.destroy({
         where: { id },
       });
       return result > 0;

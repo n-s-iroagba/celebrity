@@ -8,7 +8,8 @@ import Logo from "../../components/Logo";
 import Notifications from "../../components/Notifications";
 import { getGreeting } from "../../utils/utils";
 import returnCelebrityDashboardNavItems from "../../helpers/returnCelebrityDashboardNavItems";
-import ChatMessages from "../../components/ChatMessages";
+import { useJob } from "../../hooks/useJobs";
+
 
 
 
@@ -48,24 +49,26 @@ const CelbrityDashboard: React.FC= () => {
   const fanId=1
   const celebrityId=1
   const [showSidebar, setShowSidebar] = useState(false);
-  const [chat, setChat]=useState({
-    responseStatus:'not-seen'
-})
+  
 const [showModal,setShowModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false);
   const toggleSidebar = () => setShowSidebar((prev) => !prev);
   const toggleNotifications = () => setShowNotifications((prev) => !prev);
 
-  const [component, setComponent] = useState<ReactNode>(<ChatMessages fanId={fanId} celebrityId={celebrityId}/>);
+  const [component, setComponent] = useState<ReactNode|null>(null);
+  const {job} = useJob(fanId,celebrityId)
   const clickHandler = (component:ReactNode) => {
-    if (chat.responseStatus!=='replied' && component !== <ChatMessages fanId={fanId} celebrityId={celebrityId}/>) {
-      setShowModal(true)
-      alert('hi')
-      return
-    }
+    // if (chat.responseStatus!=='replied' && component !== <ChatMessages fanId={fanId} celebrityId={celebrityId}/>) {
+    //   setShowModal(true)
+    //   alert('hi')
+    //   return
+    // }
     setComponent(component)
   }
-  const props = returnCelebrityDashboardNavItems(fanId,celebrityId,clickHandler)
+ if (!job){
+  return 
+ }
+  const props = returnCelebrityDashboardNavItems(job,clickHandler)
  
   return (
     <div className=" min-vh-100 bg-light ">

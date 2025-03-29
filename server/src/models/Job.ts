@@ -16,6 +16,7 @@ import sequelize from "../config/orm";
     souvenirs: number;
     amountPaid: number;
   }
+  export type JobCreationAttributes = Optional<JobAttributes, "id">;
   
   export class Job extends Model<JobAttributes> implements JobAttributes {
     public id!: number;

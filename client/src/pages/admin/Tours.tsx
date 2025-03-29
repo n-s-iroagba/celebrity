@@ -3,7 +3,7 @@ import { Button, Form, Modal, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-interface TourPackage {
+interface Tour {
   id: string;
   name: string;
   description: string;
@@ -13,14 +13,14 @@ interface TourPackage {
 }
 
 export default function Tours() {
-  const [tours, setTours] = useState<TourPackage[]>([]);
-  const [editingTour, setEditingTour] = useState<TourPackage | null>(null);
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [editingTour, setEditingTour] = useState<Tour | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const newTour: TourPackage = {
+    const newTour: Tour = {
       id: editingTour?.id || Date.now().toString(),
       name: formData.get("name") as string,
       description: formData.get("description") as string,

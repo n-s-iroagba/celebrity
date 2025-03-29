@@ -1,5 +1,5 @@
 import { ClubMembership, ClubMembershipCreationAttributes } from "../models/ClubMembership";
-import { ClubMembershipGroup } from "../models/ClubMembershipGroup";
+import { Job } from "../models/Job";
 
 export class ClubMembershipService {
   /**
@@ -55,8 +55,8 @@ export class ClubMembershipService {
     const membership = await ClubMembership.findByPk(membershipId);
     if (!membership) throw new Error('ClubMembership not found');
     
-    const group = await ClubMembershipGroup.findByPk(groupId);
-    if (!group) throw new Error('ClubMembershipGroup not found');
+    const group = await Job.findByPk(groupId);
+    if (!group) throw new Error('Job not found');
 
     await membership.addGroup(group);
   }
@@ -68,8 +68,8 @@ export class ClubMembershipService {
     const membership = await ClubMembership.findByPk(membershipId);
     if (!membership) throw new Error('ClubMembership not found');
     
-    const group = await ClubMembershipGroup.findByPk(groupId);
-    if (!group) throw new Error('ClubMembershipGroup not found');
+    const group = await Job.findByPk(groupId);
+    if (!group) throw new Error('Job not found');
 
     await membership.removeGroup(group);
   }

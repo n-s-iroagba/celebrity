@@ -11,7 +11,8 @@ import Profile from "../components/Profile"
 
 import Shoutout from "../pages/fan/Shoutout"
 import { ReactNode } from "react"
-import MySouvenirs from "../hooks/MySouvenirs"
+import MySouvenirs from "../components/MySouvenirs"
+
 
 const returnDashboardNavItems = (id:number,clickHandler:(component:ReactNode)=>void) =>{
     return{
@@ -27,7 +28,6 @@ const returnDashboardNavItems = (id:number,clickHandler:(component:ReactNode)=>v
             { title: "Booked Exclusive Personalised Tours", icon: faFighterJet, component:<MyTours id={id}/> },
             { title: "Previous Events I've Attended", icon: faDollar, component: <NeverToBe title="events attended."/>,},
             { title: "Events I am to attend", icon: faLocation, component: <MyBookedEvents id={id}/> },
-            { title: "Trending News", icon: faTeamspeak, component:<News/> },
             { title: "Trending News", icon: faTeamspeak, component:<News/> },
           ],
           clickHandler: clickHandler

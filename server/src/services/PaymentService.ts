@@ -2,7 +2,7 @@ import { Payment } from '../models/Payment';
 
 class PaymentService {
   // Create a new payment
-  async createPayment(fanId: number, amount: number, item: 'Event' | 'TourPackage' | 'Souvenir' | 'Charity' | 'Clubmembership', itemId: number) {
+  async createPayment(fanId: number, amount: number, item: 'Event' | 'Tour' | 'Souvenir' | 'Charity' | 'Clubmembership', itemId: number) {
     try {
       const payment = await Payment.create({
         fanId,

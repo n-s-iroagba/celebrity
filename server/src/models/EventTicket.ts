@@ -5,8 +5,10 @@ import sequelize from "../config/orm";
 interface TicketTierAttributes {
   id: number;
   eventId: ForeignKey<Event["id"]>;
-  title: string;
   price: number;
+  tier: string;
+
+  features: string[]
 }
 
 type TicketTierCreationAttributes = Optional<TicketTierAttributes, "id">;
@@ -15,8 +17,10 @@ export class TicketPackage extends Model<TicketTierAttributes, TicketTierCreatio
   implements TicketTierAttributes {
   public id!: number;
   public eventId!: number;
-  public title!: string;
+
   public price!: number;
+  public tier!: string;
+  public features!: string[];
 
   // Timestamps
   public readonly createdAt!: Date;
@@ -38,14 +42,19 @@ export class TicketPackage extends Model<TicketTierAttributes, TicketTierCreatio
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+
       price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
+      tier: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      features: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: false,
+      }
     },
     {
       sequelize,
