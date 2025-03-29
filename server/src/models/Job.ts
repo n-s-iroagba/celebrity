@@ -2,31 +2,32 @@ import {
     Model,
     DataTypes,
     Optional,
-    Sequelize,
+    ForeignKey,
+    NonAttribute,
   } from "sequelize";
 import sequelize from "../config/orm";
+import { Celebrity } from "./Celebrity";
+import Chat from "./Chat";
+import { Fan } from "./Fan";
+import { Tour } from "./Tour";
 
   export interface JobAttributes {
     id: number;
-    adminId: number;
-    celebrityId: number;
-    tourPackageTier: string;
-    charityCampaign: string;
-    membershipPackageTier: string;
-    souvenirs: number;
-    amountPaid: number;
+    fanId:ForeignKey<Fan['id']>;
+    celebrityId:ForeignKey<Celebrity['id']>;
+    celebrity?:NonAttribute<Celebrity>
+    fan?:NonAttribute<Fan>
+    chat?:NonAttribute<Chat>
+    tours?: NonAttribute<Tour[]>;
+    events?:NonAttribute<Event[]>
   }
   export type JobCreationAttributes = Optional<JobAttributes, "id">;
   
   export class Job extends Model<JobAttributes> implements JobAttributes {
+    fanId!: number
+    celebrityId!: number
     public id!: number;
-    public adminId!: number;
-    public celebrityId!: number;
-    public tourPackageTier!: string;
-    public charityCampaign!: string;
-    public membershipPackageTier!: string;
-    public souvenirs!: number;
-    public amountPaid!: number;
+
   
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -40,7 +41,7 @@ import sequelize from "../config/orm";
           autoIncrement: true,
           primaryKey: true,
         },
-        adminId: {
+        fanId: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
@@ -48,26 +49,7 @@ import sequelize from "../config/orm";
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        tourPackageTier: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        charityCampaign: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        membershipPackageTier: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        souvenirs: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
-        amountPaid: {
-          type: DataTypes.FLOAT,
-          allowNull: false,
-        },
+        
       },
       {
         sequelize,

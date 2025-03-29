@@ -1,4 +1,10 @@
-import { DataTypes, ForeignKey, Model, Optional, NonAttribute } from "sequelize";
+import {
+  DataTypes,
+  ForeignKey,
+  Model,
+  Optional,
+  NonAttribute,
+} from "sequelize";
 import { Admin } from "./Admin";
 import { User } from "./User";
 import sequelize from "../config/orm";
@@ -8,23 +14,31 @@ interface FanAttributes {
   id: number;
   firstName: string;
   surname: string;
-  profilePicture:string|null;
+  profilePicture: string | null;
+  email: string;
   whatsappNumber: string;
-  whatsappCode: string|null
-  country: string;
+  whatsappCode: string | null;
+  emailCode: string | null;
+  countryOfResidence: string;
   gender: string;
   dateOfBirth: Date;
-  userId: ForeignKey <User['id']>
-  Chats?: NonAttribute<Chat[]>;
-//   user: NonAttribute<User>
-//   admin : NonAttribute<Admin>
+  userId: ForeignKey<User["id"]>;
+  occupation: string;
+  user?: NonAttribute<User>;
 }
 
 export type FanCreationAttributes = Optional<FanAttributes, "id">;
 
-export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implements FanAttributes {
-  public profilePicture: string | null=null;
-  public userId!: number
+export class Fan
+  extends Model<FanAttributes, FanCreationAttributes>
+  implements FanAttributes
+{
+  email!: string;
+  emailCode!: string | null;
+  countryOfResidence!: string;
+  occupation!: string;
+  public profilePicture: string | null = null;
+  public userId!: number;
   public id!: number;
   public firstName!: string;
   public surname!: string;
@@ -33,68 +47,74 @@ export class Fan   extends  Model<FanAttributes, FanCreationAttributes> implemen
   public country!: string;
   public dateOfBirth!: Date;
   public gender!: string;
-  public adminId!: number;
 
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-
 }
 
-  Fan.init(
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      profilePicture: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      surname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      gender: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      whatsappNumber: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      whatsappCode: {
-        type: DataTypes.STRING,
-        allowNull: true,
-
-      },
-      country: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      dateOfBirth: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-    
+Fan.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-      sequelize,
-      tableName: "fans",
-    }
-  );
-  Fan.hasMany(Chat, {
-    foreignKey: 'fanId',
-    as: 'Chats'
-  });
-  
-
+    profilePicture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    whatsappNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    whatsappCode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    countryOfResidence: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    dateOfBirth: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    emailCode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    occupation: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    tableName: "fans",
+  }
+);
+Fan.hasMany(Chat, {
+  foreignKey: "fanId",
+  as: "chats",
+});

@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
-import { CharityCampaignProps } from "../types/CharityCampaign";
+import {CharityProps } from "../types/Charity";
 
-// Define the CharityCampaign type
+// Define theCharity type
 
 
-const CharityCampaign: React.FC<CharityCampaignProps> = ({ campaigns,name }) => {
+const Charities: React.FC<CharityProps> = ({ campaigns,name }) => {
   return (
     <Container className="py-4">
       <Row className="g-4">
@@ -14,7 +14,7 @@ const CharityCampaign: React.FC<CharityCampaignProps> = ({ campaigns,name }) => 
             <Card className="shadow-sm border-0 h-100">
               <Card.Img
                 variant="top"
-                src={campaign.imageUrl}
+                src={campaign.image}
                 alt={campaign.title}
                 className="rounded-top"
                 style={{ height: "200px", objectFit: "cover" }}
@@ -35,4 +35,4 @@ const CharityCampaign: React.FC<CharityCampaignProps> = ({ campaigns,name }) => 
   );
 };
 
-export default CharityCampaign;
+export default Charities;

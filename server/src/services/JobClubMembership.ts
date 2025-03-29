@@ -1,4 +1,4 @@
-import { Job, JobCreationAttributes } from "../models/Job";
+import { Job, JobCreationAttributes,  } from "../models/Job";
 import { ClubMembership } from "../models/ClubMembership";
 
 export class JobService {

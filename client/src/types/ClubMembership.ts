@@ -1,12 +1,7 @@
 export interface ClubMembership {
-    id: number;
-    
-    
-      tier:string;
-    
-    
-  
-    perks:string[
-    ]
-    price:number
-  }
+  id?: number;
+  tier: string;
+  features: string[];
+  price: number;
+
+}

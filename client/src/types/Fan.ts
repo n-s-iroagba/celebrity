@@ -4,10 +4,12 @@ export type Fan = {
     firstName: string;
     surname: string;
     dateOfBirth: Date | null;
-    country: string;
+    countryOfResidence: string;
     gender: string;
     email: string;
+    occupation:string;
     whatsappNumber: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
+    profilePicture?:string;
   };

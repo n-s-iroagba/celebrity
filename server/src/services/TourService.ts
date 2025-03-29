@@ -2,13 +2,12 @@ import { Tour } from "../models/Tour";
 
 export class TourService {
 
-  static async createTour(price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<Tour> {
+  static async createTour(price: number, tier: string,   duration: Date, endDate: Date, perks: string[]): Promise<Tour> {
     try {
       const tourPackage = await Tour.create({
         price,
-        tier,
-        startDate,
-        endDate,
+        duration,
+      
         perks,
       });
       return tourPackage;
@@ -33,13 +32,13 @@ export class TourService {
     }
   }
 
-  static async updateTour(id: number, price: number, tier: string, startDate: Date, endDate: Date, perks: string[]): Promise<Tour | null> {
+  static async updateTour(id: number, price: number, tier: string,   duration: Date, endDate: Date, perks: string[]): Promise<Tour | null> {
     try {
       const tourPackage = await Tour.findByPk(id);
       if (tourPackage) {
         tourPackage.price = price;
         tourPackage.tier = tier;
-        tourPackage.startDate = startDate;
+        tourPackage   duration =   duration;
         tourPackage.endDate = endDate;
         tourPackage.perks = perks;
         await tourPackage.save();

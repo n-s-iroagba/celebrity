@@ -1,56 +1,72 @@
 import {
-    Model,
-    DataTypes,
-    Optional,
-    Sequelize,
-    ForeignKey,
-  } from "sequelize";
-import { Celebrity } from "./Celebrity";
+  Model,
+  DataTypes,
+  Optional,
+  Sequelize,
+  BelongsToManyAddAssociationMixin,
+} from "sequelize";
 import sequelize from "../config/orm";
+import { Job } from "./Job";
+
+// Define attributes for the Souvenir model
+export interface SouvenirAttributes {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+}
+
+// Define creation attributes, making `id` optional
+export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id">;
+
+export class Souvenir
+  extends Model<SouvenirAttributes, SouvenirCreationAttributes>
+  implements SouvenirAttributes
+{
+  public id!: number;
+  public name!: string;
+  public description!: string;
+  public price!: number;
+  public images!: string[];
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  // Association Methods
+  public addJob!: BelongsToManyAddAssociationMixin<Job, number>;
+}
+
+// Initialize the Souvenir model
+Souvenir.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    images: {
+      type: DataTypes.ARRAY(DataTypes.STRING), // PostgreSQL only
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    tableName: "souvenirs",
+  }
+);
 
 
-  export interface SouvenirsAttributes {
-    id: number
-    price: number;
-    images: string[];
-    celebrityId : ForeignKey<Celebrity['id']>
-  }
-  export interface SouvenirsCreationAttributes extends Optional<SouvenirsAttributes, 'id'> {}
-  
-  export class Souvenirs extends Model<SouvenirsAttributes,SouvenirsCreationAttributes>
-    implements SouvenirsAttributes {
-    public celebrityId!: number 
-    public id!: number;
-    public images!: string[]
-    public price!: number;
-  
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-  }
-  
-    Souvenirs.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        price: {
-          type: DataTypes.DECIMAL(10, 2),
-          allowNull: false,
-        },
-        images: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
-          allowNull: false,
-        },
-        celebrityId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
-      },
-      {
-        sequelize,
-        tableName: 'souvernirs',
-      }
-    );
-  
+export default Souvenir;

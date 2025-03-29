@@ -1,35 +1,48 @@
-import { DataTypes, ForeignKey, Model, Optional, NonAttribute } from 'sequelize';
-import sequelize from '../config/orm';
-import Chat from './Chat';
+import {
+  DataTypes,
+  ForeignKey,
+  Model,
+  Optional,
+  NonAttribute,
+} from "sequelize";
+import sequelize from "../config/orm";
+import Chat from "./Chat";
 
 interface MessageAttributes {
   id: number;
   senderId: number;
-  chatId: ForeignKey<Chat['id']>;
+  chatId: ForeignKey<Chat["id"]>;
   content: string;
-  mediaType: 'text' | 'video' | 'voice' | 'image';
+  mediaType: "text" | "video" | "voice" | "image";
   mediaUrl: string | null;
   isSeen: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  Chat?: NonAttribute<Chat>;
+  chat?: NonAttribute<Chat>;
 }
 
-interface MessageCreationAttributes extends Optional<MessageAttributes, 'id' | 'isSeen' | 'createdAt' | 'updatedAt'> {}
+interface MessageCreationAttributes
+  extends Optional<
+    MessageAttributes,
+    "id" | "isSeen" | "createdAt" | "updatedAt"
+  > {}
 
-class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
+class Message
+  extends Model<MessageAttributes, MessageCreationAttributes>
+  implements MessageAttributes
+{
   declare id: number;
-  declare senderType: 'fan' | 'celebrity';
+  declare senderType: "fan" | "celebrity";
   declare senderId: number;
-  declare chatId: ForeignKey<Chat['id']>;
+  declare chatId: ForeignKey<Chat["id"]>;
   declare content: string;
-  declare mediaType: 'text' | 'video' | 'voice' | 'image';
+  declare mediaType: "text" | "video" | "voice" | "image";
   declare mediaUrl: string | null;
   declare isSeen: boolean;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
-  
-  declare Chat?: NonAttribute<Chat>;
+
+  declare chat?: NonAttribute<Chat>;
 }
 
 Message.init(
@@ -39,45 +52,43 @@ Message.init(
       autoIncrement: true,
       primaryKey: true,
     },
- 
+
     senderId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'chats',
-        key: 'id'
-      }
+        model: "chats",
+        key: "id",
+      },
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
     },
     mediaType: {
-      type: DataTypes.ENUM('text', 'video', 'voice', 'image'),
+      type: DataTypes.ENUM("text", "video", "voice", "image"),
       allowNull: false,
-      defaultValue: 'text'
+      defaultValue: "text",
     },
     mediaUrl: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
     isSeen: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   },
   {
     sequelize,
-    tableName: 'messages',
-    timestamps: true
+    tableName: "messages",
+    timestamps: true,
   }
 );
-
-
 
 export default Message;

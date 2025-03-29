@@ -1,3 +1,4 @@
+import { Job } from "./Job";
 
 
 export type Tour = {
@@ -8,4 +9,5 @@ export type Tour = {
   features: string[];
   location:string;
   jobId:string
+  job:Job
 };

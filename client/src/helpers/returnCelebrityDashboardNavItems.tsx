@@ -14,7 +14,7 @@ import CelebrityTours from "../components/CelebrityTours";
 import ChatMessages from "../components/ChatMessages";
 import CelebrityEvent from "../components/CelebrityEvent";
 import { Job } from "../types/Job";
-import CharityCampaigns from "../components/CharityCampaigns";
+import Charities from "../components/Charities";
 
 const returnCelebrityDashboardNavItems = (
   job: Job,
@@ -37,7 +37,7 @@ const returnCelebrityDashboardNavItems = (
         component: (
           <CelebrityClubMembership
             name={job.celebrity.stageName || job.celebrity.firstName}
-            packages={job.clubMembershipsPackages}
+            packages={job.clubMemberships}
           />
         ),
       },
@@ -59,9 +59,9 @@ const returnCelebrityDashboardNavItems = (
         }'s Charity Campaigns Can support`,
         icon: faDollar,
         component: (
-          <CharityCampaigns
+          <Charities
             name={job.celebrity.stageName || job.celebrity.firstName}
-            campaigns={job.charityCampaigns}
+            campaigns={job.charities}
           />
         ),
       },
@@ -73,7 +73,7 @@ const returnCelebrityDashboardNavItems = (
         component: (
           <CelebrityTours
             name={job.celebrity.stageName || job.celebrity.firstName}
-            tours={job.tourPackages}
+            tours={job.tours}
           />
         ),
       },

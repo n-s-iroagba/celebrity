@@ -1,3 +1,5 @@
+import { Chat } from "./Chat";
+
 export type Message = {
     id: number;
     senderId: number;
@@ -6,5 +8,7 @@ export type Message = {
     mediaUrl: string | null;
     isSeen: boolean;
     createdAt: Date;
+    chat:Chat;
+    chatId:number
   }
   

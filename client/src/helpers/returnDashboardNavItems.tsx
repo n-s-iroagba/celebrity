@@ -6,7 +6,6 @@ import MyClubMembership from "../components/MyClubMembership"
 import MyDonationCampaigns from "../components/MyDonationCampaigns"
 import MyTours from "../components/MyTours"
 import NeverToBe from "../components/NeverToBe"
-import { News } from "../components/News"
 import Profile from "../components/Profile"
 
 import Shoutout from "../pages/fan/Shoutout"
@@ -28,7 +27,6 @@ const returnDashboardNavItems = (id:number,clickHandler:(component:ReactNode)=>v
             { title: "Booked Exclusive Personalised Tours", icon: faFighterJet, component:<MyTours id={id}/> },
             { title: "Previous Events I've Attended", icon: faDollar, component: <NeverToBe title="events attended."/>,},
             { title: "Events I am to attend", icon: faLocation, component: <MyBookedEvents id={id}/> },
-            { title: "Trending News", icon: faTeamspeak, component:<News/> },
           ],
           clickHandler: clickHandler
         

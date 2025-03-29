@@ -8,7 +8,7 @@ export class CartService {
 //         donationCampaigns: [],
 //         souvenirs: [],
 //         eventTickets: [],
-//         tourPackages: [],
+//         tours: [],
 //         clubMemberships: [],
 //       },
 //     });

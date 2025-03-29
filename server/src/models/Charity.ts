@@ -4,9 +4,11 @@ import { Job } from "./Job";
 
 interface CharityAttributes {
   id: number;
-  campaignName: string;
-  pitch: string;
-  amount: number;
+  name: string;
+  description: string;
+  goalAmount: number;
+  raisedAmount: number;
+  minimumAmount: number;
 }
 
 interface CharityAssociationMethods {
@@ -24,13 +26,16 @@ interface CharityAssociationMethods {
 
 export type CharityCreationAttributes = Optional<CharityAttributes, "id">;
 
-export class Charity extends Model<CharityAttributes, CharityCreationAttributes>
-  implements CharityAttributes, CharityAssociationMethods {
-
+export class Charity
+  extends Model<CharityAttributes, CharityCreationAttributes>
+  implements CharityAttributes, CharityAssociationMethods
+{
+  goalAmount!: number;
+  raisedAmount!: number;
+  minimumAmount!: number;
   public id!: number;
-  public campaignName!: string;
-  public pitch!: string;
-  public amount!: number;
+  public name!: string;
+  public description!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -56,29 +61,34 @@ Charity.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    campaignName: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [3, 100]
-      }
+        len: [3, 100],
+      },
     },
-    pitch: {
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [10, 500]
-      }
+        len: [10, 500],
+      },
     },
-    amount: {
+    goalAmount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-      validate: {
-        min: 0.01
-      }
-    }
+    },
+    raisedAmount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    minimumAmount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
   },
   {
     sequelize,

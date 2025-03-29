@@ -1,8 +1,8 @@
-export type CharityCampaign = {
-    id: number;
+export type Charity = {
+    id?: number;
     title: string;
     description: string;
-    imageUrl: string;
+    image: string;
     goalAmount: number;
     raisedAmount: number;
     minimumAmount:number;
@@ -10,7 +10,7 @@ export type CharityCampaign = {
 
   
   // Props interface
-  export interface CharityCampaignProps {
-    campaigns: CharityCampaign[];
+  export interface CharityProps {
+    campaigns:Charity[];
     name:string;
   }
