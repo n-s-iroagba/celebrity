@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { FanService } from "../services/FanService";
 import { MessageService } from "../services/MesageService";
-import ChatService from "../services/ChatService";
 import { CelebrityService } from "../services/CelebrityService";
+import { ChatService } from "../services/ChatService";
+import JobService from "../services/JobService";
 
 export class FanController {
 
@@ -45,7 +46,8 @@ export class FanController {
       console.log('celebrity is ',celebrity)
      
       const {token,fanId} = await FanService.createFan(fanData, userData);
-      const chat = await ChatService.createChat(fanId,celebrity.id)
+      const job = await JobService.createJob({fanId,celebrityId:celebrity.id})
+      const chat = await ChatService.createChat({ jobId: job.id });
       await MessageService.postMessage({...mediaData,content:content,chatId:chat.id,isSeen:false,senderId:fanId})
       return res.status(201).json(token);
     } catch (error: any) {
@@ -107,24 +109,4 @@ export class FanController {
     }
   }
 
- static async getFanChats(req: Request, res: Response):Promise<any> {
-    try {
-      const { id } = req.params;
-
-      if (!id || isNaN(Number(id))) {
-        return res.status(400).json({ 
-          error: 'Valid fan ID is required' 
-        });
-      }
-
-      const messages = await FanService.getFanChats(Number(id));
-      return res.status(200).json(messages);
-    } catch (error) {
-      console.error('Error fetching fan messages:', error);
-      return res.status(500).json({ 
-        error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error' 
-      });
-    }
-  }
 }

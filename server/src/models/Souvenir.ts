@@ -2,23 +2,25 @@ import {
   Model,
   DataTypes,
   Optional,
-  Sequelize,
-  BelongsToManyAddAssociationMixin,
+  ForeignKey,
 } from "sequelize";
 import sequelize from "../config/orm";
-import { Job } from "./Job";
 
-// Define attributes for the Souvenir model
+import { Celebrity } from "./Celebrity";
+import Item from "./Item";
+
+
+
 export interface SouvenirAttributes {
   id: number;
   name: string;
   description: string;
-  price: number;
   images: string[];
+  celebrityId?:ForeignKey<Celebrity['id']>
+  itemId?:ForeignKey<Item['id']>
 }
 
-// Define creation attributes, making `id` optional
-export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id">;
+export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id"|"celebrityId"|"itemId">;
 
 export class Souvenir
   extends Model<SouvenirAttributes, SouvenirCreationAttributes>
@@ -27,17 +29,15 @@ export class Souvenir
   public id!: number;
   public name!: string;
   public description!: string;
-  public price!: number;
   public images!: string[];
+  public celebrityId?: ForeignKey<Celebrity['id']>
+  public itemId?: ForeignKey<Item['id']>
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Association Methods
-  public addJob!: BelongsToManyAddAssociationMixin<Job, number>;
 }
 
-// Initialize the Souvenir model
 Souvenir.init(
   {
     id: {
@@ -53,14 +53,24 @@ Souvenir.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    price: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
     images: {
       type: DataTypes.ARRAY(DataTypes.STRING), // PostgreSQL only
       allowNull: false,
     },
+    celebrityId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Celebrity,
+        key: 'id',
+        },
+        },
+        itemId: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: Item,
+            key: 'id',
+            },
+            },
   },
   {
     sequelize,

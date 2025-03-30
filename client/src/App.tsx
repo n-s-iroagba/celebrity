@@ -6,8 +6,7 @@ import AdminDashboardLayout from './components/AdminDashboardLayout';
 import Clients from './pages/admin/Client';
 
 import Schedules from './pages/admin/Schedules';
-import Tours from './pages/admin/Tours';
-import CelebrityDashboardLayout from './components/CelebrityDashboardLayout';
+
 import CryptoCheckOut from './pages/fan/CryptoCheckOut';
 import Shoutout from './pages/fan/Shoutout';
 
@@ -17,7 +16,6 @@ import VerifyEmail from './pages/fan/VerifyEmail';
 import Dashboard from './pages/fan/Dashboard';
 import ForgotPassword from './pages/fan/ForgotPassword';
 import Login from './pages/fan/Login';
-import Tours from './pages/fan/Tours';
 
 const App = () => {
   return (
@@ -41,7 +39,7 @@ const App = () => {
 
         <Route path="/dashboard" element={<Dashboard/>}/>
        
-        <Route path="/tours/:id" element={<Tours />} />
+        {/* <Route path="/tours/:id" element={<Tours />} /> */}
         {/* <Route path="/events/:id" element={<EventTickets />} />
         <Route path="/donations/:id" element={<DonationCampaigns />} />
         <Route path="/souvenirs/:id" element={<Souvenirs />} />
@@ -54,7 +52,7 @@ const App = () => {
         <Route path="/admin/schedules" element={<AdminDashboardLayout><Schedules /></AdminDashboardLayout>} />
         <Route path="/admin/clients" element={<AdminDashboardLayout><Clients /></AdminDashboardLayout>} />
      
-        <Route path="/celebrity/tours" element={<CelebrityDashboardLayout><Tours /></CelebrityDashboardLayout>} />
+        {/* <Route path="/celebrity/tours" element={<CelebrityDashboardLayout><Tours /></CelebrityDashboardLayout>} /> */}
 
       </Routes>
     </Router>

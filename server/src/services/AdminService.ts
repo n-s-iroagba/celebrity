@@ -10,24 +10,25 @@ import { UserService } from "./UserService";
 export class AdminService {
 
   static async addAdmin(adminData: Partial <Admin>,userData: Partial<User>){
-        const { firstName, surname, phoneNumber } = adminData;
+        const { firstName, surname,  } = adminData;
         const {
           email,
           password,
+          whatsAppNumber
         }= userData
         if (
           !firstName ||
           !surname ||
           !email ||
           !password ||
-          !phoneNumber
+          !whatsAppNumber
         ) {
           throw new Error("Missing required fields");
         }
-    const user = await UserService.createUser(Role.ADMIN, userData as {email:string,password:string})
+    const user = await UserService.createUser(Role.ADMIN, userData as {email:string,password:string,whatsAppNumber:string})
     const admin = await Admin.create({
       firstName, surname, userId: user.id,
-      phoneNumber
+  
     })
     await MailService.sendVerificationEmail(user);
     return admin;

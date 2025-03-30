@@ -5,26 +5,22 @@ import {
   Optional,
   NonAttribute,
 } from "sequelize";
-import { Admin } from "./Admin";
 import { User } from "./User";
 import sequelize from "../config/orm";
-import Chat from "./Chat";
+import { Job } from "./Job";
 
 interface FanAttributes {
   id: number;
   firstName: string;
   surname: string;
   profilePicture: string | null;
-  email: string;
-  whatsappNumber: string;
-  whatsappCode: string | null;
-  emailCode: string | null;
   countryOfResidence: string;
   gender: string;
   dateOfBirth: Date;
   userId: ForeignKey<User["id"]>;
   occupation: string;
   user?: NonAttribute<User>;
+  jobs?:NonAttribute<Job>
 }
 
 export type FanCreationAttributes = Optional<FanAttributes, "id">;
@@ -33,20 +29,17 @@ export class Fan
   extends Model<FanAttributes, FanCreationAttributes>
   implements FanAttributes
 {
-  email!: string;
-  emailCode!: string | null;
-  countryOfResidence!: string;
-  occupation!: string;
-  public profilePicture: string | null = null;
-  public userId!: number;
   public id!: number;
   public firstName!: string;
   public surname!: string;
-  public whatsappNumber!: string;
-  public whatsappCode!: string | null;
-  public country!: string;
+  public profilePicture: string | null = null;
+  public userId!: number;
+  public countryOfResidence!: string;
+  public occupation!: string;
+
   public dateOfBirth!: Date;
   public gender!: string;
+
 
   // Timestamps
   public readonly createdAt!: Date;
@@ -76,14 +69,7 @@ Fan.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    whatsappNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    whatsappCode: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+ 
     countryOfResidence: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -96,25 +82,15 @@ Fan.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    emailCode: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+  
     occupation: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+  
   },
   {
     sequelize,
     tableName: "fans",
   }
 );
-Fan.hasMany(Chat, {
-  foreignKey: "fanId",
-  as: "chats",
-});

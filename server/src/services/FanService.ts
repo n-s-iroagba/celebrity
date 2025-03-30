@@ -3,7 +3,6 @@ import { messageListToDto } from "../helper/messageDto";
 import Chat from "../models/Chat";
 import { Fan, FanCreationAttributes } from "../models/Fan";
 import { User } from "../models/User";
-import ChatService from "./ChatService";
 import { MailService } from "./MailService";
 import { MessageService } from "./MesageService";
 import { UserService } from "./UserService";
@@ -17,14 +16,15 @@ export class FanService {
           const {
             firstName,
             surname,
-            whatsappNumber,
-            country,
+            countryOfResidence,
             dateOfBirth,
             gender,
+            occupation,
           } = fanData;
         const {
           email,
           password,
+          whatsAppNumber,
         }= userData
           if (
             !firstName ||
@@ -32,25 +32,25 @@ export class FanService {
             !email||
             !password ||
             !gender||
-            !whatsappNumber ||
-            !country ||
-            !dateOfBirth
+            !whatsAppNumber ||
+            !countryOfResidence ||
+            !dateOfBirth||
+            !occupation
           ) {
             throw new Error("Missing user fields  required in createFan Service function");
           }
       try{
-          const user = await UserService.createUser(Role.FAN, userData as {email:string, password:string})
+          const user = await UserService.createUser(Role.FAN, userData as {email:string, password:string,whatsAppNumber:string})
     
          const fan = await Fan.create({
-          firstName,
-          surname,
-          whatsappNumber,
-          country,
-          dateOfBirth,
-          userId:user.id,
-          gender
-
-        } as FanCreationAttributes);
+           firstName,
+           surname,
+           countryOfResidence,
+           dateOfBirth,
+           userId: user.id,
+           gender,
+           occupation,
+         })
   //because of how special their message was
     
         // await MailService.sendVerificationEmail(user);
@@ -82,29 +82,27 @@ export class FanService {
   }
 
 
-  static async getFanChats(fanId: number) {
-
-    const chats:Chat[] = await ChatService.getFanChatwithMessages(fanId);
-    
-    if (!chats || chats.length === 0) {
-      return [];
-    }
-
-    // Process each chat
-    const messageListItems = await Promise.all(
-      chats.map(async (chat) => {
-        const [lastMessage, unreadCount] = await Promise.all([
-          MessageService.getLastChatMessage(chat.id),
-          MessageService.getUnreadCount(chat.id, chat.celebrityId)
-        ]);
-
-        return messageListToDto(chat, lastMessage, unreadCount);
-      })
-    );
 
 
-    return messageListItems.sort((a, b) => 
-      new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
-    );
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

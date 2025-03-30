@@ -17,6 +17,7 @@ const sequelize = new Sequelize(
     dialect: dbConfig.dialect as "mysql"
   }
 );
+
 // sequelize.authenticate()
 //   .then(() => {
 //     console.log('Connection has been established successfully.');

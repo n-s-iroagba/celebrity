@@ -3,31 +3,25 @@ import {
   DataTypes,
   ForeignKey,
   BelongsToGetAssociationMixin,
+  NonAttribute,
 } from "sequelize";
 import sequelize from "../config/orm";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
-import { ClubMembership } from "./ClubMembership";
-import { Charity } from "./Charity";
-import { Ticket } from "./Ticket";
-import { Souvenir } from "./Souvenir";
-import { Tour } from "./Tour";
+import Item from "./Item";
 
 export interface CartAttributes {
   id: number;
   celebrityId: ForeignKey<Celebrity["id"]>;
   fanId: ForeignKey<Fan["id"]>;
-  itemType: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
-  itemId: number;
+  items?: NonAttribute <Item[]>;
 }
-
-export class Cart extends Model<CartAttributes> implements CartAttributes {
+export type CartCreationAttribute = Omit<CartAttributes, 'id'>
+export class Cart extends Model<CartAttributes,CartCreationAttribute> implements CartAttributes {
   public id!: number;
   public celebrityId!: number;
   public fanId!: number;
-  public itemType!: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
-  public itemId!: number;
-
+  public items!: Item[];
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -59,14 +53,7 @@ Cart.init(
       },
       allowNull: false,
     },
-    itemType: {
-      type: DataTypes.ENUM("ClubMembership", "Charity", "Ticket", "Souvenir", "Tour"),
-      allowNull: false,
-    },
-    itemId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    
   },
   {
     sequelize,

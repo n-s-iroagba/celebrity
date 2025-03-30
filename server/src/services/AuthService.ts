@@ -32,9 +32,9 @@ export class AuthService {
       if (userToken !== payloadToken) {
         throw Error("invalid Token");
       }
-      if (payload.verificationCode !== user.verificationCode)
+      if (payload.verificationCode !== user.emailVerificationCode)
         throw new Error("wrong email verification code");
-      user.isVerified = true;
+      user.isEmailVerified = true;
       user.verificationToken = null;
       await user.save();
       let detailedUser;
@@ -62,7 +62,7 @@ export class AuthService {
     try {
       const user = await User.findOne({ where: { email } });
       if (!user) throw new Error("User not found");
-      if (!user.isVerified) throw new Error("Email not verified");
+      if (!user.isEmailVerified) throw new Error("Email not verified");
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) throw new Error("Invalid credentials");
       let detailedUser;
@@ -90,10 +90,10 @@ export class AuthService {
     try {
       const user = await User.findOne({ where: { verificationToken } });
       if (!user) throw new Error("User not found");
-      if (user.isVerified) throw new Error("User is already verified");
+      if (user.isEmailVerified) throw new Error("User is already verified");
 
       user.verificationToken = JwtService.generateEmailVerificationToken(user);
-      user.verificationCode = Math.floor(
+      user.emailVerificationCode = Math.floor(
         100000 + Math.random() * 900000
       ).toString();
       await user.save();

@@ -57,12 +57,12 @@ export class MessageService {
     });
   }
 
-  static async getUnreadCount(chatId: number, celebrityId: number) {
+  static async getUnreadCount(chatId: number,fanId:number) {
     return Message.count({
       where: {
         chatId,
         isSeen: false,
-        senderId: celebrityId
+        senderId:fanId
       }
     });
   }

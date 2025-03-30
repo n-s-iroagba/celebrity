@@ -11,7 +11,7 @@ interface AdminAttributes {
   id: number;
   firstName: string;
   surname: string;
-  phoneNumber: string;
+
   userId: number; 
 }
 
@@ -19,7 +19,7 @@ type AdminCreationAttributes = Optional<AdminAttributes, "id">;
 
 export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
   implements AdminAttributes {
- public phoneNumber!: string;
+
   public id!: number;
   public firstName!: string;
   public surname!: string;
@@ -49,10 +49,7 @@ export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
         type: DataTypes.STRING,
         allowNull: false,
       },
-      phoneNumber: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+    
       surname: {
         type: DataTypes.STRING,
         allowNull: false,

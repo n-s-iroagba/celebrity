@@ -1,6 +1,10 @@
 import { Model, DataTypes, Optional, NonAttribute } from "sequelize";
 import sequelize from "../config/orm";
 import Chat from "./Chat";
+import ClubMembership from "./ClubMembership";
+import { Tour } from "./Tour";
+import Souvenir from "./Souvenir";
+import Charity from "./Charity";
 
 export interface CelebrityAttributes {
   id: number;
@@ -11,9 +15,14 @@ export interface CelebrityAttributes {
   isConfirmed: boolean;
   stageName: string;
   jobs?: NonAttribute<Chat[]>;
+  events?: NonAttribute<Event[]>
+  clubMembershipPackages?:NonAttribute<ClubMembership[]>
+  tourPackages?:NonAttribute<Tour[]>
+  sourvenirs?:NonAttribute<Souvenir[]>
+  charityCampaigns?:NonAttribute<Charity[]>
 }
 
-type CelebrityCreationAttributes = Optional<CelebrityAttributes, "id">;
+export type CelebrityCreationAttributes = Optional<CelebrityAttributes, "id">;
 
 export class Celebrity
   extends Model<CelebrityAttributes, CelebrityCreationAttributes>

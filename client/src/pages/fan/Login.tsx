@@ -12,7 +12,7 @@ import Logo from "../../components/Logo";
 import { postWithNoAuth } from "../../utils/apiUtils";
 import { LoginData } from "../../types/LoginData";
 import { loginUrl } from "../../data/urls";
-import JWTService from "../../assets/services/JWTService";
+import JWTService from "../../services/JWTService";
 import '../../assets/styles/Auth.css'
 
 const Login: React.FC = () => {

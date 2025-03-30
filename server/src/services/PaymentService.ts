@@ -1,14 +1,21 @@
+import Charity from '../models/Charity';
+import ClubMembership from '../models/ClubMembership';
+import Item from '../models/Item';
 import { Payment } from '../models/Payment';
+import Souvenir from '../models/Souvenir';
+import Ticket from '../models/Ticket';
+import { Tour } from '../models/Tour';
 
 class PaymentService {
   // Create a new payment
-  async createPayment(fanId: number, amount: number, item: 'Event' | 'Tour' | 'Souvenir' | 'Charity' | 'Clubmembership', itemId: number) {
+  async createPayment(fanId: number, amount: number, items: Item[],date:Date ) {
     try {
       const payment = await Payment.create({
         fanId,
         amount,
-        item,
-        itemId,
+        items,
+        date
+     
       });
       return payment;
     } catch (error:any) {

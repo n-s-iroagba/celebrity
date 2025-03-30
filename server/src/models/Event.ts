@@ -1,9 +1,11 @@
-import { Optional, Model, NonAttribute, ForeignKey, DataTypes } from "sequelize";
-import sequelize  from "../config/orm"; 
+// models/Event.ts
+import { Optional, Model, NonAttribute, ForeignKey, DataTypes, BelongsToGetAssociationMixin } from "sequelize";
+import sequelize from "../config/orm"; 
 import { Ticket } from "./Ticket";
 import { Job } from "./Job";
+import { Celebrity } from "./Celebrity";
 
-interface EventAttributes {
+export interface EventAttributes {
   id: number;
   title: string;
   startDate: Date;
@@ -12,11 +14,11 @@ interface EventAttributes {
   description: string;
   image: string;
   tickets?: NonAttribute<Ticket[]>;
-  jobId: ForeignKey<Job["id"]>;
-  job?: NonAttribute<Job>;
+  celebrityId:ForeignKey<Celebrity['id']>
+  celebrity?: NonAttribute<Celebrity>;
 }
 
-type EventCreationAttributes = Optional<EventAttributes, "id">;
+export type EventCreationAttributes = Optional<EventAttributes, "id">;
 
 export class Event extends Model<EventAttributes, EventCreationAttributes> implements EventAttributes {
   public id!: number;
@@ -26,9 +28,15 @@ export class Event extends Model<EventAttributes, EventCreationAttributes> imple
   public location!: string;
   public description!: string;
   public image!: string;
-  public jobId!: number;
+  public celebrityId!:ForeignKey<Celebrity['id']>
+  
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // Association methods
+  public getJob!: BelongsToGetAssociationMixin<Job>;
+  public getTickets!: () => Promise<Ticket[]>;
+  public getCelebrity!: () => Promise<Celebrity>;
 }
 
 Event.init(
@@ -41,43 +49,56 @@ Event.init(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [3, 100]
+      }
     },
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: true
+      }
     },
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: true,
+        isAfterStartDate(value: Date) {
+          if (this.startDate && value <= this.startDate) {
+            throw new Error('End date must be after start date');
+          }
+        }
+      }
     },
     location: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [10, 2000]
+      }
     },
     image: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    jobId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Job,
-        key: "id",
-      },
+      validate: {
+        isUrl: true
+      }
     },
   },
   {
     sequelize,
-    modelName: "Event",
+    tableName: "events",
     timestamps: true,
   }
 );
-
-
-
-export default Event;

@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, ForeignKey, NonAttribute } from "sequelize";
 import sequelize from "../config/orm";
-import { Job } from "./Job";
+import { Celebrity } from "./Celebrity";
+import Item from "./Item";
 
 export interface TourAttributes {
   id: number;
@@ -9,16 +10,17 @@ export interface TourAttributes {
   price: number;
   duration: string
   features: string[];
-  jobId: ForeignKey<Job['id']>
-  job?: NonAttribute<Job>
+  celebrityId?: ForeignKey<Celebrity['id']>
+  job?: NonAttribute<Celebrity>
+  itemId?:ForeignKey<Item['id']>
 }
 
-export interface TourCreationAttributes extends Optional<TourAttributes, 'id'> {}
+export interface TourCreationAttributes extends Optional<TourAttributes, 'id'|'itemId'> {}
 
 export class Tour extends Model<TourAttributes, TourCreationAttributes> 
   implements TourAttributes {
-  jobId!: ForeignKey<Job['id']>
-  
+  celebrityId?: ForeignKey<Celebrity['id']>
+  itemId?: ForeignKey<Item['id']>;
   location!: string;
   features!: string[];
   public description!: String;

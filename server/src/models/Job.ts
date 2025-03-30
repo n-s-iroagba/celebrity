@@ -21,12 +21,17 @@ import { Tour } from "./Tour";
     tours?: NonAttribute<Tour[]>;
     events?:NonAttribute<Event[]>
   }
-  export type JobCreationAttributes = Optional<JobAttributes, "id">;
+  export type JobCreationAttributes = Optional<JobAttributes, "id"|'celebrity'|'fan'|'chat'|'tours'|'events'>;
   
-  export class Job extends Model<JobAttributes> implements JobAttributes {
+  export class Job extends Model<JobAttributes,JobCreationAttributes> implements JobAttributes {
     fanId!: number
     celebrityId!: number
     public id!: number;
+    celebrity?:NonAttribute<Celebrity>
+    fan?:NonAttribute<Fan>
+    chat?:NonAttribute<Chat>
+    tours?: NonAttribute<Tour[]>;
+    events?:NonAttribute<Event[]>
 
   
     public readonly createdAt!: Date;
@@ -56,5 +61,4 @@ import { Tour } from "./Tour";
         tableName: 'jobs',
       }
     );
-  
   

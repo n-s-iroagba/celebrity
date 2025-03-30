@@ -27,7 +27,7 @@ interface MessageCreationAttributes
     "id" | "isSeen" | "createdAt" | "updatedAt"
   > {}
 
-class Message
+export class Message
   extends Model<MessageAttributes, MessageCreationAttributes>
   implements MessageAttributes
 {

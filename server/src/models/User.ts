@@ -12,23 +12,31 @@ export interface UserAttributes {
   email: string;
   password: string;
   role:Role;
-  isVerified:boolean|null
-  verificationCode: string|null;
+  emailVerificationCode: string|null;
   verificationToken: string|null;
   passwordResetToken: string|null;
+  whatsAppNumber:string;
+  whatsAppVerificationCode:string |null;
+  isWhatsAppVerified:boolean;
+  isEmailVerified:boolean;
 }
 
 type UserCreationAttributes = Optional<UserAttributes, "id">;
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+
   public verificationToken!: string | null;
   public passwordResetToken!: string | null;
   public role!: Role;
   public id!: number;
   public email!: string;
   public password!: string;
-  public verificationCode!: string|null;
-  public isVerified!:boolean|null;
+  public emailVerificationCode!: string|null;
+  public isWhatsAppVerified!: boolean;
+  public isEmailVerified!: boolean;
+  public whatsAppNumber!: string;
+  public whatsAppVerificationCode!: string | null;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -44,16 +52,16 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
           type: DataTypes.STRING,
           allowNull: false,
         },
-        isVerified:{
-        type:DataTypes.BOOLEAN,
-        allowNull:true,
-        defaultValue:null
-        },
+
         verificationToken: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        verificationCode: {
+        emailVerificationCode: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        whatsAppVerificationCode: {
           type: DataTypes.STRING,
           allowNull: true,
         },
@@ -69,6 +77,16 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
           type: DataTypes.STRING,
           allowNull: false,
         },
+        whatsAppNumber: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        isWhatsAppVerified: {
+          type: DataTypes.BOOLEAN,
+        },
+        isEmailVerified: {
+          type: DataTypes.BOOLEAN,
+        }
       },
       {
         sequelize,
