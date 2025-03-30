@@ -122,5 +122,17 @@ export class CelebrityService {
     }
   }
 
-  // Note: No delete method as per requirements
+  static async deleteCelebrity(id:number){
+    try{
+      const celebrity = await Celebrity.findByPk(id);
+      if(!celebrity){
+        return null;
+      }
+      await celebrity.destroy();
+    }catch(error:any){
+      throw new Error(`Error deleting celebrity: ${error instanceof Error ? error.message : String(error)
+      }`);
+    }
+
+  }
 }

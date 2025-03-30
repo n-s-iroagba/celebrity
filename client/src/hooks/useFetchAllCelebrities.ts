@@ -13,6 +13,7 @@ const useFetchAllCelebrities = () => {
         const response = await fetch(fetchAllCelebritiesUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
+          
         }
         const data = await response.json();
         setCelebrities(data);

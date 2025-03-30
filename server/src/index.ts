@@ -6,7 +6,7 @@ import cors from 'cors'
 import authRouter from './routes/authRouter';
 import celebrityRouter from './routes/celebrityRouter';
 import { seedDatabase } from '../seedDatabase';
-import path from 'path'
+
 
 
 
@@ -38,7 +38,7 @@ sequelize.sync(
   // { force: true } 
 ).then(() => {
   console.log('Database synced successfully!');
-  // seedDatabase()
+  seedDatabase()
 }).catch((error: Error) => {
   console.error('Error syncing the database: ', error);
 });

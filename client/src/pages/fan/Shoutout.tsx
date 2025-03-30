@@ -32,10 +32,11 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
     firstName: "",
     surname: "",
     dateOfBirth: null,
-    country: "",
+    countryOfResidence: "",
     gender: "",
     email: "",
     whatsappNumber: "",
+    occupation:'',
     password: "",
     confirmPassword: "",
   });
@@ -90,7 +91,7 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
     if (!fanData.surname.trim()) newErrors.surname = "Surname is required.";
     if (!fanData.dateOfBirth)
       newErrors.dateOfBirth = "Date of Birth is required.";
-    if (!fanData.country) newErrors.country = "Country is required.";
+    if (!fanData.countryOfResidence) newErrors.country = "Country is required.";
     if (!fanData.gender) newErrors.gender = "Gender is required.";
     if (!fanData.email) {
       newErrors.email = "Email is required.";
@@ -139,6 +140,9 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
           type: mediaType === "video" ? "video/webm" : "audio/webm",
         });
         setRecordedMedia(URL.createObjectURL(blob));
+        const file = new File([blob], "recording.webm", { type: blob.type });
+        setMediaFile(file);
+        
         setShowRecordingModal(false);
       };
 
@@ -190,6 +194,8 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
 
     if (mediaFile) {
       formData.append("mediaFile", mediaFile);
+    }else{
+      alert('no media file')
     }
 
     try {
@@ -205,7 +211,7 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
           firstName,
           surname,
           dateOfBirth,
-          country,
+          countryOfResidence,
           gender,
           email,
           password,
@@ -216,7 +222,7 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
           firstName,
           surname,
           dateOfBirth,
-          country,
+          countryOfResidence,
           gender,
           whatsappNumber,
         };
@@ -266,7 +272,6 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
 
   const createTempCelebrity = (name: string) => {
     const newCelebrity: Celebrity = {
-      id: null,
       stageName: name,
       firstName: name.split(" ")[0],
       surname: name.split(" ")[1] || "",
@@ -533,7 +538,7 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
                         <Select
                           options={options}
                           onChange={(e: any) =>
-                            setFanData({ ...fanData, country: e.label })
+                            setFanData({ ...fanData, countryOfResidence: e.label })
                           }
                           className="bg-light date-input"
                         />
