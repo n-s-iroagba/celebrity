@@ -58,7 +58,7 @@ const ForgotPassword: React.FC = () => {
             <Form.Group>
               <div className="d-flex justify-content-evenly w-100 pb-3">
                 <button
-                  className="auth-button text-light py-2 small-font"
+                  className="auth-button  py-2 small-font"
                   type={submitting ? 'button' : 'submit'}
                 >
                   {submitting ? <Spinner animation="border" size="sm" /> : 'Submit'}

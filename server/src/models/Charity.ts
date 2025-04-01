@@ -87,5 +87,6 @@ Charity.init(
     timestamps: true,
   }
 );
-
+Charity.belongsTo(Celebrity, { foreignKey: "celebrityId", as: "celebrity" });
+Celebrity.hasMany(Charity, { foreignKey: "celebrityId", as: "charities" });
 export default Charity;

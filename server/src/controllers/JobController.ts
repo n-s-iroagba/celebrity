@@ -31,6 +31,7 @@ class JobController{
          
       
           const job = await JobService.getJobDetails(fanId,celebrityId);
+          
     
           return res.status(200).json(job);
         } catch (error: any) {

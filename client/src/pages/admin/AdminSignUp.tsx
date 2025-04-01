@@ -71,7 +71,7 @@ const AdminSignUp: React.FC = () => {
                 name="email"
                 value={loginData.email}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
+                className="custom-input bg-transparent form-control "
               />
               <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
             </Form.Group>
@@ -86,7 +86,7 @@ const AdminSignUp: React.FC = () => {
                 name="password"
                 value={loginData.password}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
+                className="custom-input bg-transparent form-control "
               />
               <InputGroup.Text onClick={showPassword}>
                 <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
@@ -103,7 +103,7 @@ const AdminSignUp: React.FC = () => {
 </a>
 
           <div className='d-flex justify-content-evenly w-100 pt-3'>
-            <button className='auth-button text-light' type={submitting ? 'button' : 'submit'}>
+            <button className='auth-button ' type={submitting ? 'button' : 'submit'}>
               {submitting ? <Spinner animation='border' size='sm' /> : 'Submit'}
             </button>
           </div>

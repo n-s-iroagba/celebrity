@@ -1,8 +1,9 @@
 import React from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 import '../assets/styles/HowItWorks.css'
 import { faArrowAltCircleLeft, faArrowAltCircleRight, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ActionButton from './ActionButton';
 
 const HowItWorks: React.FC = () => {
   const steps = [
@@ -26,22 +27,26 @@ const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <div className="py-1 mt-4 text-light">
+    <Container className="py-1 mt-4 ">
     <h2 className=''>How it works</h2>
       <Row className="">
         {steps.map((step, index) => (
           <Col key={index} className='px-0' sm={12} md={6} lg={12}>
-            <Card className="shadow-sm bg-grey text-light  rounded-4 border-0 h-100">
+            <Card className=" rounded-4 border-0 h-100">
               <Card.Body>
                 <Card.Title
-                  style={window.innerWidth >= 992 ? { height: '1cm' } : {}}
+                  style={
+                    // window.innerWidth >= 992 ?
+                     {fontSize:'large' } 
+                    //  : {}
+                    }
                   className="text-start"
                 >
                   {step.title}
                 </Card.Title>
-                <FontAwesomeIcon className="mb-1" color="white" icon={step.icon} />
+                <FontAwesomeIcon className="mb-1" icon={step.icon} />
                 <Card.Text
-                  style={window.innerWidth >= 992 ? { height: '1cm' } : {}}
+                  style={window.innerWidth >= 992 ? { height: '' } : {}}
                   className="text-start"
                 >
                   {step.text}
@@ -52,7 +57,8 @@ const HowItWorks: React.FC = () => {
           </Col>
         ))}
       </Row>
-    </div>
+      <ActionButton/>
+    </Container>
   );
 };
 

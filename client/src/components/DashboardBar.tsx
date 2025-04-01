@@ -19,7 +19,7 @@ const DashboardBar: React.FC<DashboardBarProps> = ({ props}) => {
           <Nav.Link
             key={item.title}
             onClick={() => props.clickHandler(item.component)}
-            className="d-flex align-items-center gap-2 text-dark"
+            className="d-flex align-items-center gap-2 "
           >
             <FontAwesomeIcon icon = {item.icon}/>
             <span>{item.title}</span>

@@ -69,3 +69,6 @@ Tour.init(
     tableName: 'tour_packages',
   }
 );
+
+Tour.belongsTo(Celebrity, { foreignKey: "celebrityId", as: "celebrity" });
+Celebrity.hasMany(Tour, { foreignKey: "celebrityId", as: "tours" });

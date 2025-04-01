@@ -4,7 +4,7 @@ const AdminVerification = () => {
   return (
     <Card className="w-100" style={{ maxWidth: "400px" }}>
       <Card.Body>
-        <Card.Title className="font-title text-dark fs-4 mb-3">
+        <Card.Title className="font-title  fs-4 mb-3">
           Enter Verification Code
         </Card.Title>
         <Card.Text className="text-muted mb-4">
@@ -12,7 +12,7 @@ const AdminVerification = () => {
         </Card.Text>
         <Form>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="verificationCode" className="text-dark fw-bold">
+            <Form.Label htmlFor="verificationCode" className=" fw-bold">
               Verification Code
             </Form.Label>
             <Form.Control

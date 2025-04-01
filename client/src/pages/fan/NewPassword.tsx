@@ -68,7 +68,7 @@ const NewPassword: React.FC = () => {
               name="newPassword"
               value={passwordData.newPassword}
               onChange={handleChange}
-              className="custom-input bg-transparent form-control text-light"
+              className="custom-input bg-transparent form-control "
             />
             <InputGroup.Text onClick={showPassword}>
               <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
@@ -86,7 +86,7 @@ const NewPassword: React.FC = () => {
               name="confirmPassword"
               value={passwordData.confirmPassword}
               onChange={handleChange}
-              className="custom-input bg-transparent form-control text-light"
+              className="custom-input bg-transparent form-control "
             />
             <InputGroup.Text onClick={showPassword}>
               <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
@@ -96,7 +96,7 @@ const NewPassword: React.FC = () => {
         </Form.Group>
 
         <div className="d-flex justify-content-evenly w-100 pt-3">
-          <button className="auth-button text-light" type={submitting ? 'button' : 'submit'}>
+          <button className="auth-button " type={submitting ? 'button' : 'submit'}>
             {submitting ? <Spinner animation="border" size="sm" /> : 'Submit'}
           </button>
         </div>

@@ -61,5 +61,7 @@ ClubMembership.init(
     underscored: true,
   }
 );
+ClubMembership.belongsTo(Celebrity, { foreignKey: "celebrityId", as: "celebrity" });
+Celebrity.hasMany(ClubMembership, { foreignKey: "celebrityId", as: "clubMemberships" });
 
 export default ClubMembership;

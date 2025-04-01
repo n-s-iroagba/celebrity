@@ -1,7 +1,13 @@
+
+
 export interface ClubMembership {
-  id?: number;
+  id: string;
   tier: string;
   features: string[];
   price: number;
 
+}
+
+export type BulkMembership = {
+  memberships:ClubMembership[]
 }

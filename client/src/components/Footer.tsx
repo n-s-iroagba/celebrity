@@ -8,17 +8,17 @@ import { COMPANY_EMAIL } from '../data/data';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-transparent text-light py-4 border-0 border-top border-light mt-5">
+    <footer className="bg-transparent  py-4 border-0 border-top shadow text-dark border-dark mt-5">
       <Container>
         <Row className="text-center text-lg-start">
           {/* Navigation Links */}
           <Col sm={12} md={6} lg={4} className="mb-3">
             <h5 className="fw-bold">Quick Links</h5>
             <ul className="list-unstyled">
-              <li><a href="#how-it-works" className="text-light text-decoration-none">How It Works</a></li>
-              <li><a href="#contact" className="text-light text-decoration-none">Contact Us</a></li>
-              <li><a href="#about" className="text-light text-decoration-none">About</a></li>
-              <li><a href="#faq" className="text-light text-decoration-none">FAQ</a></li>
+              <li><a href="#how-it-works" className=" text-decoration-none">How It Works</a></li>
+              <li><a href="#contact" className=" text-decoration-none">Contact Us</a></li>
+              <li><a href="#about" className=" text-decoration-none">About</a></li>
+              <li><a href="#faq" className=" text-decoration-none">FAQ</a></li>
             </ul>
           </Col>
 
@@ -34,16 +34,16 @@ const Footer: React.FC = () => {
           <Col sm={12} lg={4} className="mb-3">
             <h5 className="fw-bold">Follow Us</h5>
             <div className="d-flex justify-content-center justify-content-lg-start gap-3">
-              <a href="https://facebook.com" className="text-light" target="_blank" rel="noopener noreferrer">
+              <a href="https://facebook.com" className="" target="_blank" rel="noopener noreferrer">
                  <FontAwesomeIcon icon ={faFacebook}/>
               </a>
-              <a href="https://twitter.com" className="text-light" target="_blank" rel="noopener noreferrer">
+              <a href="https://twitter.com" className="" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon ={faX}/>
               </a>
-              <a href="https://instagram.com" className="text-light" target="_blank" rel="noopener noreferrer">
+              <a href="https://instagram.com" className="" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon ={faInstagram}/>
               </a>
-              <a href="https://linkedin.com" className="text-light" target="_blank" rel="noopener noreferrer">
+              <a href="https://linkedin.com" className="" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon ={faLinkedin}/>
               </a>
             </div>

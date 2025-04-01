@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
         <div className="w-100">
           <div className="mt-2 mb-4">
             <p className="mb-0">{`${getGreeting()},`}</p>
-            <h6 className="fw-bold text-dark">{'Nnamdi'}</h6>
+            <h6 className="fw-bold ">{'Nnamdi'}</h6>
           </div>
           {component}
         </div>

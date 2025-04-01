@@ -84,7 +84,7 @@ const Login: React.FC = () => {
                 name="email"
                 value={loginData.email}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
+                className="custom-input bg-transparent form-control "
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a valid email.
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
                 name="password"
                 value={loginData.password}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control text-light"
+                className="custom-input bg-transparent form-control "
               />
               <InputGroup.Text onClick={showPassword}>
                 <FontAwesomeIcon
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
 
           <div className="d-flex justify-content-evenly w-100 pt-3">
             <button
-              className="auth-button text-light"
+              className="auth-button "
               type={submitting ? "button" : "submit"}
             >
               {submitting ? <Spinner animation="border" size="sm" /> : "Submit"}

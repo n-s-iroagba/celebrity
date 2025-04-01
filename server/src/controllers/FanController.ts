@@ -47,7 +47,7 @@ export class FanController {
         // Save Message with mediaFile URL
         await MessageService.postMessage({
             mediaType,
-            content: message||mediaType,
+            content: message||mediaFile,
             chatId: chat.id,
             isSeen: false,
             senderId: fanId,

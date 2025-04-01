@@ -1,7 +1,6 @@
 import React from 'react';
 import { ListGroup, Image, Badge } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckDouble, faMicrophone, faVideo } from '@fortawesome/free-solid-svg-icons';
+
 import '../assets/styles/Interactions.css'; 
 
 import { IdProps } from '../types/IdProps';

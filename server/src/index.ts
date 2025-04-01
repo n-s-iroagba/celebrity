@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/uploads', express.static('../uploads'));
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from server!');
 }
@@ -35,7 +35,7 @@ app.use("/fans", fanRouter);
 app.use ('/auth',authRouter)
 app.use('/jobs', jobRouter);
 app.use('/celebrities',celebrityRouter )
-app.use('/uploads', express.static('uploads'));
+
 sequelize.sync(
   // { force: true } 
 ).then(() => {

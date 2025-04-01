@@ -43,7 +43,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({ images }) => {
     
       const imageChunks = chunkArray(images);
   return (
-    <Carousel className='bg-dark' indicators={false} controls={false} interval={3000}>
+    <Carousel className='bg-light' indicators={false} controls={false} interval={3000}>
     {imageChunks.map((chunk, index) => (
       <Carousel.Item key={index}>
         <div className="d-flex justify-content-center">

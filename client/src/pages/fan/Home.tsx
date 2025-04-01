@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
-import { Container, Navbar, Nav, Col, Row, Button } from "react-bootstrap";
+import { Container, Navbar, Nav, Col, Row, } from "react-bootstrap";
 
-import ActionButtons from "../../components/ActionButtons";
+import ActionButton from "../../components/ActionButton";
 import Footer from "../../components/Footer";
 import VideoContent from "../../components/VideoSection";
 import '../../assets/styles/Home.css';
+import '../../assets/styles/ActionButton.css';
 import Hero from "../../components/Hero";
 import ResponsiveCarousel from "../../components/ResponsiveCarousel";
 
@@ -23,13 +24,15 @@ const Home = () => {
   
 
   return (
-    <div style={{ backgroundColor: "black", color: "white", minHeight: "100vh" }}>
+    <div style={{
+      //  backgroundColor: "black", color: "white",
+        minHeight: "100vh" }}>
       <Navbar
-        style={{ backgroundColor: 'black', color: 'white' }}
+        // style={{ backgroundColor: 'black', color: 'white' }}
         expand="lg"
-        variant="dark"
+        variant="light"
         bg="transparent"
-        className="py-3 shadow-lg"
+        className="py-3 shadow"
       >
         <Container fluid>
           {/* Brand and Toggle Wrapper */}
@@ -46,10 +49,10 @@ const Home = () => {
           {/* Collapsible Content */}
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="/login" className="text-white hover-underline mx-3">
+              <Nav.Link href="/login" className=" hover-underline mx-3">
                 Login
               </Nav.Link>
-              <Nav.Link style={{width:'10rem'}} onClick={scrollToHowItWorks} className="text-white hover-underline ">
+              <Nav.Link style={{width:'10rem'}} onClick={scrollToHowItWorks} className=" hover-underline ">
                 How It Works
               </Nav.Link>
             </Nav>
@@ -58,9 +61,10 @@ const Home = () => {
       </Navbar>
 
       <Container className="py-5">
-        <header className=" mb-5">
-          <h1 className="display-inline">
+        <header className="">
+          <h1 className="display-inline mb-4" style={{height:'3cm'}}>
             <Typewriter
+            
            
   onInit={(typewriter) => {
     typewriter.changeDelay(10)
@@ -87,6 +91,7 @@ const Home = () => {
       
       .typeString('<span style="color:purple;">Your Favorite Celebrity!</span>')
       .start();
+      
   }}
 />
             </h1>
@@ -96,8 +101,8 @@ const Home = () => {
           
     
         </header>
-       <Row >
-        <Col xs={12} lg={6}>
+       <Row className="mt-5">
+        <Col className="mb-5" xs={12} lg={6}>
         <Hero/>
         </Col>
         <Col xs={12} lg={6}>
@@ -117,7 +122,7 @@ const Home = () => {
                    
                  </div>
                  <br/>
-                 <ActionButtons />
+                 <ActionButton />
                </Col>
 
        </Row>
@@ -129,7 +134,7 @@ const Home = () => {
           <div ref={howItWorksRef}>
           <VideoContent />
           </div>
-          <ActionButtons />
+         
           <ResponsiveCarousel/>
         </section>
       </Container>

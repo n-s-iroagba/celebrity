@@ -84,7 +84,7 @@ class JobService {
       if (!job) {
         throw new Error("Job not found.");
       }
-     console.log(job)
+     console.log(job.chat?.messages)
       // Return the fetched job details
       return job;
     } catch (error) {
