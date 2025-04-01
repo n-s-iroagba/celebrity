@@ -89,4 +89,8 @@ Chat.init(
   }
 );
 
+Chat.belongsTo(Job, { foreignKey: "jobId", as: "job" });
+Job.hasOne(Chat, { foreignKey: "jobId", as: "chat" });
 export default Chat;
+
+

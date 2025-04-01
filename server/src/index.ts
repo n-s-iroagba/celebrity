@@ -6,6 +6,7 @@ import cors from 'cors'
 import authRouter from './routes/authRouter';
 import celebrityRouter from './routes/celebrityRouter';
 import { seedDatabase } from '../seedDatabase';
+import jobRouter from './routes/jobRouter';
 
 
 
@@ -24,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 )
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow only this domain
+    origin: '*', // Allow only this domain
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
@@ -32,13 +33,14 @@ app.use(
 app.use("/admin", adminRouter)
 app.use("/fans", fanRouter);
 app.use ('/auth',authRouter)
+app.use('/jobs', jobRouter);
 app.use('/celebrities',celebrityRouter )
 app.use('/uploads', express.static('uploads'));
 sequelize.sync(
   // { force: true } 
 ).then(() => {
   console.log('Database synced successfully!');
-  seedDatabase()
+  // seedDatabase()
 }).catch((error: Error) => {
   console.error('Error syncing the database: ', error);
 });

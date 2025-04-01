@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional, NonAttribute, Association, ForeignKey } from "sequelize";
+import { DataTypes, Model, Optional, NonAttribute, ForeignKey } from "sequelize";
 import { ClubMembershipTier } from "../enums/ClubMembershipTier";
 import sequelize from "../config/orm";
 import { Job } from "./Job";
@@ -8,25 +8,23 @@ import Item from "./Item";
 export interface ClubMembershipAttributes {
   id: number;
   tier: ClubMembershipTier;
-  features: string[];
-  celebrityId?:ForeignKey<Celebrity['id']>;
-    itemId?:ForeignKey<Item['id']>
-    item?:NonAttribute<Item>
+  features: string;  // Store the features as a comma-separated string
+  celebrityId?: ForeignKey<Celebrity['id']>;
+  itemId?: ForeignKey<Item['id']>;
+  item?: NonAttribute<Item>;
 }
 
+export type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes, "id" | "celebrityId" | "itemId">;
 
-
-export type ClubMembershipCreationAttributes = Optional<ClubMembershipAttributes, "id"|"celebrityId"|"itemId">;
-
-export class ClubMembership 
-  extends Model<ClubMembershipAttributes, ClubMembershipCreationAttributes> 
+export class ClubMembership
+  extends Model<ClubMembershipAttributes, ClubMembershipCreationAttributes>
   implements ClubMembershipAttributes {
-  
+
   public id!: number;
   public tier!: ClubMembershipTier;
-  public features!: string[];
-  public celebrityId?:ForeignKey<Celebrity['id']>;
-  public itemId?:ForeignKey<Item['id']>;
+  public features!: string;  // Comma-separated string
+  public celebrityId?: ForeignKey<Celebrity['id']>;
+  public itemId?: ForeignKey<Item['id']>;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly jobs?: NonAttribute<Job[]>;
@@ -46,18 +44,16 @@ ClubMembership.init(
         isIn: [Object.values(ClubMembershipTier)],
       },
     },
-    
     features: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,  // Use STRING for storing a comma-separated list
       allowNull: false,
-      defaultValue: [],
+      defaultValue: "",
     },
-    celebrityId:{
-      type:DataTypes.INTEGER,
-      allowNull:true
-    }
+    celebrityId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
-  
   {
     sequelize,
     tableName: "club_memberships",
@@ -65,7 +61,5 @@ ClubMembership.init(
     underscored: true,
   }
 );
-
-
 
 export default ClubMembership;

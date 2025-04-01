@@ -91,4 +91,6 @@ Message.init(
   }
 );
 
+Message.belongsTo(Chat, { foreignKey: "chatId", as: "chat" });
+Chat.hasMany(Message, { foreignKey: "chatId", as: "messages" });
 export default Message;

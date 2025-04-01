@@ -64,7 +64,7 @@ Ticket.init(
       allowNull: false,
     },
     perks: {
-      type: DataTypes.ARRAY(DataTypes.STRING), // PostgreSQL only
+      type: DataTypes.JSON, // PostgreSQL only
       allowNull: false,
     },
     
@@ -87,5 +87,7 @@ Ticket.init(
     tableName: "tickets",
   }
 );
+Ticket.belongsTo(Event, { foreignKey: "eventId", as: "event" });
+Event.hasMany(Ticket, { foreignKey: "eventId", as: "tickets" });
 
 export default Ticket;

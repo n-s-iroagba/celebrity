@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import Celebrity from "../../types/Celebrity";
 import SearchPic from "../../components/SearchPic";
@@ -7,109 +7,41 @@ import { useNavigate } from "react-router-dom";
 import {
   Button,
   Form,
-  InputGroup,
   Modal,
   ProgressBar,
-  Spinner,
+
 } from "react-bootstrap";
 import useFetchAllCelebrities from "../../hooks/useFetchAllCelebrities";
 import { fanSignUpUrl } from "../../data/urls";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DatePicker from "react-datepicker";
-import countryList from "react-select-country-list";
-import AuthOption from "../../components/AuthOption";
-import ErrorMessage from "../../components/ErrorMessage";
-import Logo from "../../components/Logo";
-import MiniFooter from "../../components/MiniFooter";
-import Select from "react-select";
-import { Fan } from "../../types/Fan";
-import { OptionalIdProps } from "../../types/idProps";
+interface ShoutoutProps {
+  setComponentView: Dispatch<SetStateAction<"shoutout" | "signup">>;
+  selectedCelebrity: Celebrity | null;
+  setSelectedCelebrity: Dispatch<SetStateAction<Celebrity|null>>;
+  message: string;
+  setMessage: (msg: string) => void;
+  mediaType: "text" | "video" | "voice" | "";
+  setMediaType: (type: "text" | "video" | "voice" | "") => void;
+  mediaFile:File|null
+  setMediaFile:Dispatch<SetStateAction<File|null>>
+}
 
-const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
-  const [fanData, setFanData] = useState<Fan>({
-    firstName: "",
-    surname: "",
-    dateOfBirth: null,
-    countryOfResidence: "",
-    gender: "",
-    email: "",
-    whatsappNumber: "",
-    occupation:'',
-    password: "",
-    confirmPassword: "",
-  });
-
+const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaType,selectedCelebrity,setSelectedCelebrity,message,setMessage,mediaFile,setMediaFile}) => {
+ 
   const [showRecordingModal, setShowRecordingModal] = useState(false);
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [passwordType, setPasswordType] = useState<"text" | "password">(
-    "password"
-  );
-  const options = useMemo(() => countryList().getData(), []);
-  const [startDate, setStartDate] = useState(new Date());
   const { celebrities, loading, error } = useFetchAllCelebrities();
   const [query, setQuery] = useState("");
-  const [selectedCelebrity, setSelectedCelebrity] = useState<Celebrity | null>(
-    null
-  );
-  const [message, setMessage] = useState("");
-  const [mediaType, setMediaType] = useState<"text" | "video" | "voice" | "">(
-    ""
-  );
-  const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedMedia, setRecordedMedia] = useState<string | null>(null);
-  const [recordingTime, setRecordingTime] = useState(3000);
-
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
   const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
-  const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const navigate = useNavigate();
-
  const isSignedIn = false
 
-  const showPassword = () => {
-    setPasswordType((prev) => (prev === "text" ? "password" : "text"));
-  };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFanData({ ...fanData, [event.target.name]: event.target.value });
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!fanData.firstName.trim())
-      newErrors.firstName = "First Name is required.";
-    if (!fanData.surname.trim()) newErrors.surname = "Surname is required.";
-    if (!fanData.dateOfBirth)
-      newErrors.dateOfBirth = "Date of Birth is required.";
-    if (!fanData.countryOfResidence) newErrors.country = "Country is required.";
-    if (!fanData.gender) newErrors.gender = "Gender is required.";
-    if (!fanData.email) {
-      newErrors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(fanData.email)) {
-      newErrors.email = "Enter a valid email address.";
-    }
-    if (!fanData.password) {
-      newErrors.password = "Password is required.";
-    } else if (fanData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters.";
-    }
-    if (fanData.password !== fanData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const startRecording = async () => {
     setShowRecordingModal(true);
@@ -166,15 +98,10 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
     setShowRecordingModal(false);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setMediaFile(file);
-      setRecordedMedia(URL.createObjectURL(file));
-    }
-  };
+
 
   const handleSubmit = (e: React.FormEvent) => {
+
     e.preventDefault();
 
     if (!selectedCelebrity) {
@@ -186,6 +113,10 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
       alert("Please select a media type.");
       return;
     }
+    if(!isSignedIn){
+      setComponentView('signup')
+      return;
+    }
 
     const formData = new FormData();
     formData.append("celebrity", JSON.stringify(selectedCelebrity));
@@ -194,46 +125,9 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
 
     if (mediaFile) {
       formData.append("mediaFile", mediaFile);
-    }else{
-      alert('no media file')
     }
 
     try {
-      if (!isSignedIn) {
-        if (!validateForm()) {
-          return;
-        }
-
-        setSubmitting(true);
-        setErrorMessage("");
-
-        const {
-          firstName,
-          surname,
-          dateOfBirth,
-          countryOfResidence,
-          gender,
-          email,
-          password,
-          whatsappNumber,
-        } = fanData;
-
-        const fanDataPayload = {
-          firstName,
-          surname,
-          dateOfBirth,
-          countryOfResidence,
-          gender,
-          whatsappNumber,
-        };
-
-        const userDataPayload = {
-          email,
-          password,
-        };
-
-        formData.append("fanData", JSON.stringify(fanDataPayload));
-        formData.append("userData", JSON.stringify(userDataPayload));
         fetch(fanSignUpUrl, {
           method: "POST",
           body: formData,
@@ -247,8 +141,6 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
             console.error("Error sending shoutout:", error);
           });
         return;
-      }
-      alert("hi");
     } catch (er) {
       setSubmitting(false);
       console.error(er);
@@ -462,209 +354,8 @@ const Shoutout: React.FC<OptionalIdProps>= ({id}) => {
                   </div>
               
               )}
-              {!isSignedIn && (
-                <>
-                  <div className="auth-wrapper">
-                    <div>
-                      <AuthOption
-                        route={"login"}
-                        title={"Already have an account?"}
-                        buttonText={"Login"}
-                      />
-                    </div>
-                    <p className="text-sm text-muted text-center">
-                      <small>
-                        Please kindly sign up. We'll use your email and phone
-                        number to send you important information about your
-                        request.
-                      </small>
-                    </p>
-
-                    <Form className="form-wrapper p-2 pb-5">
-                      <div className="d-flex justify-content-center my-3">
-                        <Logo />
-                      </div>
-                      <h6 className="text-center">Sign Up</h6>
-
-                      {/* Form fields for fanData */}
-                      <Form.Group className="mb-3" controlId="formName">
-                        <Form.Label className="text-sm text-neutral-950 mb-2">
-                          First Name
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter your full name"
-                          className="custom-input"
-                          name="firstName"
-                          value={fanData.firstName}
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formSurname">
-                        <Form.Label className="text-sm text-neutral-950 mb-2">
-                          Surname
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter your surname"
-                          className="custom-input"
-                          name="surname"
-                          value={fanData.surname}
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        className="mb-3 d-flex gap-3 flex-wrap align-items-center"
-                        controlId="validationFormik04"
-                      >
-                        <Form.Label>Date of birth</Form.Label>
-                        <DatePicker
-                          className="bg-light date-input text-center"
-                          selected={startDate}
-                          onChange={(date: any) => {
-                            setFanData({ ...fanData, dateOfBirth: date });
-                            setStartDate(date);
-                          }}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        className="mb-3"
-                        controlId="validationFormik04"
-                      >
-                        <Form.Label>Country of residence</Form.Label>
-                        <Select
-                          options={options}
-                          onChange={(e: any) =>
-                            setFanData({ ...fanData, countryOfResidence: e.label })
-                          }
-                          className="bg-light date-input"
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        className="mb-3"
-                        controlId="validationFormik04"
-                      >
-                        <Form.Label>Gender</Form.Label>
-                        <Form.Select
-                          onChange={(e) =>
-                            setFanData({ ...fanData, gender: e.target.value })
-                          }
-                          className="bg-light form-control"
-                        >
-                          <option value="">Select your gender</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="non-binary">Non-binary</option>
-                        </Form.Select>
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formEmail">
-                        <Form.Label className="text-sm text-neutral-950 mb-2">
-                          Email Address
-                        </Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder="Enter your email"
-                          className="custom-input"
-                          name="email"
-                          value={fanData.email}
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formContactNumber"
-                      >
-                        <Form.Label className="text-sm text-neutral-950 mb-2">
-                          Whatsapp Number
-                          <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
-                        </Form.Label>
-                        <Form.Control
-                          type="tel"
-                          name="whatsappNumber"
-                          placeholder={`Enter your Whatsapp number`}
-                          className="custom-input"
-                          value={fanData.whatsappNumber}
-                          required
-                          pattern="^\+?[1-9]\d{1,14}$"
-                          maxLength={15}
-                          onChange={handleChange}
-                        />
-                        <Form.Text className="text-muted">
-                          Please enter a valid phone number (e.g., +1234567890).
-                        </Form.Text>
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formPassword">
-                        <Form.Label>Password</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type={passwordType}
-                            required
-                            name="password"
-                            value={fanData.password}
-                            onChange={handleChange}
-                            className="custom-input bg-transparent form-control text-light"
-                          />
-                          <InputGroup.Text onClick={showPassword}>
-                            <FontAwesomeIcon
-                              icon={
-                                passwordType === "text" ? faEye : faEyeSlash
-                              }
-                            />
-                          </InputGroup.Text>
-                        </InputGroup>
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formPassword">
-                        <Form.Label>Confirm password</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type={passwordType}
-                            required
-                            name="confirmPassword"
-                            value={fanData.confirmPassword}
-                            onChange={handleChange}
-                            className="custom-input bg-transparent form-control text-light"
-                          />
-                          <InputGroup.Text onClick={showPassword}>
-                            <FontAwesomeIcon
-                              icon={
-                                passwordType === "text" ? faEye : faEyeSlash
-                              }
-                            />
-                          </InputGroup.Text>
-                        </InputGroup>
-                      </Form.Group>
-                    </Form>
-
-                    {errorMessage && <ErrorMessage message={errorMessage} />}
-                    {Object.keys(errors).length > 0 && (
-                      <div className="alert alert-danger mt-3">
-                        <ul className="mb-0">
-                          {Object.values(errors).map((error, index) => (
-                            <li key={index}>{error}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    <Button className="auth-button mt-3" onClick={handleSubmit}>
-                      {submitting ? (
-                        <Spinner as="span" animation="border" size="sm" />
-                      ) : (
-                        "Send Shoutout"
-                      )}
-                    </Button>
-
-                    <MiniFooter />
-                  </div>
-                </>
-              )}
+              <Button onClick={handleSubmit}>Submit</Button>
+              
             </Form>
           </>
         )}

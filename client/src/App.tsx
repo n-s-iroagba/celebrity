@@ -8,7 +8,7 @@ import Clients from './pages/admin/Client';
 import Schedules from './pages/admin/Schedules';
 
 import CryptoCheckOut from './pages/fan/CryptoCheckOut';
-import Shoutout from './pages/fan/Shoutout';
+
 
 
 import CelebrityReply from './pages/fan/CelebrityReply';
@@ -16,6 +16,8 @@ import VerifyEmail from './pages/fan/VerifyEmail';
 import Dashboard from './pages/fan/Dashboard';
 import ForgotPassword from './pages/fan/ForgotPassword';
 import Login from './pages/fan/Login';
+import FirstShoutout from './pages/fan/FirstShoutout';
+import CelebrityDashboard from './pages/fan/CelebrityDashboard';
 
 const App = () => {
   return (
@@ -27,7 +29,7 @@ const App = () => {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/book/shout-out" element={<Shoutout />} />
+        <Route path="/book/shout-out" element={<FirstShoutout />} />
 
   
         <Route path="/login" element={<Login />} />
@@ -38,6 +40,7 @@ const App = () => {
         <Route path="/replies" element={<CelebrityReply />} />
 
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/celebrity-dashboard/:fanId/:celebrityId" element={<CelebrityDashboard/>}/>
        
         {/* <Route path="/tours/:id" element={<Tours />} /> */}
         {/* <Route path="/events/:id" element={<EventTickets />} />

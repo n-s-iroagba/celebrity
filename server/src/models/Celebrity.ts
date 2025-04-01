@@ -5,6 +5,7 @@ import ClubMembership from "./ClubMembership";
 import { Tour } from "./Tour";
 import Souvenir from "./Souvenir";
 import Charity from "./Charity";
+import { Event } from "./Event";
 
 export interface CelebrityAttributes {
   id: number;
@@ -79,3 +80,9 @@ Celebrity.init(
     tableName: "celebrities",
   }
 );
+Celebrity.hasMany(
+  Event,{
+    foreignKey: "celebrityId",
+    as: "events",
+  }
+)

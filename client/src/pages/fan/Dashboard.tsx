@@ -43,20 +43,20 @@ const notifications = [
 
 
 
-const Dashboard: React.FC= () => {
+const Dashboard: React.FC = () => {
   const id = 1
   const [showSidebar, setShowSidebar] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const toggleSidebar = () => setShowSidebar((prev) => !prev);
   const toggleNotifications = () => setShowNotifications((prev) => !prev);
-  const [component, setComponent] = useState<ReactNode>(<Interactions id={id}/>);
-  const clickHandler = (component:ReactNode) => {
+  const [component, setComponent] = useState<ReactNode>(<Interactions id={id} />);
+  const clickHandler = (component: ReactNode) => {
     setComponent(component)
   }
-  const props = returnDashboardNavItems(id,clickHandler)
- 
+  const props = returnDashboardNavItems(id, clickHandler)
+
   return (
-    <div className=" min-vh-100 bg-light ">
+    <div className=" min-vh-100 ">
       <div className="d-flex w-100  justify-content-between">
         <FontAwesomeIcon
           className="d-lg-none"
@@ -66,20 +66,20 @@ const Dashboard: React.FC= () => {
           aria-label="Toggle Sidebar"
           size="2x"
         />
-     <div className="d-flex justify-content-center justify-content-lg-end w-50 ">
-  <Logo />
-</div>
+        <div className="d-flex justify-content-center justify-content-lg-end w-50 ">
+          <Logo />
+        </div>
         <div className="d-flex">
           <Button onClick={toggleNotifications} variant="link" className="p-0">
             <FontAwesomeIcon icon={faBell} size="lg" />
           </Button>
           {notifications.length > 0 && (
-           
-           <div className="d-flex justify-content-center align-items-center notification-badge-container">
-           <Badge pill bg="danger">
-             +{notifications.length}
-           </Badge>
-         </div>
+
+            <div className="d-flex justify-content-center align-items-center notification-badge-container">
+              <Badge pill bg="danger">
+                +{notifications.length}
+              </Badge>
+            </div>
 
           )}
         </div>
@@ -98,18 +98,18 @@ const Dashboard: React.FC= () => {
           <Offcanvas.Header closeButton>
           </Offcanvas.Header>
           <Offcanvas.Body>
-          <DashboardBar props={props} />
+            <DashboardBar props={props} />
           </Offcanvas.Body>
         </Offcanvas>
 
-       <div >
-        <div className="mt-2 mb-4">
-          <p className="mb-0">{`${getGreeting()},`}</p>
-          <h6 className="fw-bold text-dark">{'Nnamdi'}</h6>
+        <div className="w-100">
+          <div className="mt-2 mb-4">
+            <p className="mb-0">{`${getGreeting()},`}</p>
+            <h6 className="fw-bold text-dark">{'Nnamdi'}</h6>
+          </div>
+          {component}
         </div>
-        {component}
       </div>
-</div>
       <Notifications show={showNotifications} onClose={() => setShowNotifications(false)} notifications={notifications} />
 
     </div >

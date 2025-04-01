@@ -8,53 +8,58 @@ import JobService from "../services/JobService";
 export class FanController {
 
   static async createFan(req: Request, res: Response): Promise<any> {
-    let {
+    let { fan, mediaType, message, celebrity, user } = req.body;
+
+    console.log(req.body);
     
-      fanData,
-      mediaType,
-      mediaFile,
-      message,
-      celebrity,
-      userData,
-      content
-
-    } = req.body
-
-
-    fanData = JSON.parse(fanData);
-    userData = JSON.parse(userData);
+    // Parse JSON fields
+    fan = JSON.parse(fan);
+    user = JSON.parse(user);
     celebrity = JSON.parse(celebrity);
-    const mediaData ={
-      mediaType:mediaType,
-      mediaFile,
-      message:message,
-    }
-    if (!req.file&& mediaType !=='text') {
-      throw Error ('No file uploaded');
-    }
-    try {
-      if (!celebrity.id){
-         console.log('no celebrity id')
-         console.log('celebrity',celebrity)
-        celebrity = await CelebrityService.createCelebrity(
-          celebrity
-        )
 
-      }
-      console.log('fan data is',fanData)
-      console.log('user data is',userData)
-      console.log('celebrity is ',celebrity)
-     
-      const {token,fanId} = await FanService.createFan(fanData, userData);
-      const job = await JobService.createJob({fanId,celebrityId:celebrity.id})
-      const chat = await ChatService.createChat({ jobId: job.id });
-      await MessageService.postMessage({...mediaData,content:content,chatId:chat.id,isSeen:false,senderId:fanId})
-      return res.status(201).json(token);
-    } catch (error: any) {
-      console.error(error)
-      return res.status(500).json({ error: error.message });
+    // Extract media file URL
+    let mediaFile = null;
+    if (req.file && mediaType !== "text") {
+        mediaFile = `/uploads/${req.file.filename}`; // Adjust this based on your setup
     }
-  }
+
+ 
+
+    if (!mediaFile && mediaType !== "text") {
+        throw new Error("No file uploaded");
+    }
+
+    try {
+        if (!celebrity.id) {
+            console.log("No celebrity ID found, creating new...");
+            celebrity = await CelebrityService.createCelebrity(celebrity);
+        }
+
+        console.log("Fan data:", fan);
+        console.log("User data:", user);
+        console.log("Celebrity data:", celebrity);
+
+        // Create Fan, Job, Chat
+        const { token, fanId } = await FanService.createFan(fan, user);
+        const job = await JobService.createJob({ fanId, celebrityId: celebrity.id });
+        const chat = await ChatService.createChat({ jobId: job.id });
+
+        // Save Message with mediaFile URL
+        await MessageService.postMessage({
+            mediaType,
+            content: message||mediaType,
+            chatId: chat.id,
+            isSeen: false,
+            senderId: fanId,
+        });
+
+        return res.status(201).json(token);
+    } catch (error: any) {
+        console.error(error);
+        return res.status(500).json({ error: error.message });
+    }
+}
+
   static async getAllFans(req: Request, res: Response): Promise<any> {
     try {
       const fans = await FanService.getAllFans();

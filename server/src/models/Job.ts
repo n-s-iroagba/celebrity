@@ -61,4 +61,9 @@ import { Tour } from "./Tour";
         tableName: 'jobs',
       }
     );
+
+Job.belongsTo(Celebrity, { foreignKey: "celebrityId", as: "celebrity" });
+Celebrity.hasMany(Job, { foreignKey: "celebrityId", as: "jobs" });
+
+
   
