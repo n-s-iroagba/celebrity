@@ -37,10 +37,10 @@ app.use('/jobs', jobRouter);
 app.use('/celebrities',celebrityRouter )
 
 sequelize.sync(
-  // { force: true } 
+  { force: true } 
 ).then(() => {
   console.log('Database synced successfully!');
-  // seedDatabase()
+  seedDatabase()
 }).catch((error: Error) => {
   console.error('Error syncing the database: ', error);
 });

@@ -1,0 +1,229 @@
+/* Container Styling */
+.container-custom {
+    max-width: 800px;
+    margin-top: 5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Form Styling */
+  .form-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Label Styling */
+  .form-label-custom {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    font-size: 0.9rem;
+  }
+  
+
+  
+
+  /* Button Styling */
+  .button-custom {
+    background: linear-gradient(45deg, #8a2be2, #9400d3);
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    width: 7rem;
+    padding: 0.5rem;
+  }
+  
+  /* Forgot Password Link Styling */
+  .forgot-password-link {
+    color: #8a2be2;
+  }
+  
+  /* Sign-up Link Styling */
+  .signup-link {
+    color: #8a2be2;
+    font-weight: 600;
+  }
+  
+  /* Remember Me Checkbox Styling */
+  .checkbox-custom {
+    color: #6c757d;
+  }
+  
+
+
+.signup-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 700px;
+}
+
+.form-control-custom {
+  background: transparent;
+  border: none !important;
+  border-bottom: 2px solid rgb(184, 116, 184) !important;
+  border-radius: 0 !important;
+  padding-left: 0;
+  transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+  box-shadow: none !important;
+  border-bottom-color: indigo !important;
+}
+
+  /* Placeholder Styling */
+  .form-control-custom::placeholder {
+    color: #aaa;
+    opacity: 1;
+  }
+  
+
+.auth-button {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 500;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(116, 65, 148, 0.3);
+}
+
+.input-group-text {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #e0c3fc !important;
+  color: #6a1b9a !important;
+  transition: all 0.3s ease;
+}
+
+.form-check-input:checked {
+  background-color: #6a1b9a !important;
+  border-color: #6a1b9a !important;
+}
+
+.form-check-label a {
+  color: #6a1b9a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-check-label a:hover {
+  text-decoration: underline;
+}
+
+.react-select__control {
+  border: none !important;
+  border-bottom: 2px solid #e0c3fc !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.react-select__control--is-focused {
+  border-bottom-color: #6a1b9a !important;
+}
+
+.react-select__menu {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #6a1b9a !important;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #666;
+}
+
+.auth-footer a {
+  color: #6a1b9a;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  .auth-button {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}
+
+.custom-checkbox .form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  border: 2px solid #6a1b9a;
+  margin-top: 0.2em;
+}
+
+.custom-checkbox .form-check-input:checked {
+  background-color: #6a1b9a;
+  border-color: #6a1b9a;
+}
+
+.custom-checkbox .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(106, 27, 154, 0.25);
+}
+
+.checkbox-label {
+  color: #4a148c;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.terms-link {
+  color: #6a1b9a;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.terms-link:hover {
+  color: #4a148c;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.custom-checkbox:hover .form-check-input:not(:checked) {
+  border-color: #8e24aa;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Animation for checkmark */
+@keyframes checkmark {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.custom-checkbox .form-check-input:checked::after {
+  animation: checkmark 0.2s ease-out;
+}

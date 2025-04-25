@@ -1,16 +1,14 @@
 import React, { useRef } from "react";
-import { Container, Navbar, Nav, Col, Row, } from "react-bootstrap";
+import { Container, Navbar, Nav, Col, Row } from "react-bootstrap";
 
 import ActionButton from "../../components/ActionButton";
 import Footer from "../../components/Footer";
 import VideoContent from "../../components/VideoSection";
-import '../../assets/styles/Home.css';
-import '../../assets/styles/ActionButton.css';
+// import "../../assets/styles/Home.css";
+import "../../assets/styles/ActionButton.css";
 import Hero from "../../components/Hero";
 import ResponsiveCarousel from "../../components/ResponsiveCarousel";
-
-import Typewriter from 'typewriter-effect';
-
+import './Home.css'
 
 const Home = () => {
   const howItWorksRef = useRef<any>(null);
@@ -21,22 +19,24 @@ const Home = () => {
     }
   };
 
-  
-
   return (
-    <div style={{
-      //  backgroundColor: "black", color: "white",
-        minHeight: "100vh" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+      }}
+      className="gradient-animation"
+    >
       <Navbar
         // style={{ backgroundColor: 'black', color: 'white' }}
         expand="lg"
-        variant="light"
+       
         bg="transparent"
-        className="py-3 shadow"
+        className="py-3 custom-navbar"
+
       >
         <Container fluid>
           {/* Brand and Toggle Wrapper */}
-          <div className="d-flex align-items-center w-100">
+          <div className="d-flex align-items-center w-100 me-auto">
             {/* Brand */}
             <Navbar.Brand href="#" className="fs-2 font-title me-auto">
               Vercel Celebrity Connect
@@ -49,10 +49,14 @@ const Home = () => {
           {/* Collapsible Content */}
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="/login" className=" hover-underline mx-3">
+              <Nav.Link href="/login" className=" hover-underline ">
                 Login
               </Nav.Link>
-              <Nav.Link style={{width:'10rem'}} onClick={scrollToHowItWorks} className=" hover-underline ">
+              <Nav.Link
+                style={{ width: "30rem" }}
+                onClick={scrollToHowItWorks}
+                className=" hover-underline "
+              >
                 How It Works
               </Nav.Link>
             </Nav>
@@ -60,85 +64,39 @@ const Home = () => {
         </Container>
       </Navbar>
 
-      <Container className="py-5">
-        <header className="">
-          <h1 className="display-inline mb-4" style={{height:'3cm'}}>
-            <Typewriter
-            
-           
-  onInit={(typewriter) => {
-    typewriter.changeDelay(10)
-    .changeDeleteSpeed(10)
-    .typeString('<span className="">Send A Personal Message To <span style="color:violet;">Your Favorite Celebrity!</span></span>')
-    .pauseFor(2000)
-    .deleteChars(24)
-    .typeString(' <span style="color:purple">An Actor!</span>')
-      .pauseFor(2000)
-      .deleteChars(9)
-      .typeString('<span style="color:violet;">A Musician!</span>')
-      .pauseFor(2000)
-      .deleteChars(11)
-   
-     
-      .typeString('<span style="color:purple;">An Athelete!</span>')
-      .pauseFor(2000)
-      .deleteChars(12)
-    
- 
-      .typeString('<span style="color:violet;">A TV Or Reality Star!</span>')
-      .pauseFor(2000)
-      .deleteChars(21)
-      
-      .typeString('<span style="color:purple;">Your Favorite Celebrity!</span>')
-      .start();
-      
-  }}
-/>
-            </h1>
-          <p className="text-grey">
-            Connect with actors, musicians, athletes, and more for video calls, shout-outs, and personalized experiences.
-          </p>
-          
-    
-        </header>
-       <Row className="mt-5">
-        <Col className="mb-5" xs={12} lg={6}>
-        <Hero/>
-        </Col>
-        <Col xs={12} lg={6}>
-          
-                 <div className="fs-6">
-                   <h1>Connect With Your Favorite Celebrities All Over The World!</h1>
-                
-                   <p>
-                     Send a shoutout, favorite celebrities from anywhere on the globe!
-                   </p>
-                   
-                   <p>It's simple and free.</p>
-                   
-                   <p>And a response is guaranteed.</p>
-                   
-                   <p>Click any of the buttons below to get started</p>
-                   
-                 </div>
-                 <br/>
-                 <ActionButton />
-               </Col>
+      <div className="px-3">
+        <Row className="mt-5 animated-side-section gy-3 mb-3">
+          <Col className="" xs={12} lg={6}>
+            <Hero />
+          </Col>
 
-       </Row>
-      
+          <Col xs={12} lg={6} className=" text-start">
+            <div className="hero-content">
+              <h1 className="hero-title mb-4">
+                Connect with Your Your Favorite Celebrities
+                <span className="highlight d-block mt-2">
+                  Like Never Before.
+                </span>
+              </h1>
+              <p className="lead ">
+                Share your thoughts, admiration, and creativity directly with
+                your favorite stars through text, video, or voice messages at no
+                cost.
+              </p>
+              <ActionButton />
+            </div>
+          </Col>
+        </Row>
+
         <section id="py-5">
-        
-
           {/* Add ref to HowItWorks */}
           <div ref={howItWorksRef}>
-          <VideoContent />
+            <VideoContent />
           </div>
-         
-          <ResponsiveCarousel/>
-        </section>
-      </Container>
 
+          <ResponsiveCarousel />
+        </section>
+      </div>
       <Footer />
     </div>
   );

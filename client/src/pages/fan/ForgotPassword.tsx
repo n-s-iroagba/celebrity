@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import { Spinner } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import ErrorMessage from '../../components/ErrorMessage';
-import '../../assets/styles/Auth.css';
-import MiniFooter from '../../components/MiniFooter';
+import '../../assets/styles/Form.css';
 import Logo from '../../components/Logo';
 
 const ForgotPassword: React.FC = () => {
@@ -33,9 +32,9 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-      <div className="pt-4 mb-4 responsive-padding-sides">
-        <div className="form-wrapper mt-4 px-5 pt-5 mx-1">
-        <div className='d-flex justify-content-center w-100'>
+    <div className="purple-gradient-bg d-flex align-items-center">
+    <Container className="container-custom mt-0 py-3 bg-light">
+      <div className="d-flex justify-content-center mb-3">
           <Logo/>
         </div>
           <h6 className="text-center">Forgot Password</h6>
@@ -48,7 +47,7 @@ const ForgotPassword: React.FC = () => {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="custom-input bg-transparent"
+                className="form-control-custom"
               />
               <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
             </Form.Group>
@@ -66,10 +65,10 @@ const ForgotPassword: React.FC = () => {
               </div>
             </Form.Group>
           </Form>
-          <ErrorMessage message={errorMessage} />
-        </div>
+          {errorMessage &&  <ErrorMessage message={errorMessage} />}
+        </Container>
       </div>
-      <MiniFooter />
+
     </>
   );
 };

@@ -1,64 +1,44 @@
-import React from 'react';
-import { Row, Col, Card, Container } from 'react-bootstrap';
-import '../assets/styles/HowItWorks.css'
-import { faArrowAltCircleLeft, faArrowAltCircleRight, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faVideo, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 import ActionButton from './ActionButton';
 
+
 const HowItWorks: React.FC = () => {
-  const steps = [
-    {
-      icon: faSearch,
-      title: 'Search celeb',
-      text: 'Find your favorite celebrity by searching their name in our search bar.',
-    },
-    {
-      icon: faArrowAltCircleLeft,
-      title: 'Send a shoutout message',
-      text: 'Type and send your shout out message.'
-      // title: ' Book a schedule for calls or Request Personalized Video',
-      // text: 'Schedule a call at a time that is convenient for you or request for a personalized video.',
-    },
-    {
-      icon: faArrowAltCircleRight,
-      title: ' Get a response',
-      text: 'Receive a prompt response tailored to your selected conversation type.',
-    },
-  ];
+
 
   return (
-    <Container className="py-1 mt-4 ">
-    <h2 className=''>How it works</h2>
-      <Row className="">
-        {steps.map((step, index) => (
-          <Col key={index} className='px-0' sm={12} md={6} lg={12}>
-            <Card className=" rounded-4 border-0 h-100">
-              <Card.Body>
-                <Card.Title
-                  style={
-                    // window.innerWidth >= 992 ?
-                     {fontSize:'large' } 
-                    //  : {}
-                    }
-                  className="text-start"
-                >
-                  {step.title}
-                </Card.Title>
-                <FontAwesomeIcon className="mb-1" icon={step.icon} />
-                <Card.Text
-                  style={window.innerWidth >= 992 ? { height: '' } : {}}
-                  className="text-start"
-                >
-                  {step.text}
-                </Card.Text>
-
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-      <ActionButton/>
-    </Container>
+    <section className=" ">
+    
+          <Row className="gy-5 mb-5  justify-content-center text-center">
+            <Col xs={12} >
+              <div className=" h-100">
+                <FontAwesomeIcon icon={faCommentDots}  size='2x' />
+                <h3 className=" mb-2">Text Messages</h3>
+                <p className="mb-0">Share your thoughts in heartfelt written messages</p>
+              </div>
+            </Col>
+            <Col xs={12} >
+              <div className=" h-100">
+                <FontAwesomeIcon icon={faVideo}  size='2x' />
+                <h3 className=" mb-2">Video Clips</h3>
+                <p className="mb-0">Express yourself through personal video messages</p>
+              </div>
+            </Col>
+            <Col xs={12} >
+              <div className=" h-100">
+                <FontAwesomeIcon icon={faMicrophone} size='2x'  />
+                <h3 className=" mb-2">Voice Notes</h3>
+                <p className="mb-0">Send authentic audio messages with your unique voice</p>
+              </div>
+            </Col>
+          </Row>
+          <ActionButton/>
+        
+      </section>
+     
+ 
   );
 };
 

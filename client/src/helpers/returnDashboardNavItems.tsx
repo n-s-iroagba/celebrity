@@ -1,6 +1,6 @@
 import { faTeamspeak } from "@fortawesome/free-brands-svg-icons"
 import { faUser, faUsersRays, faUsers, faGifts, faDollar, faFighterJet, faLocation } from "@fortawesome/free-solid-svg-icons"
-import Interactions from "../components/Interactions"
+import ChatList from "../components/ChatList"
 import MyBookedEvents from "../components/MyBookedEvents"
 import MyClubMembership from "../components/MyClubMembership"
 import MyDonationCampaigns from "../components/MyDonationCampaigns"
@@ -19,7 +19,7 @@ const returnDashboardNavItems = (id:number,clickHandler:(component:ReactNode)=>v
             
             { title: "Make a shoutout", icon: faTeamspeak, component: <Shoutout id={id}/> },
             { title: "Profile", icon: faUser, component: <Profile id={id}/> },
-            { title: "My Interactions", icon: faUsersRays, component: <Interactions id={id}/> },
+            { title: "My ChatList", icon: faUsersRays, component: <ChatList id={id}/> },
             { title: "Clubs I belong To", icon: faUsers, component: <MyClubMembership id={id}/> },
             { title: "Souvenirs I've Received", icon: faGifts, component: <MySouvenirs id={id}/> },
             { title: "Charity Campaigns I've supported", icon: faDollar, component: <MyDonationCampaigns id={id}/>},

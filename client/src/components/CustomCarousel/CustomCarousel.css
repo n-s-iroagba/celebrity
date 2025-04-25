@@ -1,0 +1,31 @@
+.carousel-container {
+    width: 600px; /* Three cards, each 200px wide */
+    height: 200px; /* Match image height */
+    margin: auto;
+    position: relative;
+    overflow: hidden; /* Ensures only part of the side cards is visible */
+    display: flex;
+    justify-content: center;
+  }
+  
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    position: relative;
+  }
+  
+  .carousel-card {
+    flex: 0 0 200px; /* Each card is 200px wide */
+    height: 200px; /* Each card is 200px tall */
+    margin: 0 -100px; /* Overlaps adjacent cards */
+    position: relative;
+  }
+  
+  .carousel-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  

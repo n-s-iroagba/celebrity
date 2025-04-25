@@ -7,7 +7,7 @@ import { InputGroup, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import ErrorMessage from '../../components/ErrorMessage';
-import AuthOption from '../../components/AuthOption';
+
 import Logo from '../../components/Logo';
 
 const AdminLogin: React.FC = () => {
@@ -111,7 +111,6 @@ const AdminLogin: React.FC = () => {
         <ErrorMessage message={errorMessage} />
       </div>
       <div className='mt-5'>
-        <AuthOption route={'signup'} title={"Don't have an account?"} buttonText={'Sign Up'} />
       </div>
     </div>
   );

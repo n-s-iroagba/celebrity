@@ -3,9 +3,10 @@ import SearchBar from "../../components/SearchBar";
 import Celebrity from "../../types/Celebrity";
 import SearchPic from "../../components/SearchPic";
 import { useNavigate } from "react-router-dom";
-
+import '../../assets/styles/Shoutout.css'
 import {
   Button,
+  Container,
   Form,
   Modal,
   ProgressBar,
@@ -13,6 +14,9 @@ import {
 } from "react-bootstrap";
 import useFetchAllCelebrities from "../../hooks/useFetchAllCelebrities";
 import { fanSignUpUrl } from "../../data/urls";
+import { faVideo, faComment, faMicrophone, faTimesCircle, faUsersBetweenLines } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMeetup } from "@fortawesome/free-brands-svg-icons";
 interface ShoutoutProps {
   setComponentView: Dispatch<SetStateAction<"shoutout" | "signup">>;
   selectedCelebrity: Celebrity | null;
@@ -41,7 +45,12 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
   const navigate = useNavigate();
  const isSignedIn = false
 
-
+ const stopMediaTracks = () => {
+  if (mediaStreamRef.current) {
+    mediaStreamRef.current.getTracks().forEach(track => track.stop());
+    mediaStreamRef.current = null;
+  }
+};
 
   const startRecording = async () => {
     setShowRecordingModal(true);
@@ -75,9 +84,9 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
         const file = new File([blob], "recording.webm", { type: blob.type });
         setMediaFile(file);
         
+        stopMediaTracks(); // Add this line
         setShowRecordingModal(false);
       };
-
       mediaRecorderRef.current.start();
     } catch (error) {
       console.error("Error accessing media devices:", error);
@@ -191,175 +200,234 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
   }
 
   return (
-    <div className="d-flex justify-content-center">
-      <div className="md-w-50 px-5">
-        <h6 className="mt-3 text-center">
-          Connect With Your Favorite Celebrities All Over The World!
-        </h6>
-        <SearchPic />
-        <div className="d-flex justify-content-center text-center py-3">
-          <small>
-            Kindly search the celebrity you wish to send a shoutout to.
-          </small>
-        </div>
-        <SearchBar
-          query={query}
-          onQueryChange={handleSearchChange}
-          items={filteredCelebrities}
-          onSelectItem={handleSelectCelebrity}
-          renderItem={(celebrity) => (
-            <div className="d-flex align-items-center">
-              <img
-                src={celebrity.image}
-                alt={celebrity.stageName}
-                style={{ width: 40, height: 40, borderRadius: "50%" }}
-                className="me-3"
-              />
-              <div>
-                <strong>
-                  {celebrity.firstName} {celebrity.surname}
-                </strong>
-                <br />
-                <small>{celebrity.stageName}</small>
-              </div>
-            </div>
-          )}
-          createEntity={createTempCelebrity}
-        />
+<div className="purple-gradient-bg vh-100">
+      <Container className="glassmorphic-card py-4">
+        <div className="px-md-4">
+          <h3 className="text-center mb-3 mobile-heading">
+            <FontAwesomeIcon icon={faVideo} className="me-2" />
+            Connect With Celebrities
+          </h3>
 
-        {selectedCelebrity && (
-          <>
-            <p className="mt-3 mb-0">
-              <b>
-                You picked {selectedCelebrity.firstName}{" "}
-                {selectedCelebrity.surname} ({selectedCelebrity.stageName})
-              </b>
-            </p>
-            <Form className="p-2 pb-5">
-              <div className="mb-3">
+          <div className="text-center mb-3">
+            <small className="text-muted instruction-text">
+              Search below to send personalized messages
+            </small>
+          </div>
+
+          <SearchPic />
+
+          <div className="mb-4">
+            <SearchBar
+              query={query}
+              onQueryChange={handleSearchChange}
+              items={filteredCelebrities}
+              onSelectItem={handleSelectCelebrity}
+              renderItem={(celebrity) => (
+                <div className="d-flex align-items-center py-2 search-result-item">
+                  <img
+                    src={celebrity.image}
+                    alt={celebrity.stageName}
+                    className="celebrity-avatar me-3"
+                  />
+                  <div>
+                    <strong className="celebrity-name">
+                      {celebrity.firstName} {celebrity.surname}
+                    </strong>
+                    <br />
+                    <small className="text-muted stage-name">{celebrity.stageName}</small>
+                  </div>
+                </div>
+              )}
+              createEntity={createTempCelebrity}
+            />
+          </div>
+
+          {selectedCelebrity && (
+            <>
+              <div className="text-center mb-4">
+                <h5 className="selected-celebrity">
+                  Shoutout for{' '}
+                  <span className="highlight-name">
+                    {selectedCelebrity.stageName}
+                  </span>
+                </h5>
+              </div>
+
+              <div className="media-selector-buttons d-flex flex-column flex-md-row gap-2 mb-4">
                 <Button
                   variant={mediaType === "text" ? "primary" : "outline-primary"}
+                  className="media-button"
                   onClick={() => handleMediaTypeChange("text")}
-                  className="me-2"
                 >
-                  Text
+                  <FontAwesomeIcon icon={faComment} className="me-2" style={{color:'purple'}} />
+                  <span className="button-text">Text</span>
                 </Button>
                 <Button
-                  variant={
-                    mediaType === "video" ? "primary" : "outline-primary"
-                  }
+                  variant={mediaType === "video" ? "primary" : "outline-primary"}
+                  className="media-button"
                   onClick={() => handleMediaTypeChange("video")}
-                  className="me-2"
                 >
-                  Video
+                  <FontAwesomeIcon icon={faVideo} className="me-2"  style={{color:'purple'}}/>
+                  <span className="button-text">Video</span>
                 </Button>
                 <Button
-                  variant={
-                    mediaType === "voice" ? "primary" : "outline-primary"
-                  }
+                  variant={mediaType === "voice" ? "primary" : "outline-primary"}
+                  className="media-button"
                   onClick={() => handleMediaTypeChange("voice")}
                 >
-                  Voice Note
+                  <FontAwesomeIcon icon={faMicrophone} className="me-2"  style={{color:'purple'}}/>
+                  <span className="button-text">Voice</span>
                 </Button>
               </div>
-              <Modal show={showRecordingModal} onHide={discardRecording} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Recording {mediaType}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          {mediaType === "video" && (
-            <video ref={videoPreviewRef} className="w-100" autoPlay muted />
-          )}
-            {mediaType === "voice" &&(
-                      <div className="mt-3">
-                        <ProgressBar
-                        striped style={{backgroundColor:'black'}}
-                          now={40}
-                          
-                        />
-                      </div>
-                    )}
-            <small>Recording in progress...</small>
-                      
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={discardRecording}>
-            Discard
-          </Button>
-          <Button variant="success" onClick={stopRecording}>
-            Stop Recording
-          </Button>
-        </Modal.Footer>
-      </Modal>
-              {recordedMedia && (
-        <div className="mt-3">
+              {(mediaType === "video" || mediaType === "voice") && (
+  <div className="recording-section mb-4">
+    {recordedMedia ? (
+      <div className="media-preview-container">
+        <div className="media-wrapper shadow-sm rounded-lg overflow-hidden">
           {mediaType === "video" ? (
-            <video src={recordedMedia} controls className="w-100" />
+            <video 
+              src={recordedMedia} 
+              controls 
+              className="w-100 rounded-lg"
+              style={{ maxHeight: '60vh' }}
+            />
           ) : (
-            <audio src={recordedMedia} controls />
+            <div className="audio-player-container bg-light-purple p-3 rounded-lg">
+              <audio src={recordedMedia} controls className="w-100" />
+            </div>
           )}
-          <Button variant="danger" onClick={discardRecording} className="mt-2">
-            Discard & Retake
-          </Button>
+        </div>
+        <Button 
+          variant="outline-danger" 
+          onClick={discardRecording}
+          className="mt-3 discard-button"
+        >
+          <FontAwesomeIcon icon={faTimesCircle} className="me-2" />
+          Discard & Retake
+        </Button>
+      </div>
+    ) : (
+      <div className="recording-controls">
+        <Button
+          variant={isRecording ? "danger" : "success"}
+          onClick={isRecording ? stopRecording : startRecording}
+          className="w-100 recording-button py-3"
+        >
+          <div className="d-flex align-items-center justify-content-center">
+            <FontAwesomeIcon 
+              icon={mediaType === "video" ? faVideo : faMicrophone} 
+              className="h4 mb-0 me-3"
+            />
+            <span className="button-label">
+              {isRecording ? (
+                <>
+                  <span className="pulsating-dot me-2"></span>
+                  Recording {mediaType}...
+                </>
+              ) : (
+                `Start ${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} Recording`
+              )}
+            </span>
+          </div>
+        </Button>
+        {!isRecording && (
+          <small className="d-block text-muted text-center mt-2 helper-text">
+            {mediaType === "video" 
+              ? "Make sure you're in a well-lit environment"
+              : "Find a quiet space for best quality"}
+          </small>
+        )}
+      </div>
+    )}
+  </div>
+)}
+
+<Modal 
+  show={showRecordingModal} 
+  onHide={discardRecording} 
+  centered 
+  className="modern-recording-modal"
+>
+  <Modal.Header className="modal-header mb-0">
+
+          <span className="action-text">{isRecording ? 'Recording  ' : 'Ready  '}   </span> 
+          <span className="action-text">{' '+ mediaType} Session</span>
+ 
+  </Modal.Header>
+  
+  <Modal.Body className="modal-body my-0 py-0">
+    <div className="visual-feedback">
+      {mediaType === "video" ? (
+        <video 
+          ref={videoPreviewRef} 
+          className="live-preview" 
+          autoPlay 
+          muted 
+          style={{ borderRadius: '12px' }}
+        />
+      ) : (
+        <div className="audio-visualization">
+          <div className={`sound-wave ${isRecording ? 'active' : ''}`}>
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className="bar" />
+            ))}
+          </div>
         </div>
       )}
+    </div>
+    
+    <div className="recording-status py-0 my-0">
+      <div className={`pulse-container ${isRecording ? 'recording' : ''}`}>
+        <div className="pulse-ring"></div>
+        <FontAwesomeIcon 
+          icon={mediaType === 'video' ? faVideo : faMicrophone} 
+          className="status-icon"
+        />
+      </div>
+    </div>
+  </Modal.Body>
+
+  <Modal.Footer className="d-flex justify-content-center my-0 py-0">
+    <div >
+      <button 
+        className={`control-btn ${isRecording ? 'stop-btn' : 'start-btn'}`}
+        onClick={stopRecording}
+      >
+        {isRecording ? (
+          <>
+            <span className="pulse-dot"></span>
+            <span>Stop Recording</span>
+          </>
+        ) : 'Start Session'}
+      </button>
+    </div>
+  </Modal.Footer>
+</Modal>
+
 
               {mediaType === "text" && (
-                <Form.Group className="mb-3" controlId="formMessage">
-                  <p className="text-sm text-neutral-950 mb-2">
-                    Write a heartfelt message to {selectedCelebrity.firstName}{" "}
-                    {selectedCelebrity.surname}
-                  </p>
+                <Form.Group className="mb-4">
                   <Form.Control
                     as="textarea"
-                    rows={10}
-                    placeholder="Type your message here..."
-                    className="border-black"
+                    rows={6}
+                    placeholder={`Write your message to ${selectedCelebrity.firstName}...`}
+                    className="message-textarea"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
                 </Form.Group>
               )}
 
-              {(mediaType === "video" || mediaType === "voice") && (
-              
-                  
-                  <div className="d-flex flex-column gap-2">
-                   
-                    {mediaType === "video" && (
-                      <video
-                        ref={videoPreviewRef}
-                        style={{
-                          width: "100%",
-                          display: isRecording ? "block" : "none",
-                        }}
-                        muted
-                      />
-                    )}
-
-                    {/* Voice Recording Bar */}
-                 
-
-                    {/* Record from Camera/Microphone */}
-                    <div className="d-flex gap-2">
-                      <Button
-                        variant={isRecording ? "danger" : "success"}
-                        onClick={isRecording ? stopRecording : startRecording}
-                      >
-                        {isRecording ? "Stop Recording" : "Start Recording"}
-                      </Button>
-                    </div>
-
-
-                  </div>
-              
-              )}
-              <Button onClick={handleSubmit}>Submit</Button>
-              
-            </Form>
-          </>
-        )}
-      </div>
+              <Button 
+                onClick={handleSubmit} 
+                className="submit-button w-100 py-3"
+              >
+                Send Shoutout 🌟
+              </Button>
+            </>
+          )}
+        </div>
+      </Container>
     </div>
   );
 };

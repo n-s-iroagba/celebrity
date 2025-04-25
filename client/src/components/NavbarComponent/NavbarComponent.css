@@ -1,0 +1,5 @@
+.custom-navbar .navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }

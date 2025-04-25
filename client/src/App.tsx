@@ -18,6 +18,9 @@ import ForgotPassword from './pages/fan/ForgotPassword';
 import Login from './pages/fan/Login';
 import FirstShoutout from './pages/fan/FirstShoutout';
 import CelebrityDashboard from './pages/fan/CelebrityDashboard';
+import ChatMessages from './components/ChatMessages';
+import ChatList from './components/ChatList';
+
 
 const App = () => {
   return (
@@ -34,12 +37,12 @@ const App = () => {
   
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<NewPassword />} />
+        <Route path="/reset-password/:token" element={<NewPassword />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         <Route path="/replies" element={<CelebrityReply />} />
 
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/dashboard" element={<ChatList/>}/>
         <Route path="/celebrity-dashboard/:fanId/:celebrityId" element={<CelebrityDashboard/>}/>
        
         {/* <Route path="/tours/:id" element={<Tours />} /> */}

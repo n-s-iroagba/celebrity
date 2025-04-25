@@ -3,17 +3,18 @@ import { useNavigate } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { InputGroup, Spinner } from "react-bootstrap";
+import { Container, InputGroup, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import ErrorMessage from "../../components/ErrorMessage";
-import AuthOption from "../../components/AuthOption";
+
 import Logo from "../../components/Logo";
 import { postWithNoAuth } from "../../utils/apiUtils";
 import { LoginData } from "../../types/LoginData";
 import { loginUrl } from "../../data/urls";
 import JWTService from "../../services/JWTService";
-import '../../assets/styles/Auth.css'
+import '../../assets/styles/Form.css'
+import MiniFooter from "../../components/MiniFooter";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -63,14 +64,15 @@ const Login: React.FC = () => {
 
   return (
   
-      <div className="form-wrapper">
-        <h3 className="text-center">Login</h3>
-        <div className="d-flex justify-content-center">
+    <div className="purple-gradient-bg d-flex align-items-center">
+    <Container className="container-custom mt-0 py-3 bg-light min-h-100">
+      <div className="d-flex justify-content-center mb-3">
           <Logo />
         </div>
+        
 
         <Form
-          className=" py-2"
+          className=" p-4 "
           noValidate
           validated={validated}
           onSubmit={handleSubmit}
@@ -84,7 +86,7 @@ const Login: React.FC = () => {
                 name="email"
                 value={loginData.email}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control "
+                className="form-control-custom "
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a valid email.
@@ -101,7 +103,7 @@ const Login: React.FC = () => {
                 name="password"
                 value={loginData.password}
                 onChange={handleChange}
-                className="custom-input bg-transparent form-control "
+                  className="form-control-custom "
               />
               <InputGroup.Text onClick={showPassword}>
                 <FontAwesomeIcon
@@ -113,14 +115,6 @@ const Login: React.FC = () => {
               Please enter your password.
             </Form.Control.Feedback>
           </Form.Group>
-          <a
-            className="small-font grey-text"
-            href="/forgot-password"
-            style={{ cursor: "pointer" }}
-          >
-            Forgot Password
-          </a>
-
           <div className="d-flex justify-content-evenly w-100 pt-3">
             <button
               className="auth-button "
@@ -129,16 +123,23 @@ const Login: React.FC = () => {
               {submitting ? <Spinner animation="border" size="sm" /> : "Submit"}
             </button>
           </div>
+          <div className="auth-footer mb-5">
+        <p>
+           <a href="/forgot-password">Forgot Password?</a>
+        </p>
+        <p>
+          Do not have an account? <a href="/signup">Sign up</a>
+        </p>
+      </div>
+
+        
         </Form>
+        
       
       {errorMessage && <ErrorMessage message={errorMessage} />}
-      <div className="mt-5">
-        <AuthOption
-          route={"book/shout-out"}
-          title={"Haven't sent a shoutout yet?"}
-          buttonText={"Send Message"}
-        />
-      </div>
+  </Container>
+
+ 
     </div>
   );
 };

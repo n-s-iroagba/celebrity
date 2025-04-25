@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import { InputGroup, Spinner } from 'react-bootstrap';
+import { Container, InputGroup, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -52,9 +52,9 @@ const NewPassword: React.FC = () => {
   };
 
   return (
-    <div className='responsive-padding-sides'>
-    <div className="form-wrapper px-5 pt-5 pb-3 mt-5">
-    <div className='d-flex justify-content-center w-100'>
+    <div className="purple-gradient-bg d-flex align-items-center">
+    <Container className="container-custom mt-0 py-3 bg-light">
+      <div className="d-flex justify-content-center mb-3">
           <Logo/>
         </div>
       <h3 className="text-center">Reset Password</h3>
@@ -68,7 +68,7 @@ const NewPassword: React.FC = () => {
               name="newPassword"
               value={passwordData.newPassword}
               onChange={handleChange}
-              className="custom-input bg-transparent form-control "
+            className="form-control-custom"
             />
             <InputGroup.Text onClick={showPassword}>
               <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
@@ -86,7 +86,7 @@ const NewPassword: React.FC = () => {
               name="confirmPassword"
               value={passwordData.confirmPassword}
               onChange={handleChange}
-              className="custom-input bg-transparent form-control "
+            className="form-control-custom"
             />
             <InputGroup.Text onClick={showPassword}>
               <FontAwesomeIcon icon={passwordType === 'text' ? faEye : faEyeSlash} />
@@ -101,8 +101,8 @@ const NewPassword: React.FC = () => {
           </button>
         </div>
       </Form>
-      <ErrorMessage message={errorMessage} />
-    </div>
+     {errorMessage && <ErrorMessage message={errorMessage} />}
+    </Container>
     </div>
   );
 };
