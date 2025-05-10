@@ -1,17 +1,7 @@
 import { Fan } from "../types/Fan";
 import { User } from "../types/User";
 
-export const getGreeting = (): string => {
-    const currentTime = new Date().getHours();
-  
-    if (currentTime >= 0 && currentTime < 12) {
-      return 'Good morning';
-    } else if (currentTime >= 12 && currentTime < 18) {
-      return 'Good afternoon';
-    } else {
-      return 'Good evening';
-    }
-  };
+
 
  export const validateForm = (fan:Fan,user:User,setErrors:any,confirmPassword:string): boolean => {
     const newErrors: Record<string, string> = {};

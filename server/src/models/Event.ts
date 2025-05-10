@@ -2,7 +2,7 @@
 import { Optional, Model, NonAttribute, ForeignKey, DataTypes, BelongsToGetAssociationMixin } from "sequelize";
 import sequelize from "../config/orm"; 
 import { Ticket } from "./Ticket";
-import { Job } from "./Job";
+
 import { Celebrity } from "./Celebrity";
 
 export interface EventAttributes {
@@ -34,7 +34,7 @@ export class Event extends Model<EventAttributes, EventCreationAttributes> imple
   public readonly updatedAt!: Date;
 
   // Association methods
-  public getJob!: BelongsToGetAssociationMixin<Job>;
+
   public getTickets!: () => Promise<Ticket[]>;
   public getCelebrity!: () => Promise<Celebrity>;
 }

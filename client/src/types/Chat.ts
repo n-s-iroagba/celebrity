@@ -1,8 +1,8 @@
-import { Message } from "./Messages"
+import { Message } from "./Message"
 
 export type Chat = {
     id:number
     messages:Message[]
-    jobId:number
-    job:string
+    fanId:number
+    celebrityId:number;
 }

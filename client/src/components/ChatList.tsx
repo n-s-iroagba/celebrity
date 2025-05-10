@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {  useFetchList } from '../hooks/useFetch';
 
-interface ChatItem {
+export interface ChatListItem {
   id: number;
   name: string;
-  avatar: string;
+  image: string;
   lastMessage: string;
-  timestamp: string;
+  lastMessageType: 'text' | 'voice' | 'video'|'image';
+  lastMessageTime: string;
+  timestamp:Date
   unreadCount: number;
 }
 
@@ -142,15 +145,10 @@ const UnreadBadge = styled.span`
 
 // Component
 const ChatList: React.FC = () => {
-  const [chats, setChats] = useState<ChatItem[]>([
-    { id: 1, name: 'Alice Johnson', avatar: '/avatars/alice.jpg', lastMessage: 'See you tomorrow!', timestamp: '12:45', unreadCount: 2 },
-    { id: 2, name: 'Bob Smith', avatar: '/avatars/bob.jpg', lastMessage: 'Thanks for the update.', timestamp: '11:20', unreadCount: 0 },
-    { id: 3, name: 'Charlie Brown', avatar: '/avatars/charlie.jpg', lastMessage: 'Can we reschedule?', timestamp: '09:05', unreadCount: 5 },
-  ]);
-
   const [searchTerm, setSearchTerm] = useState('');
+  const {stateList} = useFetchList<ChatListItem>('')
 
-  const filteredChats = chats.filter(c =>
+  const filteredChats = stateList.filter(c =>
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -174,13 +172,13 @@ const ChatList: React.FC = () => {
         <ChatsList>
           {filteredChats.map(chat => (
             <ChatRow key={chat.id}>
-              <Avatar src={chat.avatar} alt={chat.name} />
+              <Avatar src={chat.image} alt={chat.name} />
               <ChatInfo>
                 <ChatName>{chat.name}</ChatName>
                 <LastMessage>{chat.lastMessage}</LastMessage>
               </ChatInfo>
               <ChatMeta>
-                <TimeStamp>{chat.timestamp}</TimeStamp>
+                <TimeStamp>{new Date(chat.timestamp).toISOString()}</TimeStamp>
                 {chat.unreadCount > 0 && <UnreadBadge>{chat.unreadCount}</UnreadBadge>}
               </ChatMeta>
             </ChatRow>

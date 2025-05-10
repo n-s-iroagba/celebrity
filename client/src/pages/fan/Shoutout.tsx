@@ -1,40 +1,48 @@
-import React, { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import Celebrity from "../../types/Celebrity";
 import SearchPic from "../../components/SearchPic";
 import { useNavigate } from "react-router-dom";
-import '../../assets/styles/Shoutout.css'
+import "../../assets/styles/Shoutout.css";
+import { Button, Container, Form, Modal } from "react-bootstrap";
+import { fanSignUpUrl, fetchAllCelebritiesUrl } from "../../data/urls";
 import {
-  Button,
-  Container,
-  Form,
-  Modal,
-  ProgressBar,
-
-} from "react-bootstrap";
-import useFetchAllCelebrities from "../../hooks/useFetchAllCelebrities";
-import { fanSignUpUrl } from "../../data/urls";
-import { faVideo, faComment, faMicrophone, faTimesCircle, faUsersBetweenLines } from "@fortawesome/free-solid-svg-icons";
+  faVideo,
+  faComment,
+  faMicrophone,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMeetup } from "@fortawesome/free-brands-svg-icons";
+import ErrorMessage from "../../components/ErrorMessage";
+import { useFetchList } from "../../hooks/useFetch";
+
 interface ShoutoutProps {
   setComponentView: Dispatch<SetStateAction<"shoutout" | "signup">>;
   selectedCelebrity: Celebrity | null;
-  setSelectedCelebrity: Dispatch<SetStateAction<Celebrity|null>>;
+  setSelectedCelebrity: Dispatch<SetStateAction<Celebrity | null>>;
   message: string;
   setMessage: (msg: string) => void;
   mediaType: "text" | "video" | "voice" | "";
   setMediaType: (type: "text" | "video" | "voice" | "") => void;
-  mediaFile:File|null
-  setMediaFile:Dispatch<SetStateAction<File|null>>
+  mediaFile: File | null;
+  setMediaFile: Dispatch<SetStateAction<File | null>>;
 }
 
-const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaType,selectedCelebrity,setSelectedCelebrity,message,setMessage,mediaFile,setMediaFile}) => {
- 
+const Shoutout: React.FC<ShoutoutProps> = ({
+  setComponentView,
+  mediaType,
+  setMediaType,
+  selectedCelebrity,
+  setSelectedCelebrity,
+  message,
+  setMessage,
+  mediaFile,
+  setMediaFile,
+}) => {
   const [showRecordingModal, setShowRecordingModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { celebrities, loading, error } = useFetchAllCelebrities();
+  const { stateList, loading, error } = useFetchList<Celebrity>(fetchAllCelebritiesUrl);
   const [query, setQuery] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [recordedMedia, setRecordedMedia] = useState<string | null>(null);
@@ -43,19 +51,19 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
   const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const navigate = useNavigate();
- const isSignedIn = false
+  const isSignedIn = false;
 
- const stopMediaTracks = () => {
-  if (mediaStreamRef.current) {
-    mediaStreamRef.current.getTracks().forEach(track => track.stop());
-    mediaStreamRef.current = null;
-  }
-};
+  const stopMediaTracks = () => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      mediaStreamRef.current = null;
+    }
+  };
 
   const startRecording = async () => {
     setShowRecordingModal(true);
     setIsRecording(true);
-    
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: mediaType === "video",
@@ -78,13 +86,14 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
 
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, {
-          type: mediaType === "video" ? "video/webm" : "audio/webm",
+          type: mediaType === "video" ? "video/webm" : "audio/ogg",
         });
+
         setRecordedMedia(URL.createObjectURL(blob));
         const file = new File([blob], "recording.webm", { type: blob.type });
         setMediaFile(file);
-        
-        stopMediaTracks(); // Add this line
+
+        stopMediaTracks();
         setShowRecordingModal(false);
       };
       mediaRecorderRef.current.start();
@@ -107,10 +116,7 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
     setShowRecordingModal(false);
   };
 
-
-
   const handleSubmit = (e: React.FormEvent) => {
-
     e.preventDefault();
 
     if (!selectedCelebrity) {
@@ -122,8 +128,8 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
       alert("Please select a media type.");
       return;
     }
-    if(!isSignedIn){
-      setComponentView('signup')
+    if (!isSignedIn) {
+      setComponentView("signup");
       return;
     }
 
@@ -137,19 +143,19 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
     }
 
     try {
-        fetch(fanSignUpUrl, {
-          method: "POST",
-          body: formData,
+      fetch(fanSignUpUrl, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          navigate(`verify-email/${data}`);
         })
-          .then((response) => response.json())
-          .then((data) => {
-            navigate(`verify-email/${data}`);
-          })
-          .catch((error) => {
-            setErrorMessage("Sorry an error, occurred try again later");
-            console.error("Error sending shoutout:", error);
-          });
-        return;
+        .catch((error) => {
+          setErrorMessage("Sorry an error, occurred try again later");
+          console.error("Error sending shoutout:", error);
+        });
+      return;
     } catch (er) {
       setSubmitting(false);
       console.error(er);
@@ -184,7 +190,7 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
     setQuery("");
   };
 
-  const filteredCelebrities = celebrities.filter(
+  const filteredCelebrities = stateList.filter(
     (celebrity) =>
       celebrity.stageName.toLowerCase().includes(query.toLowerCase()) ||
       celebrity.firstName.toLowerCase().includes(query.toLowerCase()) ||
@@ -200,7 +206,7 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
   }
 
   return (
-<div className="purple-gradient-bg vh-100">
+    <div className="purple-gradient-bg vh-100">
       <Container className="glassmorphic-card py-4">
         <div className="px-md-4">
           <h3 className="text-center mb-3 mobile-heading">
@@ -234,7 +240,9 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
                       {celebrity.firstName} {celebrity.surname}
                     </strong>
                     <br />
-                    <small className="text-muted stage-name">{celebrity.stageName}</small>
+                    <small className="text-muted stage-name">
+                      {celebrity.stageName}
+                    </small>
                   </div>
                 </div>
               )}
@@ -246,7 +254,7 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
             <>
               <div className="text-center mb-4">
                 <h5 className="selected-celebrity">
-                  Shoutout for{' '}
+                  Shoutout for{" "}
                   <span className="highlight-name">
                     {selectedCelebrity.stageName}
                   </span>
@@ -259,151 +267,190 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
                   className="media-button"
                   onClick={() => handleMediaTypeChange("text")}
                 >
-                  <FontAwesomeIcon icon={faComment} className="me-2" style={{color:'purple'}} />
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    className="me-2"
+                    style={{ color: "purple" }}
+                  />
                   <span className="button-text">Text</span>
                 </Button>
                 <Button
-                  variant={mediaType === "video" ? "primary" : "outline-primary"}
+                  variant={
+                    mediaType === "video" ? "primary" : "outline-primary"
+                  }
                   className="media-button"
                   onClick={() => handleMediaTypeChange("video")}
                 >
-                  <FontAwesomeIcon icon={faVideo} className="me-2"  style={{color:'purple'}}/>
+                  <FontAwesomeIcon
+                    icon={faVideo}
+                    className="me-2"
+                    style={{ color: "purple" }}
+                  />
                   <span className="button-text">Video</span>
                 </Button>
                 <Button
-                  variant={mediaType === "voice" ? "primary" : "outline-primary"}
+                  variant={
+                    mediaType === "voice" ? "primary" : "outline-primary"
+                  }
                   className="media-button"
                   onClick={() => handleMediaTypeChange("voice")}
                 >
-                  <FontAwesomeIcon icon={faMicrophone} className="me-2"  style={{color:'purple'}}/>
+                  <FontAwesomeIcon
+                    icon={faMicrophone}
+                    className="me-2"
+                    style={{ color: "purple" }}
+                  />
                   <span className="button-text">Voice</span>
                 </Button>
               </div>
               {(mediaType === "video" || mediaType === "voice") && (
-  <div className="recording-section mb-4">
-    {recordedMedia ? (
-      <div className="media-preview-container">
-        <div className="media-wrapper shadow-sm rounded-lg overflow-hidden">
-          {mediaType === "video" ? (
-            <video 
-              src={recordedMedia} 
-              controls 
-              className="w-100 rounded-lg"
-              style={{ maxHeight: '60vh' }}
-            />
-          ) : (
-            <div className="audio-player-container bg-light-purple p-3 rounded-lg">
-              <audio src={recordedMedia} controls className="w-100" />
-            </div>
-          )}
-        </div>
-        <Button 
-          variant="outline-danger" 
-          onClick={discardRecording}
-          className="mt-3 discard-button"
-        >
-          <FontAwesomeIcon icon={faTimesCircle} className="me-2" />
-          Discard & Retake
-        </Button>
-      </div>
-    ) : (
-      <div className="recording-controls">
-        <Button
-          variant={isRecording ? "danger" : "success"}
-          onClick={isRecording ? stopRecording : startRecording}
-          className="w-100 recording-button py-3"
-        >
-          <div className="d-flex align-items-center justify-content-center">
-            <FontAwesomeIcon 
-              icon={mediaType === "video" ? faVideo : faMicrophone} 
-              className="h4 mb-0 me-3"
-            />
-            <span className="button-label">
-              {isRecording ? (
-                <>
-                  <span className="pulsating-dot me-2"></span>
-                  Recording {mediaType}...
-                </>
-              ) : (
-                `Start ${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} Recording`
+                <div className="recording-section mb-4">
+                  {recordedMedia ? (
+                    <div className="media-preview-container">
+                      <div className="media-wrapper shadow-sm rounded-lg overflow-hidden">
+                        {mediaType === "video" ? (
+                          <video
+                            src={recordedMedia}
+                            controls
+                            className="w-100 rounded-lg"
+                            style={{ maxHeight: "60vh" }}
+                          />
+                        ) : (
+                          <div className="audio-player-container bg-light-purple p-3 rounded-lg">
+                            <audio
+                              src={recordedMedia}
+                              controls
+                              className="w-100"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <Button
+                        variant="outline-danger"
+                        onClick={discardRecording}
+                        className="mt-3 discard-button"
+                      >
+                        <FontAwesomeIcon
+                          icon={faTimesCircle}
+                          className="me-2"
+                        />
+                        Discard & Retake
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="recording-controls">
+                      <Button
+                        variant={isRecording ? "danger" : "success"}
+                        onClick={isRecording ? stopRecording : startRecording}
+                        className="w-100 recording-button py-3"
+                      >
+                        <div className="d-flex align-items-center justify-content-center">
+                          <FontAwesomeIcon
+                            icon={
+                              mediaType === "video" ? faVideo : faMicrophone
+                            }
+                            className="h4 mb-0 me-3"
+                          />
+                          <span className="button-label">
+                            {isRecording ? (
+                              <>
+                                <span className="pulsating-dot me-2"></span>
+                                Recording {mediaType}...
+                              </>
+                            ) : (
+                              `Start ${
+                                mediaType.charAt(0).toUpperCase() +
+                                mediaType.slice(1)
+                              } Recording`
+                            )}
+                          </span>
+                        </div>
+                      </Button>
+                      {!isRecording && (
+                        <small className="d-block text-muted text-center mt-2 helper-text">
+                          {mediaType === "video"
+                            ? "Make sure you're in a well-lit environment"
+                            : "Find a quiet space for best quality"}
+                        </small>
+                      )}
+                    </div>
+                  )}
+                </div>
               )}
-            </span>
-          </div>
-        </Button>
-        {!isRecording && (
-          <small className="d-block text-muted text-center mt-2 helper-text">
-            {mediaType === "video" 
-              ? "Make sure you're in a well-lit environment"
-              : "Find a quiet space for best quality"}
-          </small>
-        )}
-      </div>
-    )}
-  </div>
-)}
 
-<Modal 
-  show={showRecordingModal} 
-  onHide={discardRecording} 
-  centered 
-  className="modern-recording-modal"
->
-  <Modal.Header className="modal-header mb-0">
+              <Modal
+                show={showRecordingModal}
+                onHide={discardRecording}
+                centered
+                className="modern-recording-modal"
+              >
+                <Modal.Header className="modal-header mb-0">
+                  <span className="action-text">
+                    {isRecording ? "Recording  " : "Ready  "}{" "}
+                  </span>
+                  <span className="action-text">{" " + mediaType} Session</span>
+                </Modal.Header>
 
-          <span className="action-text">{isRecording ? 'Recording  ' : 'Ready  '}   </span> 
-          <span className="action-text">{' '+ mediaType} Session</span>
- 
-  </Modal.Header>
-  
-  <Modal.Body className="modal-body my-0 py-0">
-    <div className="visual-feedback">
-      {mediaType === "video" ? (
-        <video 
-          ref={videoPreviewRef} 
-          className="live-preview" 
-          autoPlay 
-          muted 
-          style={{ borderRadius: '12px' }}
-        />
-      ) : (
-        <div className="audio-visualization">
-          <div className={`sound-wave ${isRecording ? 'active' : ''}`}>
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="bar" />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-    
-    <div className="recording-status py-0 my-0">
-      <div className={`pulse-container ${isRecording ? 'recording' : ''}`}>
-        <div className="pulse-ring"></div>
-        <FontAwesomeIcon 
-          icon={mediaType === 'video' ? faVideo : faMicrophone} 
-          className="status-icon"
-        />
-      </div>
-    </div>
-  </Modal.Body>
+                <Modal.Body className="modal-body my-0 py-0">
+                  <div className="visual-feedback">
+                    {mediaType === "video" ? (
+                      <video
+                        ref={videoPreviewRef}
+                        className="live-preview"
+                        autoPlay
+                        muted
+                        style={{ borderRadius: "12px" }}
+                      />
+                    ) : (
+                      <div className="audio-visualization">
+                        <div
+                          className={`sound-wave ${
+                            isRecording ? "active" : ""
+                          }`}
+                        >
+                          {[...Array(12)].map((_, i) => (
+                            <div key={i} className="bar" />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
-  <Modal.Footer className="d-flex justify-content-center my-0 py-0">
-    <div >
-      <button 
-        className={`control-btn ${isRecording ? 'stop-btn' : 'start-btn'}`}
-        onClick={stopRecording}
-      >
-        {isRecording ? (
-          <>
-            <span className="pulse-dot"></span>
-            <span>Stop Recording</span>
-          </>
-        ) : 'Start Session'}
-      </button>
-    </div>
-  </Modal.Footer>
-</Modal>
+                  <div className="recording-status py-0 my-0">
+                    <div
+                      className={`pulse-container ${
+                        isRecording ? "recording" : ""
+                      }`}
+                    >
+                      <div className="pulse-ring"></div>
+                      <FontAwesomeIcon
+                        icon={mediaType === "video" ? faVideo : faMicrophone}
+                        className="status-icon"
+                      />
+                    </div>
+                  </div>
+                </Modal.Body>
 
+                <Modal.Footer className="d-flex justify-content-center my-0 py-0">
+                  <div>
+                    <button
+                      className={`control-btn ${
+                        isRecording ? "stop-btn" : "start-btn"
+                      }`}
+                      onClick={stopRecording}
+                    >
+                      {isRecording ? (
+                        <>
+                          <span className="pulse-dot"></span>
+                          <span>Stop Recording</span>
+                        </>
+                      ) : (
+                        "Start Session"
+                      )}
+                    </button>
+                  </div>
+                </Modal.Footer>
+              </Modal>
 
               {mediaType === "text" && (
                 <Form.Group className="mb-4">
@@ -418,16 +465,25 @@ const Shoutout: React.FC<ShoutoutProps>= ({setComponentView,mediaType,setMediaTy
                 </Form.Group>
               )}
 
-              <Button 
-                onClick={handleSubmit} 
-                className="submit-button w-100 py-3"
-              >
-                Send Shoutout 🌟
-              </Button>
+              {((mediaType === "text" && message.trim().length > 0) ||
+                ((mediaType === "video" || mediaType === "voice") &&
+                  recordedMedia)) && (
+                <div className="text-center mt-4">
+                  <Button
+                    variant="primary"
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                  >
+                    {submitting ? "Sending..." : "Send Shoutout"}
+                  </Button>
+                  {errorMessage && <ErrorMessage message={errorMessage} />}
+                </div>
+              )}
             </>
           )}
         </div>
       </Container>
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 };

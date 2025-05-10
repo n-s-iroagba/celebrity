@@ -1,0 +1,53 @@
+import {
+  Model,
+  DataTypes,
+  ForeignKey,
+  NonAttribute,
+} from "sequelize";
+import sequelize from "../config/orm";
+import Payment from "./Payment";
+
+export interface InvoiceAttributes {
+  id: number;
+  InvoiceType: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
+  price:number;
+  paymentId?:ForeignKey<Payment['id']>
+  payment?:NonAttribute<Payment>
+}
+
+export type InvoiceCreationAttributes = Omit<InvoiceAttributes, 'id'|"paymentId">;
+
+export class Invoice extends Model<InvoiceAttributes,InvoiceCreationAttributes> implements InvoiceAttributes {
+  public id!: number;
+  public price!:number;
+  public InvoiceType!: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
+  public paymentId?: ForeignKey<Payment['id']>;
+
+}
+
+Invoice.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    InvoiceType: {
+      type: DataTypes.ENUM("ClubMembership", "Charity", "Ticket", "Souvenir,Tour"),
+      allowNull:false
+    },
+    price: {
+      type:DataTypes.DOUBLE,
+      allowNull:false
+    }
+  },
+  {
+    sequelize,
+    tableName: "Invoice",
+  }
+);
+
+
+export default Invoice;
+
+  

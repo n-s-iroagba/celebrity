@@ -3,7 +3,7 @@ import Message from '../models/Message';
 import Chat from '../models/Chat';
 
 
-export interface MessageListItem {
+export interface ChatListItem {
   id: number;
   name: string;
   image: string;
@@ -13,11 +13,11 @@ export interface MessageListItem {
   unreadCount: number;
 }
 
-export function messageListToDto(
+export async function messageListToDto(
   chat: Chat  ,
   lastMessage: Message | null,
   unreadCount: number
-): MessageListItem {
+): Promise<ChatListItem> {
   let lastMessageContent = '';
   let lastMessageType: 'text' | 'voice' | 'video'|'image' = 'text';
 
@@ -30,8 +30,8 @@ export function messageListToDto(
 
   return {
     id: chat.id,
-    name: chat.Celebrity?.stageName||chat.Celebrity?.firstName ||'',
-    image: chat.Celebrity?.image || 'https://via.placeholder.com/50',
+    name: (await chat.getCelebrity()).stageName||(await chat.getCelebrity()).firstName ||'',
+    image: (await chat.getCelebrity()).image || 'https://via.placeholder.com/50',
     lastMessage: lastMessageContent,
     lastMessageType,
     lastMessageTime: lastMessage 
@@ -40,3 +40,4 @@ export function messageListToDto(
     unreadCount
   };
 }
+

@@ -1,5 +1,5 @@
 import { Notification } from "../models/Notification"; // Assuming you have a Notification model
-import { Op } from "sequelize";
+
 
 export class NotificationService {
 

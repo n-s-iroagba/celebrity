@@ -4,22 +4,20 @@ import Cropper from 'react-cropper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import 'cropperjs/dist/cropper.css';
-import { IdProps } from '../types/IdProps';
+import { Fan } from '../types/Fan';
 
-
-
-const Profile: React.FC<IdProps> = ({id}) => {
+const Profile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | undefined>();
   const [cropper, setCropper] = useState<any>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editableFields, setEditableFields] = useState({
-    name: 'John Doe',
-    phoneNumber: '1234567890',
-    address1: '123 Main Street',
-    address2: 'Apt 4B',
-    district: 'Central District',
-    localGovernment: 'City Council',
-    state: 'California',
+  const [editableFields, setEditableFields] = useState<Fan>({
+    firstName: '',
+    surname: '',
+    dateOfBirth: null,
+    countryOfResidence: '',
+    gender: '',
+    occupation: '',
+    profilePicture: '',
   });
 
   const nonEditableFields = {
@@ -29,6 +27,11 @@ const Profile: React.FC<IdProps> = ({id}) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditableFields({ ...editableFields, [name]: value });
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditableFields({ ...editableFields, [name]: new Date(value) });
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +47,9 @@ const Profile: React.FC<IdProps> = ({id}) => {
 
   const cropImage = () => {
     if (cropper) {
-      setProfileImage(cropper.getCroppedCanvas().toDataURL());
+      const croppedDataUrl = cropper.getCroppedCanvas().toDataURL();
+      setProfileImage(croppedDataUrl);
+      setEditableFields({ ...editableFields, profilePicture: croppedDataUrl });
     }
   };
 
@@ -55,8 +60,8 @@ const Profile: React.FC<IdProps> = ({id}) => {
   const saveChanges = () => {
     setIsEditing(false);
     alert('Changes saved successfully!');
+    // Optionally, send data to server here
   };
-
 
   return (
     <div className="profile-page p-4" style={{ backgroundColor: 'white', maxWidth: '800px', margin: '0 auto' }}>
@@ -80,26 +85,35 @@ const Profile: React.FC<IdProps> = ({id}) => {
           </div>
           
           {isEditing && (
-            <label 
-              htmlFor="upload-image" 
-              className="position-absolute bottom-0 end-0 bg-violet rounded-circle p-2"
-              style={{
-                transform: 'translate(25%, 25%)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <FontAwesomeIcon 
-                icon={faCamera} 
-                className="text-white"
-                style={{ fontSize: '1.2rem' }}
-              />
-            </label>
+            <>
+              <label 
+                htmlFor="upload-image" 
+                className="position-absolute bottom-0 end-0 bg-violet rounded-circle p-2"
+                style={{
+                  transform: 'translate(25%, 25%)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <FontAwesomeIcon 
+                  icon={faCamera} 
+                  className="text-white"
+                  style={{ fontSize: '1.2rem' }}
+                />
+                <input
+                  type="file"
+                  id="upload-image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="d-none"
+                />
+              </label>
+            </>
           )}
         </div>
       </div>
@@ -121,21 +135,10 @@ const Profile: React.FC<IdProps> = ({id}) => {
               onInitialized={(instance) => setCropper(instance)}
             />
           </div>
-          <Button 
-            onClick={cropImage} 
-            variant="indigo" 
-            className="me-2"
-            style={{
-              backgroundColor: '#4B0082',
-              borderColor: '#4B0082',
-            }}
-          >
+          <Button onClick={cropImage} variant="indigo" className="me-2" style={{ backgroundColor: '#4B0082', borderColor: '#4B0082' }}>
             Save Cropped Image
           </Button>
-          <Button 
-            variant="outline-violet" 
-            onClick={() => setProfileImage(undefined)}
-          >
+          <Button variant="outline-violet" onClick={() => setProfileImage(undefined)}>
             Cancel
           </Button>
         </div>
@@ -143,8 +146,8 @@ const Profile: React.FC<IdProps> = ({id}) => {
 
       {/* Edit/Save Controls */}
       <div className="text-center mb-4">
-        <Button 
-          onClick={toggleEditMode} 
+        <Button
+          onClick={toggleEditMode}
           variant={isEditing ? 'outline-violet' : 'indigo'}
           className="px-4 py-2"
           style={{
@@ -161,105 +164,78 @@ const Profile: React.FC<IdProps> = ({id}) => {
       <Form className="profile-form p-4 rounded" style={{ backgroundColor: '#f8f9fa' }}>
         <Row className="g-3 mb-4">
           <Col md={6}>
-            <Form.Group controlId="name">
-              <Form.Label className="text-indigo fw-bold">Full Name</Form.Label>
+            <Form.Group controlId="firstName">
+              <Form.Label className="text-indigo fw-bold">First Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
-                value={editableFields.name}
+                name="firstName"
+                value={editableFields.firstName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className="profile-input"
-                style={{
-                  borderColor: '#8A2BE2',
-                }}
               />
             </Form.Group>
           </Col>
           <Col md={6}>
-            <Form.Group controlId="phoneNumber">
-              <Form.Label className="text-indigo fw-bold">Phone Number</Form.Label>
+            <Form.Group controlId="surname">
+              <Form.Label className="text-indigo fw-bold">Surname</Form.Label>
               <Form.Control
                 type="text"
-                name="phoneNumber"
-                value={editableFields.phoneNumber}
+                name="surname"
+                value={editableFields.surname}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className="profile-input"
-                style={{
-                  borderColor: '#8A2BE2',
-                }}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="dateOfBirth">
+              <Form.Label className="text-indigo fw-bold">Date of Birth</Form.Label>
+              <Form.Control
+                type="date"
+                name="dateOfBirth"
+                value={editableFields.dateOfBirth ? new Date(editableFields.dateOfBirth).toISOString().split('T')[0] : ''}
+                onChange={handleDateChange}
+                disabled={!isEditing}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="countryOfResidence">
+              <Form.Label className="text-indigo fw-bold">Country of Residence</Form.Label>
+              <Form.Control
+                type="text"
+                name="countryOfResidence"
+                value={editableFields.countryOfResidence}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="gender">
+              <Form.Label className="text-indigo fw-bold">Gender</Form.Label>
+              <Form.Control
+                type="text"
+                name="gender"
+                value={editableFields.gender}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="occupation">
+              <Form.Label className="text-indigo fw-bold">Occupation</Form.Label>
+              <Form.Control
+                type="text"
+                name="occupation"
+                value={editableFields.occupation}
+                onChange={handleInputChange}
+                disabled={!isEditing}
               />
             </Form.Group>
           </Col>
         </Row>
-
-        {/* Address Section */}
-        <div className="mb-4">
-          <h5 className="text-indigo mb-3 border-bottom pb-2">Address Information</h5>
-          <Row className="g-3">
-            <Col md={6}>
-              <Form.Group controlId="address1">
-                <Form.Label>Street Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="address1"
-                  value={editableFields.address1}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group controlId="address2">
-                <Form.Label>Apt/Suite</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="address2"
-                  value={editableFields.address2}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group controlId="district">
-                <Form.Label>District</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="district"
-                  value={editableFields.district}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group controlId="localGovernment">
-                <Form.Label>Local Government</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="localGovernment"
-                  value={editableFields.localGovernment}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group controlId="state">
-                <Form.Label>State</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="state"
-                  value={editableFields.state}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </div>
 
         {/* Email Section */}
         <Form.Group controlId="email" className="mb-4">
@@ -274,15 +250,7 @@ const Profile: React.FC<IdProps> = ({id}) => {
 
         {isEditing && (
           <div className="text-center">
-            <Button 
-              onClick={saveChanges} 
-              variant="indigo"
-              className="px-5 py-2"
-              style={{
-                backgroundColor: '#4B0082',
-                borderColor: '#4B0082',
-              }}
-            >
+            <Button onClick={saveChanges} variant="indigo" className="px-5 py-2" style={{ backgroundColor: '#4B0082', borderColor: '#4B0082' }}>
               Save Changes
             </Button>
           </div>
@@ -292,13 +260,6 @@ const Profile: React.FC<IdProps> = ({id}) => {
       <style>{`
         .text-indigo { color: #4B0082; }
         .bg-violet { background-color: #8A2BE2; }
-        .btn-indigo {
-          background-color: #4B0082;
-          color: white;
-        }
-        .btn-indigo:hover {
-          background-color: #3a0063;
-        }
         .btn-outline-violet {
           border-color: #8A2BE2;
           color: #8A2BE2;
@@ -306,10 +267,6 @@ const Profile: React.FC<IdProps> = ({id}) => {
         .btn-outline-violet:hover {
           background-color: #8A2BE2;
           color: white;
-        }
-        .profile-input:disabled {
-          background-color: #f8f9fa;
-          opacity: 1;
         }
       `}</style>
     </div>

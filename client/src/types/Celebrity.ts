@@ -1,4 +1,4 @@
-import { Job } from "./Job";
+
 export default interface Celebrity {
     id?:string
     stageName: string;
@@ -7,6 +7,5 @@ export default interface Celebrity {
     bio:string;
     isConfirmed:boolean;
     image: string;
-    jobs?:Job[]
    
   }

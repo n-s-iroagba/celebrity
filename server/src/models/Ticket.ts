@@ -7,7 +7,6 @@ import {
 } from "sequelize";
 import sequelize from "../config/orm";
 import { Event } from "./Event";
-import Item from "./Item";
 
 
 export interface TicketAttributes {
@@ -17,11 +16,10 @@ export interface TicketAttributes {
   tier: string;
   perks: string[];
   eventId: ForeignKey<Event["id"]>;
-   itemId?:ForeignKey<Item['id']>;
 }
 
 
-export type TicketCreationAttributes = Optional<TicketAttributes, "id"|"itemId">;
+export type TicketCreationAttributes = Optional<TicketAttributes, "id">;
 
 // Define Ticket model
 export class Ticket
@@ -34,7 +32,6 @@ export class Ticket
   public tier!: string;
   public perks!: string[];
   public eventId!: number;
-  public itemId?:ForeignKey<Item['id']>;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -77,10 +74,7 @@ Ticket.init(
       onDelete: "CASCADE",
       allowNull: false,
     },
-    itemId:{
-      type: DataTypes.INTEGER,
-      allowNull:true,
-    }
+  
   },
   {
     sequelize,

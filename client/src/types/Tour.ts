@@ -1,4 +1,4 @@
-import { Job } from "./Job";
+
 
 
 export type Tour = {
@@ -8,6 +8,4 @@ export type Tour = {
   duration:string
   features: string[];
   location:string;
-  jobId:string
-  job:Job
 };

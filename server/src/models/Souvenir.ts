@@ -1,7 +1,8 @@
 import { Model, DataTypes, Optional, ForeignKey } from "sequelize";
 import sequelize from "../config/orm";
 import { Celebrity } from "./Celebrity";
-import Item from "./Item";
+import { Fan } from "./Fan";
+
 
 export interface SouvenirAttributes {
   id: number;
@@ -9,18 +10,23 @@ export interface SouvenirAttributes {
   description: string;
   images: string[]; // this will now be a JSON array
   celebrityId?: ForeignKey<Celebrity['id']>;
-  itemId?: ForeignKey<Item['id']>;
+  fanId:ForeignKey<Fan['id']>
+  isClaimed:boolean;
+  shippingAddress:string|null
 }
 
-export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id" | "celebrityId" | "itemId">;
+export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id" | "celebrityId" |"shippingAddress"|'isClaimed'>;
 
 export class Souvenir extends Model<SouvenirAttributes, SouvenirCreationAttributes> implements SouvenirAttributes {
+  isClaimed: boolean = false;
+  shippingAddress: string | null = null;
   public id!: number;
   public name!: string;
   public description!: string;
   public images!: string[];
   public celebrityId?: ForeignKey<Celebrity['id']>;
-  public itemId?: ForeignKey<Item['id']>;
+   fanId!:ForeignKey<Fan['id']>
+ 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -51,13 +57,17 @@ Souvenir.init(
         key: 'id',
       },
     },
-    itemId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Item,
-        key: 'id',
+    shippingAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
       },
-    },
+    
+    
+    isClaimed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      
+    }
   },
   {
     sequelize,

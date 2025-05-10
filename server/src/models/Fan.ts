@@ -7,7 +7,7 @@ import {
 } from "sequelize";
 import { User } from "./User";
 import sequelize from "../config/orm";
-import { Job } from "./Job";
+
 
 interface FanAttributes {
   id: number;
@@ -20,7 +20,6 @@ interface FanAttributes {
   userId: ForeignKey<User["id"]>;
   occupation: string;
   user?: NonAttribute<User>;
-  jobs?:NonAttribute<Job>
 }
 
 export type FanCreationAttributes = Optional<FanAttributes, "id">;

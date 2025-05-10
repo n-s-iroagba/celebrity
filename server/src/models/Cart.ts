@@ -4,30 +4,33 @@ import {
   ForeignKey,
   BelongsToGetAssociationMixin,
   NonAttribute,
+  HasManyGetAssociationsMixin,
+
 } from "sequelize";
 import sequelize from "../config/orm";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
-import Item from "./Item";
+import Invoice from "./Invoice";
 
 export interface CartAttributes {
   id: number;
   celebrityId: ForeignKey<Celebrity["id"]>;
   fanId: ForeignKey<Fan["id"]>;
-  items?: NonAttribute <Item[]>;
+  items?: NonAttribute <Invoice[]>;
 }
 export type CartCreationAttribute = Omit<CartAttributes, 'id'>
 export class Cart extends Model<CartAttributes,CartCreationAttribute> implements CartAttributes {
   public id!: number;
   public celebrityId!: number;
   public fanId!: number;
-  public items!: Item[];
+  public items?:NonAttribute< Invoice[]>;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
   // Association Methods
   public getCelebrity!: BelongsToGetAssociationMixin<Celebrity>;
   public getFan!: BelongsToGetAssociationMixin<Fan>;
+  public getItems! : HasManyGetAssociationsMixin<Invoice>
 }
 
 Cart.init(

@@ -1,6 +1,6 @@
 import { Celebrity } from "../models/Celebrity";
 import { Charity, CharityAttributes, CharityCreationAttributes } from "../models/Charity";
-import { Job } from "../models/Job";
+
 
 export class CharityService {
   /**
@@ -19,19 +19,17 @@ export class CharityService {
 
   /**
    * Get all charities
-   * @param includeJobs Whether to include associated jobs
-   * @returns Array of all charities
+   * @returns Array of all charities with the associated celebrities
    */
-  static async getAllCharities(includeJobs: boolean = false): Promise<Charity[]> {
+  static async getAllCharities(): Promise<Charity[]> {
     try {
       const options: any = {};
-      if (includeJobs) {
+   
         options.include = [{
-          model: Job,
-          as: 'groups'
+          model: Celebrity,
+          as: 'celebrity'
         }];
-      }
-      
+  
       const charities = await Charity.findAll(options);
       return charities;
     } catch (error) {
@@ -42,22 +40,20 @@ export class CharityService {
   /**
    * Get charity by ID
    * @param id Charity ID
-   * @param includeJobs Whether to include associated jobs
+   * @param includeCelebrities Whether to include associated jobs
    * @returns Charity if found, null otherwise
    */
-  static async getCharityById(id: number, includeCelebrity: boolean = false): Promise<Charity | null> {
+  static async getCharityById(id: number): Promise<Charity | null> {
     try {
       const options: any = {
         where: { id }
       };
       
-      if (includeCelebrity) {
         options.include = [{
           model: Celebrity,
           as: 'celebrity'
         }];
-      }
-      
+  
       const charity = await Charity.findOne(options);
       return charity;
     } catch (error) {

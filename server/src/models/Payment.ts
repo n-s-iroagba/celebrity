@@ -8,15 +8,17 @@ import {
     ForeignKey,
   } from "sequelize";
   import sequelize from "../config/orm";
-import Item from "./Item";
+import Invoice from "./Invoice";
 import { Fan } from "./Fan";
   
   export interface PaymentAttributes {
     id: number;
-    items:NonAttribute<Item[]>;
+    items:NonAttribute<Invoice[]>;
     amount: number;
     date: Date;
     fanId:ForeignKey<Fan['id']>
+    transactionRef: string;
+    
   }
   
   export type PaymentCreationAttributes = Optional<PaymentAttributes, "id">;
@@ -24,11 +26,11 @@ import { Fan } from "./Fan";
   export class Payment extends Model<PaymentAttributes, PaymentCreationAttributes>
     implements PaymentAttributes {
     public id!: number;
-    public itemType!: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
     public amount!: number;
     public date!: Date;
-    public items!: Item[];
+    public items!: Invoice[];
     public fanId!: ForeignKey<Fan['id']>
+      public transactionRef!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
   }
@@ -50,14 +52,18 @@ import { Fan } from "./Fan";
       },
       items: {
         type: DataTypes.JSONB,
-        allowNull:false
+        allowNull: false
       },
-      fanId:{
-        type:DataTypes.INTEGER,
+      fanId: {
+        type: DataTypes.INTEGER,
         references: {
           model: Fan,
           key: 'id'
-          },
+        },
+      },
+      transactionRef: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {

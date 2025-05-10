@@ -3,7 +3,7 @@ import { FanService } from "../services/FanService";
 import { MessageService } from "../services/MesageService";
 import { CelebrityService } from "../services/CelebrityService";
 import { ChatService } from "../services/ChatService";
-import JobService from "../services/JobService";
+
 
 export class FanController {
 
@@ -32,7 +32,7 @@ export class FanController {
     try {
         if (!celebrity.id) {
             console.log("No celebrity ID found, creating new...");
-            celebrity = await CelebrityService.createCelebrity(celebrity);
+            celebrity = await CelebrityService.createUnconfirmedCelebrity(celebrity);
         }
 
         console.log("Fan data:", fan);
@@ -41,8 +41,7 @@ export class FanController {
 
         // Create Fan, Job, Chat
         const { token, fanId } = await FanService.createFan(fan, user);
-        const job = await JobService.createJob({ fanId, celebrityId: celebrity.id });
-        const chat = await ChatService.createChat({ jobId: job.id });
+        const chat = await ChatService.createChat({ fanId, celebrityId:celebrity.id });
 
         // Save Message with mediaFile URL
         await MessageService.postMessage({

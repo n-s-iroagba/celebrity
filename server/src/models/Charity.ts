@@ -1,8 +1,7 @@
 import { DataTypes, ForeignKey, Model, NonAttribute, Optional } from "sequelize";
 import sequelize from "../config/orm";
-import { Job } from "./Job";
 import { Celebrity } from "./Celebrity";
-import Item from "./Item";
+
 
 export interface CharityAttributes {
   id: number;
@@ -12,13 +11,11 @@ export interface CharityAttributes {
   raisedAmount: number;
   celebrityId?:ForeignKey<Celebrity['id']>;
   celebrity?:NonAttribute<Celebrity>
-  itemId?:ForeignKey<Item['id']>
-  item?:NonAttribute<Item>
 }
 
 
 
-export type CharityCreationAttributes = Optional<CharityAttributes, "id"|"celebrityId"|"itemId">;
+export type CharityCreationAttributes = Optional<CharityAttributes, "id"|"celebrityId">;
 
 export class Charity
   extends Model<CharityAttributes, CharityCreationAttributes>
@@ -30,7 +27,7 @@ export class Charity
   public name!: string;
   public description!: string;
   public celebrityId?:ForeignKey<Celebrity['id']>;
-  public itemId?:ForeignKey<Item['id']>;
+
 
 
 
@@ -74,11 +71,7 @@ Charity.init(
       allowNull:true
 
     },
-    itemId: {
-      type: DataTypes.INTEGER,
-      allowNull:true
-
-    }
+ 
 
   },
   {

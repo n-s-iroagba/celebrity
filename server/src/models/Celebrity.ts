@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional, NonAttribute } from "sequelize";
 import sequelize from "../config/orm";
 import Chat from "./Chat";
 import ClubMembership from "./ClubMembership";
-import { Tour } from "./Tour";
+import { Project } from "./Project";
 import Souvenir from "./Souvenir";
 import Charity from "./Charity";
 import { Event } from "./Event";
@@ -15,12 +15,12 @@ export interface CelebrityAttributes {
   image: string;
   isConfirmed: boolean;
   stageName: string;
-  jobs?: NonAttribute<Chat[]>;
+  chats?: NonAttribute<Chat[]>;
   events?: NonAttribute<Event[]>
   clubMembershipPackages?:NonAttribute<ClubMembership[]>
-  tourPackages?:NonAttribute<Tour[]>
   sourvenirs?:NonAttribute<Souvenir[]>
   charityCampaigns?:NonAttribute<Charity[]>
+  projects?:NonAttribute<Project[]>
 }
 
 export type CelebrityCreationAttributes = Optional<CelebrityAttributes, "id">;

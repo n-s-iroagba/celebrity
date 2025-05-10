@@ -16,14 +16,19 @@ import {
   HasManyRemoveAssociationsMixin,
   HasManySetAssociationsMixin,
   Association,
+  HasOneGetAssociationMixin,
 } from "sequelize";
 import sequelize from "../config/orm";
-import { Job } from "./Job";
 import { Message } from "./Message";
+import { Celebrity } from "./Celebrity";
+import { Fan } from "./Fan";
 
 export interface ChatAttributes {
   id: number;
-  jobId: ForeignKey<Job["id"]>;
+  celebrityId:ForeignKey<Celebrity['id']>;
+  fanId:ForeignKey<Fan['id']>
+  celebrity?:NonAttribute<Celebrity>
+  fan?:NonAttribute<Fan>
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -32,15 +37,18 @@ export interface ChatCreationAttributes extends Optional<ChatAttributes, "id" | 
 
 export class Chat extends Model<ChatAttributes, ChatCreationAttributes> implements ChatAttributes {
   public id!: number;
-  public jobId!: ForeignKey<Job["id"]>;
-  
+    celebrityId!:ForeignKey<Celebrity['id']>;
+  fanId!:ForeignKey<Fan['id']>
+  celebrity?:NonAttribute<Celebrity>
+  fan?:NonAttribute<Fan>
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
   // Association methods
-  public getJob!: BelongsToGetAssociationMixin<Job>;
-  
+  public getFan!: HasOneGetAssociationMixin<Fan>;
+    public getCelebrity!: HasOneGetAssociationMixin<Celebrity>;
+
   // Message associations
   public getMessages!: HasManyGetAssociationsMixin<Message>;
   public addMessage!: HasManyAddAssociationMixin<Message, number>;
@@ -56,11 +64,9 @@ export class Chat extends Model<ChatAttributes, ChatCreationAttributes> implemen
   // Model associations
   public static associations: {
     messages: Association<Chat, Message>;
-    job: Association<Chat, Job>;
+
   };
 
-  // Non-attribute fields
-  public readonly job?: NonAttribute<Job>;
   public readonly messages?: NonAttribute<Message[]>;
 }
 
@@ -71,14 +77,17 @@ Chat.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    jobId: {
+    celebrityId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true, // Ensures one-to-one relationship with Job
-      references: {
-        model: 'jobs',
-        key: 'id',
-      },
+
+     
+    },
+       fanId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+
+     
     },
   },
   {
@@ -89,8 +98,6 @@ Chat.init(
   }
 );
 
-Chat.belongsTo(Job, { foreignKey: "jobId", as: "job" });
-Job.hasOne(Chat, { foreignKey: "jobId", as: "chat" });
 export default Chat;
 
 

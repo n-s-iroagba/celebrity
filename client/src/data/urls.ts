@@ -8,10 +8,6 @@ export const resendVerificationCodeUrl = `${BACKEND_SERVER_URL}/resend-verificat
 
 export const fetchFanChatsUrl = `${BACKEND_SERVER_URL}/fans/chats`
 
-
-
 export const fetchAllCelebritiesUrl = `${BACKEND_SERVER_URL}/celebrities/`
-
-
 export const fetchFanJobsUrl =`${BACKEND_SERVER_URL}/jobs`
 export const fetchJobDetailsUrl = `${BACKEND_SERVER_URL}/jobs`
