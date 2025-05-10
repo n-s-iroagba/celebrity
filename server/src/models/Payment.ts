@@ -3,7 +3,6 @@ import {
     Model,
     DataTypes,
     Optional,
-    Sequelize,
     NonAttribute,
     ForeignKey,
   } from "sequelize";

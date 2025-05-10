@@ -36,7 +36,7 @@ export const adminMiddleware = async (req: AuthenticatedRequest, res: Response, 
       return res.status(401).json({ message: 'Unauthorized: User not found' });
     }
 
-    if (user.role !== (Role.ADMIN|| Role.SUPER_ADMIN)) {
+    if (user.role !== Role.ADMIN) {
       return res.status(403).json({ message: 'Forbidden: Admins only' });
     }
 
@@ -47,33 +47,7 @@ export const adminMiddleware = async (req: AuthenticatedRequest, res: Response, 
   }
 };
 
-export const superadminMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const token = getTokenFromHeader(req);
 
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
-  }
-
-  try {
-    const decoded = verifyToken(token);
-    const userId = decoded.id;
-
-    const user = await User.findByPk(userId);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Unauthorized: User not found' });
-    }
-
-    if (user.role !== Role.SUPER_ADMIN) {
-      return res.status(403).json({ message: 'Forbidden: Superadmins only' });
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
-  }
-};
 
 export const fanMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const token = getTokenFromHeader(req);

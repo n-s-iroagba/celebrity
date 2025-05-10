@@ -9,10 +9,11 @@ import Payment from "./Payment";
 
 export interface InvoiceAttributes {
   id: number;
-  InvoiceType: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
+  invoiceType: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour"|'Booking'|'Reservation';
   price:number;
   paymentId?:ForeignKey<Payment['id']>
   payment?:NonAttribute<Payment>
+  paymentDate:Date
 }
 
 export type InvoiceCreationAttributes = Omit<InvoiceAttributes, 'id'|"paymentId">;
@@ -20,10 +21,12 @@ export type InvoiceCreationAttributes = Omit<InvoiceAttributes, 'id'|"paymentId"
 export class Invoice extends Model<InvoiceAttributes,InvoiceCreationAttributes> implements InvoiceAttributes {
   public id!: number;
   public price!:number;
-  public InvoiceType!: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour";
+  public invoiceType!: "ClubMembership" | "Charity" | "Ticket" | "Souvenir" | "Tour"|'Booking'|'Reservation';
   public paymentId?: ForeignKey<Payment['id']>;
-
+  paymentDate!:Date
 }
+
+
 
 Invoice.init(
   {
@@ -32,13 +35,17 @@ Invoice.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    InvoiceType: {
-      type: DataTypes.ENUM("ClubMembership", "Charity", "Ticket", "Souvenir,Tour"),
-      allowNull:false
+    invoiceType: {
+      type: DataTypes.ENUM("ClubMembership", "Charity", "Ticket", "Souvenir,Tour",'Reservation'),
+      allowNull: false
     },
     price: {
-      type:DataTypes.DOUBLE,
-      allowNull:false
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    paymentDate: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   },
   {

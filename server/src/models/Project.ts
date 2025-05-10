@@ -5,7 +5,7 @@ interface ProjectAttributes {
   id: number;
   title: string;
   description: string;
-  type: 'RESERVATION'|'TOUR'
+  type:'Tour'|'Reservation'
   location: string;
   startDate: Date;
   endDate: Date;
@@ -21,7 +21,7 @@ export class Project extends Model<ProjectAttributes, ProjectCreationAttributes>
   public location!: string;
   public startDate!: Date;
   public endDate!: Date;
-  public type!: 'RESERVATION'|'TOUR'
+  public type!:'Tour'|'Reservation'
   public accessLevels!: object;
   public isActive!: boolean;
   public celebrityId!: number;
@@ -41,7 +41,7 @@ export class Project extends Model<ProjectAttributes, ProjectCreationAttributes>
         isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
         celebrityId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
         type: {
-          type: DataTypes.ENUM('RESERVATION', 'TOUR'),
+          type: DataTypes.ENUM('Tour','Reservation'),
           allowNull: false,
         }
       },

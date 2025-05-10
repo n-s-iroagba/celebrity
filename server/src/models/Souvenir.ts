@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional, ForeignKey } from "sequelize";
 import sequelize from "../config/orm";
 import { Celebrity } from "./Celebrity";
 import { Fan } from "./Fan";
+import { Project } from "./Project";
 
 
 export interface SouvenirAttributes {
@@ -13,6 +14,7 @@ export interface SouvenirAttributes {
   fanId:ForeignKey<Fan['id']>
   isClaimed:boolean;
   shippingAddress:string|null
+    projectId?: ForeignKey<Project['id']>
 }
 
 export type SouvenirCreationAttributes = Optional<SouvenirAttributes, "id" | "celebrityId" |"shippingAddress"|'isClaimed'>;
@@ -24,7 +26,9 @@ export class Souvenir extends Model<SouvenirAttributes, SouvenirCreationAttribut
   public name!: string;
   public description!: string;
   public images!: string[];
-  public celebrityId?: ForeignKey<Celebrity['id']>;
+  public celebrityId!: ForeignKey<Celebrity['id']>;
+  projectId?: ForeignKey<Project['id']>
+
    fanId!:ForeignKey<Fan['id']>
  
   public readonly createdAt!: Date;
