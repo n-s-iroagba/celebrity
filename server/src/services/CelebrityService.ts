@@ -21,6 +21,37 @@ export class CelebrityService {
 
 
   /**
+   * Update celebrity by ID
+   * @param id Celebrity ID
+   * @param updateData Data to update (can include new image as base64 string)
+   * @returns Updated celebrity
+   */
+  static async updateCelebrity(
+    id: number,
+    updateData: Partial<CelebrityAttributes>
+  ): Promise<Celebrity | null> {
+    try {
+      const celebrity = await Celebrity.findByPk(id);
+      if (!celebrity) {
+        return null;
+      }
+
+      await celebrity.update(updateData);
+      return celebrity;
+    } catch (error) {
+      throw new Error(`Error updating celebrity: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  static async getAllCelebrities(): Promise<Celebrity[]> {
+    try {
+      const celebrities = await Celebrity.findAll();
+      return celebrities;
+    } catch (error) {
+      throw new Error(`Error getting confirmed celebrities: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  /**
    * Get confirmed celebrities
    * @returns Array of confirmed celebrities
    */

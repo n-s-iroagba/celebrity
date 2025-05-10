@@ -6,7 +6,7 @@ import cors from 'cors'
 import authRouter from './routes/authRouter';
 import celebrityRouter from './routes/celebrityRouter';
 import { seedDatabase } from '../seedDatabase';
-import jobRouter from './routes/jobRouter';
+import tourRouter from './routes/tourRouter';
 
 
 
@@ -33,7 +33,7 @@ app.use(
 app.use("/admin", adminRouter)
 app.use("/fans", fanRouter);
 app.use ('/auth',authRouter)
-app.use('/jobs', jobRouter);
+app.use('/jobs', tourRouter);
 app.use('/celebrities',celebrityRouter )
 
 sequelize.sync(
