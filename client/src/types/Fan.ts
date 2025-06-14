@@ -1,4 +1,3 @@
-
 export type Fan = {
     id?:string,
     firstName: string;

@@ -1,116 +1,63 @@
-import { Request, Response } from "express";
-import { FanService } from "../services/FanService";
-import { MessageService } from "../services/MesageService";
-import { CelebrityService } from "../services/CelebrityService";
-import { ChatService } from "../services/ChatService";
-
+import type { Request, Response } from "express"
+import { FanService } from "../services/FanService"
+import type { AuthTokenPayload } from "../services/JwtService" // Assuming req.user is of this type or similar
 
 export class FanController {
-
-  static async createFan(req: Request, res: Response): Promise<any> {
-    let { fan, mediaType, message, celebrity, user } = req.body;
-
-    console.log(req.body);
-    
-    // Parse JSON fields
-    fan = JSON.parse(fan);
-    user = JSON.parse(user);
-    celebrity = JSON.parse(celebrity);
-
-    // Extract media file URL
-    let mediaFile = null;
-    if (req.file && mediaType !== "text") {
-        mediaFile = `/uploads/${req.file.filename}`; // Adjust this based on your setup
-    }
-
- 
-
-    if (!mediaFile && mediaType !== "text") {
-        throw new Error("No file uploaded");
-    }
-
+  static async updateMyProfile(req: Request, res: Response): Promise<any> {
     try {
-        if (!celebrity.id) {
-            console.log("No celebrity ID found, creating new...");
-            celebrity = await CelebrityService.createUnconfirmedCelebrity(celebrity);
-        }
-
-        console.log("Fan data:", fan);
-        console.log("User data:", user);
-        console.log("Celebrity data:", celebrity);
-
-        // Create Fan, Job, Chat
-        const { token, fanId } = await FanService.createFan(fan, user);
-        const chat = await ChatService.createChat({ fanId, celebrityId:celebrity.id });
-
-        // Save Message with mediaFile URL
-        await MessageService.postMessage({
-            mediaType,
-            content: message||mediaFile,
-            chatId: chat.id,
-            isSeen: false,
-            senderId: fanId,
-        });
-
-        return res.status(201).json(token);
-    } catch (error: any) {
-        console.error(error);
-        return res.status(500).json({ error: error.message });
-    }
-}
-
-  static async getAllFans(req: Request, res: Response): Promise<any> {
-    try {
-      const fans = await FanService.getAllFans();
-      return res.status(200).json(fans);
-    } catch (error: any) {
-      console.error(error)
-      return res.status(500).json({ error: error.message });
-    }
-  }
-
-
-  static async getFanById(req: Request, res: Response): Promise<any> {
-    try {
-      const id = parseInt(req.params.id, 10);
-      const fan = await FanService.getFanById(id);
-      if (!fan) {
-        throw new Error("Fan not found");
+      // Assuming authMiddleware adds user object to req, and it contains fanId if user is a fan
+      const user = req.user as AuthTokenPayload | undefined
+      if (!user || !user.fanId) {
+        return res.status(403).json({ message: "Forbidden: User is not a fan or not authenticated properly." })
       }
-      return res.status(200).json(fan);
-    } catch (error: any) {
-      console.error(error)
-      return res.status(500).json({ error: error.message });
-    }
-  }
 
-  static async updateFan(req: Request, res: Response): Promise<any> {
-    try {
-      const id = parseInt(req.params.id, 10);
-      const updates = req.body;
-      const updatedFan = await FanService.updateFan(id, updates);
-      if (!updatedFan) {
-        throw new Error("Fan not found");
+      const fanId = user.fanId
+      const { countryOfResidence, dateOfBirth, gender, occupation, profilePicture, firstName, surname } = req.body
+
+      // Basic validation: Ensure at least one field is being updated
+      if (Object.keys(req.body).length === 0) {
+        return res.status(400).json({ message: "No profile data provided for update." })
       }
-      return res.status(200).json({ message: "Fan updated successfully", fan: updatedFan });
-    } catch (error: any) {
-      console.error(error)
-      return res.status(500).json({ error: error.message });
-    }
-  }
 
-  static async deleteFan(req: Request, res: Response): Promise<any> {
-    try {
-      const id = parseInt(req.params.id, 10);
-      const success = await FanService.deleteFan(id);
-      if (!success) {
-        throw new Error("Fan not found");
+      const profileDataToUpdate: any = {}
+      if (countryOfResidence !== undefined) profileDataToUpdate.countryOfResidence = countryOfResidence
+      if (dateOfBirth !== undefined) profileDataToUpdate.dateOfBirth = dateOfBirth
+      if (gender !== undefined) profileDataToUpdate.gender = gender
+      if (occupation !== undefined) profileDataToUpdate.occupation = occupation
+      if (profilePicture !== undefined) profileDataToUpdate.profilePicture = profilePicture
+      if (firstName !== undefined) profileDataToUpdate.firstName = firstName
+      if (surname !== undefined) profileDataToUpdate.surname = surname
+
+      if (Object.keys(profileDataToUpdate).length === 0) {
+        return res.status(400).json({ message: "No updatable profile data provided." })
       }
-      return res.status(200).json({ message: "Fan deleted successfully" });
+
+      const updatedFan = await FanService.updateFanProfile(fanId, profileDataToUpdate)
+      return res.status(200).json(updatedFan)
     } catch (error: any) {
-      console.error(error)
-      return res.status(500).json({ error: error.message });
+      console.error("Update fan profile error:", error)
+      if (error.message === "Fan profile not found." || error.message === "Invalid gender value.") {
+        return res.status(404).json({ message: error.message })
+      }
+      return res.status(500).json({ message: "Failed to update fan profile.", error: error.message })
     }
   }
 
+  static async getMyProfile(req: Request, res: Response): Promise<any> {
+    try {
+      const user = req.user as AuthTokenPayload | undefined
+      if (!user || !user.fanId) {
+        return res.status(403).json({ message: "Forbidden: User is not a fan or not authenticated properly." })
+      }
+      const fanId = user.fanId
+      const fanProfile = await FanService.getFanById(fanId) // Or getFanByUserId(user.userId)
+      if (!fanProfile) {
+        return res.status(404).json({ message: "Fan profile not found." })
+      }
+      return res.status(200).json(fanProfile)
+    } catch (error: any) {
+      console.error("Get fan profile error:", error)
+      return res.status(500).json({ message: "Failed to retrieve fan profile.", error: error.message })
+    }
+  }
 }

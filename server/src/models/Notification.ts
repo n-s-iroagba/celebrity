@@ -60,4 +60,3 @@ import sequelize from "../config/orm";
         tableName: 'membership_packages',
       }
     );
-  

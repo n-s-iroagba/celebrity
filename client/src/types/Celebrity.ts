@@ -1,4 +1,3 @@
-
 export default interface Celebrity {
     id?:string
     stageName: string;

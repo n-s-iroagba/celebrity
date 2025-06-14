@@ -1,5 +1,3 @@
-
-
 export interface ClubMembership {
   id: string;
   tier: string;

@@ -1,6 +1,3 @@
-
-
-
 export type Tour = {
   id: number;
   price: number;

@@ -56,5 +56,3 @@ Invoice.init(
 
 
 export default Invoice;
-
-  

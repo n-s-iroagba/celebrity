@@ -1,5 +1,3 @@
-
-
 export type Message = {
     id: number;
     sender:'fan'|'celebrity';
@@ -10,4 +8,3 @@ export type Message = {
     createdAt: Date;
     chatId:number
   }
-  

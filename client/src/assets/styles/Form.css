@@ -1,56 +1,59 @@
 /* Container Styling */
 .container-custom {
-    max-width: 800px;
-    margin-top: 5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  /* Form Styling */
-  .form-container {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  /* Label Styling */
-  .form-label-custom {
-    position: absolute;
-    left: 0;
-    top: -20px;
-    font-size: 0.9rem;
-  }
-  
+  max-width: 500px; /* Or your preferred max width */
+  background-color: transparent; /* Let the gradient show through */
+  margin-top: 5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 
-  
+/* Ensure form itself has a background if container is transparent */
+.container-custom > Form {
+  background-color: #ffffff; /* White background for the form */
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 
-  /* Button Styling */
-  .button-custom {
-    background: linear-gradient(45deg, #8a2be2, #9400d3);
-    border: none;
-    font-size: 1.1rem;
-    font-weight: 600;
-    width: 7rem;
-    padding: 0.5rem;
-  }
-  
-  /* Forgot Password Link Styling */
-  .forgot-password-link {
-    color: #8a2be2;
-  }
-  
-  /* Sign-up Link Styling */
-  .signup-link {
-    color: #8a2be2;
-    font-weight: 600;
-  }
-  
-  /* Remember Me Checkbox Styling */
-  .checkbox-custom {
-    color: #6c757d;
-  }
-  
+/* Form Styling */
+.form-container {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+/* Label Styling */
+.form-label-custom {
+  position: absolute;
+  left: 0;
+  top: -20px;
+  font-size: 0.9rem;
+}
+
+/* Button Styling */
+.button-custom {
+  background: linear-gradient(45deg, #8a2be2, #9400d3);
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 7rem;
+  padding: 0.5rem;
+}
+
+/* Forgot Password Link Styling */
+.forgot-password-link {
+  color: #8a2be2;
+}
+
+/* Sign-up Link Styling */
+.signup-link {
+  color: #8a2be2;
+  font-weight: 600;
+}
+
+/* Remember Me Checkbox Styling */
+.checkbox-custom {
+  color: #6c757d;
+}
 
 .signup-container {
   background: rgba(255, 255, 255, 0.95);
@@ -63,56 +66,67 @@
 }
 
 .form-control-custom {
-  background: transparent;
-  border: none !important;
-  border-bottom: 2px solid rgb(184, 116, 184) !important;
-  border-radius: 0 !important;
-  padding-left: 0;
-  transition: all 0.3s ease;
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control-custom:focus {
-  box-shadow: none !important;
-  border-bottom-color: indigo !important;
+  border-color: #80bdff; /* Example focus color */
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Example focus shadow */
 }
 
-  /* Placeholder Styling */
-  .form-control-custom::placeholder {
-    color: #aaa;
-    opacity: 1;
-  }
-  
+/* Placeholder Styling */
+.form-control-custom::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
 
 .auth-button {
-  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-weight: 500;
+  background-color: #6f42c1; /* Theme Purple */
+  border-color: #6f42c1;
+  color: white;
   width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
   transition: all 0.3s ease;
 }
 
 .auth-button:hover {
+  background-color: #5a32a3; /* Darker Theme Purple */
+  border-color: #5a32a3;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(116, 65, 148, 0.3);
+  box-shadow: 0 5px 15px rgba(111, 66, 193, 0.3);
+}
+
+.auth-button:disabled {
+  background-color: #b39ddb; /* Lighter purple for disabled */
+  border-color: #b39ddb;
 }
 
 .input-group-text {
   background: transparent !important;
   border: none !important;
-  border-bottom: 2px solid #e0c3fc !important;
-  color: #6a1b9a !important;
+  border-bottom: 2px solid #e0c3fc !important; /* Light Theme Purple */
+  color: #6a1b9a !important; /* Theme Purple */
   transition: all 0.3s ease;
 }
 
 .form-check-input:checked {
-  background-color: #6a1b9a !important;
+  background-color: #6a1b9a !important; /* Theme Purple */
   border-color: #6a1b9a !important;
 }
 
 .form-check-label a {
-  color: #6a1b9a;
+  color: #6a1b9a; /* Theme Purple */
   text-decoration: none;
   font-weight: 500;
 }
@@ -123,14 +137,14 @@
 
 .react-select__control {
   border: none !important;
-  border-bottom: 2px solid #e0c3fc !important;
+  border-bottom: 2px solid #e0c3fc !important; /* Light Theme Purple */
   border-radius: 0 !important;
   box-shadow: none !important;
   background: transparent !important;
 }
 
 .react-select__control--is-focused {
-  border-bottom-color: #6a1b9a !important;
+  border-bottom-color: #6a1b9a !important; /* Theme Purple */
 }
 
 .react-select__menu {
@@ -140,17 +154,18 @@
 }
 
 .react-select__option--is-selected {
-  background-color: #6a1b9a !important;
+  background-color: #6a1b9a !important; /* Theme Purple */
 }
 
 .auth-footer {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
   color: #666;
 }
 
 .auth-footer a {
-  color: #6a1b9a;
+  color: #6f42c1; /* Theme Purple */
   font-weight: 500;
   text-decoration: none;
 }
@@ -179,27 +194,32 @@
 .custom-checkbox .form-check-input {
   width: 1.2em;
   height: 1.2em;
-  border: 2px solid #6a1b9a;
+  border: 2px solid #6a1b9a; /* Theme Purple */
   margin-top: 0.2em;
+  border-radius: 0.25em;
 }
 
 .custom-checkbox .form-check-input:checked {
-  background-color: #6a1b9a;
+  background-color: #6a1b9a; /* Theme Purple */
   border-color: #6a1b9a;
 }
 
 .custom-checkbox .form-check-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(106, 27, 154, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(106, 27, 154, 0.25); /* Theme Purple focus */
+}
+
+.custom-checkbox .form-check-label {
+  font-size: 0.9rem;
 }
 
 .checkbox-label {
-  color: #4a148c;
+  color: #4a148c; /* Darker Theme Purple */
   font-weight: 500;
   margin-left: 0.5rem;
 }
 
 .terms-link {
-  color: #6a1b9a;
+  color: #6f42c1; /* Theme Purple */
   text-decoration: none;
   font-weight: 600;
   position: relative;
@@ -207,23 +227,96 @@
 }
 
 .terms-link:hover {
-  color: #4a148c;
+  color: #4a148c; /* Darker Theme Purple */
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
 
 .custom-checkbox:hover .form-check-input:not(:checked) {
-  border-color: #8e24aa;
+  border-color: #8e24aa; /* Lighter Theme Purple */
   transform: scale(1.05);
   transition: all 0.2s ease;
 }
 
 /* Animation for checkmark */
 @keyframes checkmark {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .custom-checkbox .form-check-input:checked::after {
   animation: checkmark 0.2s ease-out;
+}
+
+/* Password Criteria Styling - Fine-tuned */
+.password-criteria-container {
+  background-color: #f9f7fc;
+  border-radius: 0.3rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #e0d6f0;
+  font-family: inherit;
+}
+
+.password-criteria-heading {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a148c;
+  margin-bottom: 0.6rem;
+}
+
+.password-criteria-list {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.password-criterion-item {
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  color: #555;
+  transition: background-color 0.2s ease-in-out;
+  cursor: default;
+}
+
+.password-criterion-item:hover {
+  /* TRY THIS OPTION: RGBA Theme Purple */
+  background-color: rgba(111, 66, 193, 0.05); /* 5% opacity of #6f42c1 */
+}
+
+.password-criterion-item .criterion-icon {
+  margin-right: 0.6rem;
+  width: 16px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+/* Valid criterion */
+.password-criterion-item.is-valid {
+  color: #198754;
+}
+.password-criterion-item.is-valid .criterion-icon {
+  color: #198754;
+}
+
+/* Invalid criterion */
+.password-criterion-item.is-invalid {
+  color: #dc3545;
+}
+.password-criterion-item.is-invalid .criterion-icon {
+  color: #dc3545;
+}
+
+.purple-gradient-bg {
+  background: linear-gradient(135deg, #6f42c1 0%, #9b59b6 100%);
+  min-height: 100vh;
+  padding-top: 2rem; /* Adjust as needed */
+  padding-bottom: 2rem; /* Adjust as needed */
 }

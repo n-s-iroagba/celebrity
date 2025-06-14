@@ -1,78 +1,36 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { User, UserAttributes } from '../models/User';
-import { Role } from '../enums/Role';
- // Assuming UserAttributes contains user data type
+import type { Request, Response, NextFunction } from "express"
+import { JwtService, type AuthTokenPayload } from "../services/JwtService"
 
-interface AuthenticatedRequest extends Request {
-  user?: UserAttributes;  // Assuming you have a UserAttributes type for the user
+// Extend Express Request type to include 'user'
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthTokenPayload
+    }
+  }
 }
 
-const JWT_SECRET = 'your_jwt_secret';  // Use your secret key here
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization
 
-const verifyToken = (token: string) => {
-  return jwt.verify(token, JWT_SECRET) as { id: number, role: string };  // Decoding the token
-};
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Unauthorized: No token provided or malformed token." })
+  }
 
-const getTokenFromHeader = (req: Request): string | null => {
-  const token = req.headers['authorization']?.split(' ')[1];  // Extracting the token from Authorization header
-  return token || null;
-};
-
-export const adminMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const token = getTokenFromHeader(req);
-
+  const token = authHeader.split(" ")[1]
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    return res.status(401).json({ message: "Unauthorized: Token missing." })
   }
 
   try {
-    const decoded = verifyToken(token);
-    const userId = decoded.id;
-
-    const user = await User.findByPk(userId);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Unauthorized: User not found' });
+    const decoded = JwtService.verifyLoginToken(token)
+    if (!decoded) {
+      return res.status(401).json({ message: "Unauthorized: Invalid token." })
     }
-
-    if (user.role !== Role.ADMIN) {
-      return res.status(403).json({ message: 'Forbidden: Admins only' });
-    }
-
-    req.user = user;
-    next();
+    req.user = decoded // Attach decoded user payload to request object
+    next()
   } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+    console.error("Auth middleware error:", error)
+    return res.status(401).json({ message: "Unauthorized: Invalid token." })
   }
-};
-
-
-
-export const fanMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const token = getTokenFromHeader(req);
-
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
-  }
-
-  try {
-    const decoded = verifyToken(token);
-    const userId = decoded.id;
-
-    const user = await User.findByPk(userId);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Unauthorized: User not found' });
-    }
-
-    if (user.role !== Role.FAN) {
-      return res.status(403).json({ message: 'Forbidden: Fans only' });
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
-  }
-};
+}

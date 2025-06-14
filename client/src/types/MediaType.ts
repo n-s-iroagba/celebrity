@@ -1,5 +1,3 @@
-
-
 export enum MediaType {
     VIDEO='video',
     TEXT='text',

@@ -1,37 +1,13 @@
-import { Router } from "express";
-import { FanController } from "../controllers/FanController";
-import multer from "multer";
-import path from 'path'
-import fs from 'fs'
+import { Router } from "express"
+import { FanController } from "../controllers/FanController"
+import { authMiddleware } from "../middlewares/authMIddleware" // Assuming you have this
 
-const fanRouter = Router();
-// Ensure the uploads folder exists
-const uploadDir =  "../uploads";
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const fanRouter = Router()
 
-// Configure multer to store files in "uploads" folder
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); // Save in uploads directory
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${uniqueSuffix}-${file.originalname}`); // Save with unique name
-  },
-});
+// All routes in this router will require authentication
+fanRouter.use(authMiddleware)
 
-const upload = multer({ storage })
+fanRouter.put("/me/profile", FanController.updateMyProfile)
+fanRouter.get("/me/profile", FanController.getMyProfile)
 
-fanRouter.post("/signup",upload.single('mediaFile'), FanController.createFan);
-
-fanRouter.get("/", FanController.getAllFans);
-
-fanRouter.get("/:id", FanController.getFanById);
-
-fanRouter.put("/:id", FanController.updateFan);
-
-fanRouter.delete("/:id", FanController.deleteFan);
-
-export default fanRouter;
+export default fanRouter

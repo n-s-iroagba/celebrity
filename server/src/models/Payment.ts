@@ -1,4 +1,3 @@
-
 import {
     Model,
     DataTypes,
@@ -72,4 +71,3 @@ import { Fan } from "./Fan";
   );
   
   export default Payment;
-  

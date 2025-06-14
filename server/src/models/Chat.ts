@@ -99,5 +99,3 @@ Chat.init(
 );
 
 export default Chat;
-
-

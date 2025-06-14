@@ -1,4 +1,3 @@
-
 interface Config {
   env: string;
   apiDomain: string;

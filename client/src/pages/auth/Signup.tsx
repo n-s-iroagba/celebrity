@@ -1,72 +1,121 @@
-import React, { useMemo, useState } from "react";
-import { Button, Container, Form, InputGroup, Spinner } from "react-bootstrap";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import countryList from "react-select-country-list";
-import "../../assets/styles/Form.css";
-import MiniFooter from "../../components/MiniFooter";
-import ErrorMessage from "../../components/ErrorMessage";
-import Logo from "../../components/Logo";
-import { Fan } from "../../types/Fan";
-import { User } from "../../types/User";
+"use client"
 
-interface SignUpProps {
-  handleUserChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleFanChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  setFan: React.Dispatch<React.SetStateAction<Fan>>;
-  setComponentView?: React.Dispatch<React.SetStateAction<any>>;
-  fan: Fan;
-  user: User;
-  submitting: boolean;
-  errorMessage: string;
-  errors: Record<string, string>;
-  setConfirmPassword: (password: string) => void;
-  confirmPassword: string;
-}
+import type React from "react"
+import { useState, useEffect } from "react"
+import { Button, Container, Form, InputGroup, Spinner, Alert } from "react-bootstrap"
+import { faWhatsapp, faGoogle } from "@fortawesome/free-brands-svg-icons"
+import { faEye, faEyeSlash, faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useNavigate, useLocation } from "react-router-dom"
+import "../../../src/assets/styles/Form.css"
+import MiniFooter from "../../components/MiniFooter"
+import Logo from "../../components/Logo"
+import {
+  validatePassword,
+  initialPasswordValidationResult,
+  passwordCriteria,
+  type PasswordValidationResult,
+} from "../../utils/password-validator"
+import { registerFanApi, resendVerificationApi, googleAuthUrl } from "../../services/api"
+import { ErrorMessageDisplay } from "@/components/ui/ErrorMessageDisplay" // Adjust path if needed
 
-const SignUp: React.FC<SignUpProps> = ({
-  errorMessage,
-  errors,
-  submitting,
-  setFan,
-  handleUserChange,
-  handleFanChange,
-  fan,
-  user,
-  handleSubmit,
-  setConfirmPassword,
-  confirmPassword,
-}) => {
-  const [passwordType, setPasswordType] = useState<"text" | "password">(
-    "password"
-  );
-  const [agreeTerms, setAgreeTerms] = useState(false); // Local state for checkbox only
-  const options = useMemo(() => countryList().getData(), []);
+const SignUp: React.FC = () => {
+  const navigate = useNavigate()
+  const location = useLocation() // To get state passed from navigation
+  const { tempSessionId, celebrityName } = (location.state as { tempSessionId?: string; celebrityName?: string }) || {}
 
-  const showPassword = () => {
-    setPasswordType((prev) => (prev === "text" ? "password" : "text"));
-  };
+  const [fanData, setFanData] = useState({ firstName: "", surname: "" })
+  const [userData, setUserData] = useState({ email: "", password: "", whatsAppNumber: "" })
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [passwordType, setPasswordType] = useState<"text" | "password">("password")
+  const [agreeTerms, setAgreeTerms] = useState(false)
+  const [passwordValidation, setPasswordValidation] = useState<PasswordValidationResult>(
+    initialPasswordValidationResult,
+  )
+  const [submitting, setSubmitting] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+  const [signupSuccess, setSignupSuccess] = useState<string | null>(null)
+  const [showResendButton, setShowResendButton] = useState(false)
 
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreeTerms(e.target.checked);
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!agreeTerms) {
-      alert("You must agree to the terms and conditions");
-      return;
+  useEffect(() => {
+    if (userData.password) {
+      setPasswordValidation(validatePassword(userData.password))
+    } else {
+      setPasswordValidation(initialPasswordValidationResult)
     }
-    handleSubmit(e);
-  };
+  }, [userData.password])
+
+  const handleFanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFanData({ ...fanData, [e.target.name]: e.target.value })
+  }
+  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value })
+  }
+  const showPassword = () => setPasswordType((prev) => (prev === "text" ? "password" : "text"))
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => setAgreeTerms(e.target.checked)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormError(null)
+    setSignupSuccess(null)
+    if (!agreeTerms) {
+      setFormError("You must agree to the terms and conditions.")
+      return
+    }
+    if (userData.password !== confirmPassword) {
+      setFormError("Passwords do not match.")
+      return
+    }
+    if (userData.password && !passwordValidation.allValid) {
+      setFormError("Please ensure your password meets all criteria.")
+      return
+    }
+    setSubmitting(true)
+    try {
+      const registrationData = { ...userData, ...fanData }
+      // Pass tempSessionId if it exists
+      await registerFanApi(registrationData, tempSessionId)
+      let successMessage = "Registration successful! Please check your email to verify your account."
+      if (celebrityName && tempSessionId) {
+        successMessage += ` Your chat with ${celebrityName} will be saved once you log in.`
+      }
+      setSignupSuccess(successMessage)
+      setShowResendButton(true)
+    } catch (error: any) {
+      setFormError(error.message || "Registration failed. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleResendVerification = async () => {
+    // ... (implementation remains the same)
+    if (!userData.email) {
+      setFormError("Please enter your email address to resend verification.")
+      return
+    }
+    setSubmitting(true)
+    setFormError(null)
+    try {
+      await resendVerificationApi({ email: userData.email })
+      setSignupSuccess("Verification email resent! Please check your inbox.")
+    } catch (error: any) {
+      setFormError(error.message || "Failed to resend verification email.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleGoogleSignup = () => {
+    // Store tempSessionId in localStorage before redirecting to Google
+    // The OAuthCallbackPage will need to pick this up
+    if (tempSessionId) {
+      localStorage.setItem("oauthTempSessionId", tempSessionId)
+      localStorage.setItem("oauthCelebrityName", celebrityName || "")
+    }
+    window.location.href = googleAuthUrl
+  }
 
   return (
     <div className="purple-gradient-bg">
@@ -76,157 +125,116 @@ const SignUp: React.FC<SignUpProps> = ({
         </div>
         <p className="text-sm text-muted text-center">
           <small>
-            Please kindly sign up. We'll use your email and phone number to send
-            you important information about your request.
+            Sign up to connect with {celebrityName ? `${celebrityName} and other stars` : "your favorite stars"}.
+            {tempSessionId && " Your current chat will be saved!"}
           </small>
         </p>
 
-        <Form className="bg-light border-white p-4" onSubmit={handleFormSubmit}>
+        <Form className="bg-light border-white p-4" onSubmit={handleSubmit}>
           <h6 className="text-center">Sign Up</h6>
 
-          {/* First Name */}
-          <Form.Group className="mb-3 " controlId="formName">
+          {/* Replaced Alert with ErrorMessageDisplay */}
+          <ErrorMessageDisplay message={formError} className="mb-3" />
+
+          {signupSuccess && <Alert variant="success">{signupSuccess}</Alert>}
+
+          {/* Form fields remain the same */}
+          <Form.Group className="mb-3 " controlId="firstName">
             <Form.Label>First Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter your first name"
               name="firstName"
-              value={fan.firstName}
+              value={fanData.firstName}
               onChange={handleFanChange}
               required
               className="form-control-custom"
             />
           </Form.Group>
 
-          {/* Surname */}
-          <Form.Group className="mb-3" controlId="formSurname">
+          <Form.Group className="mb-3" controlId="surname">
             <Form.Label>Surname</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter your surname"
               name="surname"
-              value={fan.surname}
+              value={fanData.surname}
               onChange={handleFanChange}
               required
               className="form-control-custom"
             />
           </Form.Group>
 
-          {/* Date of Birth */}
-          <Form.Group className="mb-3" controlId="dob">
-            <Form.Label>Date of Birth</Form.Label>
-            <Form.Control
-              type="date"
-              name="dateOfBirth"
-              value={fan.dateOfBirth?.toString() || new Date().toString()}
-              onChange={handleFanChange}
-              required
-              className="form-control-custom"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="gender">
-            <Form.Label>Country of Residence</Form.Label>
-            <Form.Select
-              value={fan.countryOfResidence}
-              onChange={(e) =>
-                setFan({ ...fan, countryOfResidence: e.target.value })
-              }
-              required
-              className="form-control-custom"
-            >
-              <option value="">Select Country Of Residence</option>
-              {options.map((opt) => (
-                <option value={opt.value}>{opt.label}</option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="gender">
-            <Form.Label>Gender</Form.Label>
-            <Form.Select
-              value={fan.gender}
-              onChange={(e) => setFan({ ...fan, gender: e.target.value })}
-              required
-              className="form-control-custom"
-            >
-              <option value="">Select your gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="non-binary">Non-binary</option>
-            </Form.Select>
-          </Form.Group>
-
-          {/* Occupation */}
-          <Form.Group className="mb-3" controlId="occupation">
-            <Form.Label>Occupation</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your occupation"
-              name="occupation"
-              className="form-control-custom"
-              value={fan.occupation}
-              onChange={handleFanChange}
-            />
-          </Form.Group>
-
-          {/* Email */}
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email Address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter your email"
               name="email"
-              value={user.email}
+              value={userData.email}
               onChange={handleUserChange}
               required
               className="form-control-custom"
             />
           </Form.Group>
 
-          {/* WhatsApp Number */}
           <Form.Group className="mb-3" controlId="formContactNumber">
             <Form.Label>
-              WhatsApp Number{" "}
-              <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
+              WhatsApp Number <FontAwesomeIcon icon={faWhatsapp} className="me-2" />
             </Form.Label>
             <Form.Control
               type="tel"
               name="whatsAppNumber"
               placeholder="Enter your WhatsApp number"
-              value={user.whatsAppNumber}
+              value={userData.whatsAppNumber}
+              onChange={handleUserChange}
               pattern="^\+?[1-9]\d{1,14}$"
               maxLength={15}
-              onChange={handleUserChange}
               required
               className="form-control-custom"
             />
           </Form.Group>
 
-          {/* Password */}
           <Form.Group className="mb-3" controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <InputGroup>
               <Form.Control
                 type={passwordType}
                 name="password"
-                value={user.password}
+                value={userData.password || ""}
                 onChange={handleUserChange}
                 required
                 className="form-control-custom"
+                aria-describedby="passwordHelpBlock"
               />
-              <InputGroup.Text
-                onClick={showPassword}
-                style={{ cursor: "pointer" }}
-              >
-                <FontAwesomeIcon
-                  icon={passwordType === "text" ? faEye : faEyeSlash}
-                />
+              <InputGroup.Text onClick={showPassword} style={{ cursor: "pointer" }}>
+                <FontAwesomeIcon icon={passwordType === "text" ? faEye : faEyeSlash} />
               </InputGroup.Text>
             </InputGroup>
           </Form.Group>
 
-          {/* Confirm Password */}
+          {userData.password && (
+            <div className="password-criteria-container mb-3" id="passwordHelpBlock">
+              <p className="password-criteria-heading">Password must contain:</p>
+              <ul className="list-unstyled password-criteria-list">
+                {passwordCriteria.map((criterion) => (
+                  <li
+                    key={criterion.key}
+                    className={`password-criterion-item ${
+                      passwordValidation[criterion.key] ? "is-valid" : "is-invalid"
+                    }`}
+                  >
+                    <FontAwesomeIcon
+                      icon={passwordValidation[criterion.key] ? faCheckCircle : faTimesCircle}
+                      className="criterion-icon"
+                    />
+                    {criterion.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <Form.Group className="mb-3" controlId="formConfirmPassword">
             <Form.Label>Confirm Password</Form.Label>
             <InputGroup>
@@ -237,18 +245,20 @@ const SignUp: React.FC<SignUpProps> = ({
                 required
                 className="form-control-custom"
               />
-              <InputGroup.Text
-                onClick={showPassword}
-                style={{ cursor: "pointer" }}
-              >
-                <FontAwesomeIcon
-                  icon={passwordType === "text" ? faEye : faEyeSlash}
-                />
+              <InputGroup.Text onClick={showPassword} style={{ cursor: "pointer" }}>
+                <FontAwesomeIcon icon={passwordType === "text" ? faEye : faEyeSlash} />
               </InputGroup.Text>
             </InputGroup>
+            {/* Replaced Form.Text with ErrorMessageDisplay */}
+            <ErrorMessageDisplay
+              message={
+                userData.password && confirmPassword && userData.password !== confirmPassword
+                  ? "Passwords do not match."
+                  : null
+              }
+            />
           </Form.Group>
 
-          {/* Terms and Conditions Checkbox */}
           <Form.Group className="mb-4 mt-4">
             <Form.Check
               type="checkbox"
@@ -272,23 +282,15 @@ const SignUp: React.FC<SignUpProps> = ({
             />
           </Form.Group>
 
-          {/* Error Messages */}
-          {errorMessage && <ErrorMessage message={errorMessage} />}
-          {Object.keys(errors).length > 0 && (
-            <div className="alert alert-danger mt-3">
-              <ul>
-                {Object.values(errors).map((error, index) => (
-                  <li key={index}>{error}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Submit Button */}
           <Button
             type="submit"
-            className="auth-button mt-3"
-            disabled={submitting || !agreeTerms}
+            className="auth-button mt-3 w-100"
+            disabled={
+              submitting ||
+              !agreeTerms ||
+              (userData.password && !passwordValidation.allValid) ||
+              userData.password !== confirmPassword
+            }
           >
             {submitting ? (
               <>
@@ -298,17 +300,43 @@ const SignUp: React.FC<SignUpProps> = ({
               "Sign Up"
             )}
           </Button>
+
+          <div className="text-center my-3">OR</div>
+          <Button
+            variant="outline-danger"
+            className="w-100 mt-2 d-flex align-items-center justify-content-center"
+            onClick={handleGoogleSignup}
+          >
+            <FontAwesomeIcon icon={faGoogle} className="me-2" /> Sign up with Google
+          </Button>
+
+          {showResendButton && !signupSuccess?.includes("resent") && (
+            <Button
+              variant="link"
+              onClick={handleResendVerification}
+              disabled={submitting}
+              className="mt-2 d-block mx-auto"
+            >
+              Resend Verification Email
+            </Button>
+          )}
         </Form>
 
         <div className="auth-footer mb-5">
           <p>
-            Already have an account? <a href="/login">Login</a>
+            Already have an account?{" "}
+            <Button
+              variant="link"
+              className="p-0 m-0 align-baseline"
+              onClick={() => navigate("/login", { state: { tempSessionId, celebrityName } })}
+            >
+              Login
+            </Button>
           </p>
         </div>
       </Container>
       <MiniFooter />
     </div>
-  );
-};
-
-export default SignUp;
+  )
+}
+export default SignUp
